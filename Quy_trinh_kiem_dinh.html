@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Kiểm Định & Sửa Chữa Đồng Hồ Nước — Cấp Nước Sơn La</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="shared.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ---- Page-specific styles for Quy trình kiểm định ---- */
+        .type-icon {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .type-card {
+            text-align: center;
+        }
+
+        .type-card h3 {
+            font-size: 17px;
+            margin: 0 0 8px;
+            font-weight: 800;
+        }
+
+        .type-card p {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* ---- Process Timeline (4-stage vertical) ---- */
+        .process-timeline {
+            position: relative;
+            padding-left: 0;
+        }
+
+        .process-timeline::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--line);
+            border-radius: 2px;
+        }
+
+        .stage-item {
+            position: relative;
+            padding-left: 52px;
+            margin-bottom: 36px;
+        }
+
+        .stage-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stage-dot {
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fff;
+            z-index: 2;
+            border: 3px solid var(--bg-page);
+            font-family: var(--font-mono);
+        }
+
+        .stage-dot.c-navy { background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+        .stage-dot.c-teal { background: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
+        .stage-dot.c-gold { background: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+
+        .stage-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .stage-head h3 {
+            margin: 0;
+            font-size: 17.5px;
+            font-weight: 800;
+        }
+
+        .stage-head h3.navy { color: var(--blue); }
+        .stage-head h3.teal { color: var(--teal); }
+        .stage-head h3.gold { color: var(--gold); }
+
+        .stage-desc {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0 0 12px;
+        }
+
+        .stage-detail-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 18px 22px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stage-detail-card.border-navy { border-left: 4px solid var(--blue); }
+        .stage-detail-card.border-teal { border-left: 4px solid var(--teal); }
+        .stage-detail-card.border-gold { border-left: 4px solid var(--gold); }
+
+        .stage-detail-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .stage-detail-card ul li {
+            font-size: 13.5px;
+            color: var(--ink);
+            padding: 5px 0;
+            line-height: 1.55;
+        }
+
+        .stage-detail-card ul li::before {
+            content: "•";
+            color: var(--teal);
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .chart-note {
+            font-size: 12px;
+            color: var(--muted);
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .note-card .note-icon {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .note-card h4 {
+            font-size: 15.5px;
+            color: var(--ink);
+            margin: 0 0 6px;
+            font-weight: 800;
+        }
+
+        .note-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .page-section {
+            margin-bottom: 48px;
+        }
+
+        .page-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-intro {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.65;
+            max-width: 720px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html" class="active"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty cổ phần cấp nước Sơn La</div>
+  <h1>QUY TRÌNH KIỂM ĐỊNH & <span class="highlight-text">SỬA CHỮA ĐỒNG HỒ NƯỚC</span></h1>
+  <p class="sub">Hướng dẫn chi tiết theo ĐLVN 17 : 2017 — Quy trình chuẩn hóa nhằm đảm bảo tính chính xác, công bằng và tuân thủ kỹ thuật đo lường quốc gia.</p>
+</header>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="wrap" style="margin-top: -30px;">
+
+    <!-- SECTION 1: Verification Types -->
+    <section class="page-section">
+        <div class="section-title">
+            <h2>I. Phân Loại Kiểm Định</h2>
+            <span class="tag">ĐLVN 17 : 2017</span>
+        </div>
+        <p class="section-intro">
+            Hoạt động kiểm định được chia thành ba loại hình chính để đáp ứng các nhu cầu khác nhau của vòng đời thiết bị và yêu cầu quản lý.
+        </p>
+
+        <div class="grid-3">
+            <!-- Card 1 -->
+            <div class="s-card accent-navy type-card">
+                <span class="type-icon">🆕</span>
+                <h3 class="text-navy">Kiểm Định Ban Đầu</h3>
+                <p>
+                    Thực hiện đối với đồng hồ <strong>mới sản xuất</strong> hoặc nhập khẩu trước khi đưa vào mạng lưới sử dụng.
+                </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="s-card accent-teal type-card">
+                <span class="type-icon">📅</span>
+                <h3 class="text-teal">Kiểm Định Định Kỳ</h3>
+                <p>
+                    Thực hiện theo <strong>chu kỳ bắt buộc</strong> đối với các đồng hồ đang vận hành bình thường trên mạng lưới.
+                </p>
+            </div>
+            <!-- Card 3 -->
+            <div class="s-card accent-gold type-card">
+                <span class="type-icon">⚠️</span>
+                <h3 class="text-gold">Kiểm Định Bất Thường</h3>
+                <p>
+                    Thực hiện khi có <strong>sự cố, nghi ngờ sai số</strong>, hoặc theo yêu cầu giải quyết khiếu nại của khách hàng.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: Repair Process Timeline -->
+    <section class="page-section">
+        <div class="section-title">
+            <h2>II. Quy Trình Sửa Chữa & Phục Hồi</h2>
+            <span class="tag">4 giai đoạn · 14 bước</span>
+        </div>
+        <p class="section-intro">
+            Quy trình 4 giai đoạn với 14 bước nghiêm ngặt để biến một đồng hồ cũ, hỏng thành thiết bị đo lường đạt chuẩn.
+        </p>
+
+        <div class="process-timeline">
+            <!-- Stage 1 -->
+            <div class="stage-item">
+                <div class="stage-dot c-navy">1</div>
+                <div class="stage-head">
+                    <h3 class="navy">Giai Đoạn 1: Tháo Dỡ & Xử Lý Vỏ</h3>
+                    <span class="badge badge-navy">Bước 1-5</span>
+                </div>
+                <p class="stage-desc">
+                    Làm sạch nền tảng. Bao gồm phân loại, tháo chì, đánh gỉ, phun sơn tĩnh điện và cập nhật định danh mới.
+                </p>
+                <div class="stage-detail-card border-navy">
+                    <ul>
+                        <li>Phân loại tình trạng kỹ thuật ban đầu</li>
+                        <li>Tháo dỡ chì niêm phong & linh kiện hư hỏng</li>
+                        <li>Đánh gỉ & Phun sơn tĩnh điện vỏ bảo vệ</li>
+                        <li><strong>Đóng số seri & cập nhật mã định danh mới</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="stage-item">
+                <div class="stage-dot c-teal">2</div>
+                <div class="stage-head">
+                    <h3 class="teal">Giai Đoạn 2: Thay Thế Linh Kiện</h3>
+                    <span class="badge badge-teal">Bước 6-8</span>
+                </div>
+                <p class="stage-desc">
+                    Phục hồi lõi cơ học. Thay thế bộ số, cánh quạt, bánh răng truyền động chính xác.
+                </p>
+                <div class="stage-detail-card border-teal">
+                    <ul>
+                        <li>Lắp ráp cơ cấu bánh răng mới</li>
+                        <li>Cân chỉnh cánh quạt quay tự do</li>
+                        <li>Thay mặt kính & gioăng cao su chống nước</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="stage-item">
+                <div class="stage-dot c-gold">3</div>
+                <div class="stage-head">
+                    <h3 class="gold">Giai Đoạn 3: Kiểm Tra & Hiệu Chỉnh Sai Số</h3>
+                    <span class="badge badge-gold">Bước 9-11</span>
+                </div>
+                <p class="stage-desc">
+                    Trọng tâm kỹ thuật. Đo thử lưu lượng trên giàn kiểm định chuẩn ĐLVN 17 và chỉnh bánh răng sai số.
+                </p>
+                <div class="stage-detail-card border-gold">
+                    <ul>
+                        <li>Đo sai số ở lưu lượng danh định Qn & tối thiểu Qmin</li>
+                        <li>Thay đổi bánh răng hiệu chỉnh tỷ số truyền</li>
+                        <li>Thử áp lực tĩnh chống rò rỉ 1.6 MPa</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="stage-item">
+                <div class="stage-dot c-navy">4</div>
+                <div class="stage-head">
+                    <h3 class="navy">Giai Đoạn 4: Niêm Phong & Bàn Giao</h3>
+                    <span class="badge badge-navy">Bước 12-14</span>
+                </div>
+                <p class="stage-desc">
+                    Kẹp chì kiểm định viên, dán tem ĐLVN 17 và lưu trữ hồ sơ thiết bị.
+                </p>
+                <div class="stage-detail-card border-navy">
+                    <ul>
+                        <li>Bấm chì kiểm định viên pháp quy</li>
+                        <li>Dán tem kiểm định hiệu lực</li>
+                        <li>Nhập kho chuẩn bị cấp phát</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: Visual Analytics -->
+    <section class="page-section">
+        <div class="section-title">
+            <h2>III. Phân Tích Dữ Liệu & Hiệu Quả</h2>
+            <span class="tag">Minh họa trực quan</span>
+        </div>
+
+        <div class="grid-2">
+            <!-- Chart 1: Calibration Impact -->
+            <div class="chart-card">
+                <h4>📉 Tác Động Của Hiệu Chỉnh Sai Số</h4>
+                <p class="desc">
+                    Biểu đồ minh họa sự khác biệt sai số (%) giữa đồng hồ cũ và đồng hồ sau khi đã qua quy trình hiệu chỉnh (Đưa về dải ±2% đến ±5%).
+                </p>
+                <div class="chart-holder">
+                    <canvas id="calibrationChart"></canvas>
+                </div>
+                <p class="chart-note">*Dữ liệu mô phỏng quy trình kiểm định kỹ thuật.</p>
+            </div>
+
+            <!-- Chart 2: Process Distribution -->
+            <div class="chart-card">
+                <h4>⏱️ Phân Bổ Tỷ Trọng Kỹ Thuật</h4>
+                <p class="desc">
+                    Biểu đồ thể hiện mức độ phức tạp và thời gian tiêu tốn cho mỗi giai đoạn. Giai đoạn 3 chiếm tỷ trọng cao nhất do yêu cầu thử nghiệm nghiêm ngặt.
+                </p>
+                <div class="chart-holder">
+                    <canvas id="processDistChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Critical Notes -->
+    <section class="page-section">
+        <div class="section-title">
+            <h2>IV. Lưu Ý Kỹ Thuật Quan Trọng</h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="s-card left-navy note-card">
+                <span class="note-icon">🌪️</span>
+                <h4>Độ Nhạy Cánh Quạt</h4>
+                <p>
+                    Khi thay cánh quạt mới (Bước 7), bắt buộc kiểm tra độ quay tự do trước khi lắp nắp chặn để đảm bảo độ nhạy ở lưu lượng nhỏ (Qmin).
+                </p>
+            </div>
+            <div class="s-card left-gold note-card">
+                <span class="note-icon">🧲</span>
+                <h4>Vành Chống Từ</h4>
+                <p>
+                    Vành chống từ (Bước 12) phải được lắp chính xác vị trí để ngăn chặn gian lận bằng nam châm và tránh làm kẹt bộ số cơ học.
+                </p>
+            </div>
+            <div class="s-card left-teal note-card">
+                <span class="note-icon">🛡️</span>
+                <h4>An Toàn Lao Động</h4>
+                <p>
+                    Quá trình đánh gỉ và phun sơn (Bước 3-4) phát sinh bụi và hóa chất. Kỹ thuật viên bắt buộc trang bị kính, khẩu trang và găng tay.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="rpt-footer">
+  Phòng Quản lý Khách hàng — Công ty cổ phần cấp nước Sơn La.
+</footer>
+
+<script>
+    // --- HELPER FUNCTION: Label Splitting (16 chars) ---
+    function splitLabel(label) {
+        if (typeof label !== 'string' || label.length <= 16) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if ((currentLine + ' ' + words[i]).length <= 16) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    let chartInstance1 = null;
+    let chartInstance2 = null;
+
+    function renderCharts() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const textColor = isDark ? '#F1F5F9' : '#0F172A';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : '#E2E8F0';
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.95)' : 'rgba(16, 185, 129, 0.95)',
+                    titleFont: { size: 13, family: "'Plus Jakarta Sans', sans-serif" },
+                    bodyFont: { size: 12, family: "'Plus Jakarta Sans', sans-serif" }
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        usePointStyle: true,
+                        padding: 16,
+                        font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600' }
+                    }
+                }
+            }
+        };
+
+        // Chart 1: Line Chart
+        const ctxCalib = document.getElementById('calibrationChart');
+        if (ctxCalib) {
+            if (chartInstance1) chartInstance1.destroy();
+            chartInstance1 = new Chart(ctxCalib.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Qmin (Nhỏ nhất)', 'Qt (Chuyển tiếp)', 'Qn (Danh định)'].map(splitLabel),
+                    datasets: [
+                        {
+                            label: 'Trước Sửa Chữa (Sai số cao)',
+                            data: [-8.5, 6.2, 4.5],
+                            borderColor: '#F59E0B',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#F59E0B',
+                            pointRadius: 5,
+                            tension: 0.3,
+                            borderDash: [5, 5]
+                        },
+                        {
+                            label: 'Sau Hiệu Chỉnh (Đạt chuẩn)',
+                            data: [-1.5, 0.8, 0.5],
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#10B981',
+                            pointRadius: 6,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Giới Hạn Cho Phép (±2-5%)',
+                            data: [5, 2, 2],
+                            borderColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)',
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: {
+                        y: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor },
+                            title: { display: true, text: 'Sai Số (%)', color: textColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Doughnut Chart
+        const ctxProcess = document.getElementById('processDistChart');
+        if (ctxProcess) {
+            if (chartInstance2) chartInstance2.destroy();
+            chartInstance2 = new Chart(ctxProcess.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'GĐ1: Tháo Dỡ & Vỏ (5 bước)', 
+                        'GĐ2: Thay Linh Kiện (3 bước)', 
+                        'GĐ3: Kiểm Tra & Hiệu Chỉnh (3 bước)', 
+                        'GĐ4: Hoàn Thiện (3 bước)'
+                    ].map(splitLabel),
+                    datasets: [{
+                        data: [25, 20, 40, 15],
+                        backgroundColor: ['#06B6D4', '#10B981', '#F59E0B', '#3B82F6'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    cutout: '60%'
+                }
+            });
+        }
+    }
+
+    // Theme Toggle Script
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+        renderCharts();
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', current);
+        localStorage.setItem('theme', current);
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+        renderCharts();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+    });
+
+    // Scroll to Top Script
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        if (btn) {
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        }
+    });
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>

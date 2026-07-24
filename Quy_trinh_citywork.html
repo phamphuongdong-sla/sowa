@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Thực Hiện Phân Hệ Công Việc CityWork — Cấp Nước Sơn La</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="shared.css">
+
+    <style>
+        /* ---- Modern Web Standards & Clean Architecture ---- */
+        :root {
+            --cw-radius: 14px;
+            --cw-shadow: var(--shadow-sm);
+            --cw-shadow-hover: var(--shadow-md);
+        }
+
+        .clean-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        h1, h2, h3, h4 {
+            text-wrap: balance;
+        }
+
+        /* Top Key Highlights Summary Banner */
+        .key-notes-summary {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--gold);
+            border-radius: var(--cw-radius);
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .key-notes-summary h3 {
+            margin: 0 0 16px;
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 800;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .summary-chip {
+            background: var(--card-bg-solid);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13.5px;
+            color: var(--ink);
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .summary-chip:hover {
+            transform: translateY(-2px);
+            border-color: var(--teal);
+        }
+
+        .summary-chip .chip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Step List Cards */
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .step-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--teal);
+            border-radius: var(--cw-radius);
+            padding: 26px 30px;
+            box-shadow: var(--cw-shadow);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-left-color 0.25s ease;
+        }
+
+        .step-item:hover, .step-item:focus-within {
+            transform: translateY(-3px);
+            box-shadow: var(--cw-shadow-hover);
+            border-left-color: var(--cyan);
+            border-color: var(--card-hover-border);
+        }
+
+        .step-list:has(.step-item:hover) .step-item:not(:hover) {
+            opacity: 0.9;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .step-badge-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .step-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            font-family: var(--font-mono);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .step-icon-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--teal-light);
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .step-heading {
+            font-size: clamp(1rem, 2.2vw, 1.125rem);
+            font-weight: 800;
+            color: var(--ink);
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        .step-text {
+            font-size: 14.5px;
+            color: var(--ink);
+            line-height: 1.65;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* High Visibility Note Box for (i) */
+        .prominent-note {
+            background: var(--gold-light);
+            border: 1.5px solid rgba(245, 158, 11, 0.4);
+            border-left: 5px solid var(--gold);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .prominent-note .note-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--gold);
+            color: #ffffff;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+            font-family: var(--font-mono);
+        }
+
+        .prominent-note .note-body {
+            font-size: 14px;
+            color: var(--ink);
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        /* Step 6 Outcomes */
+        .outcome-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .outcome-item {
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .outcome-item .out-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .outcome-item.success {
+            background: var(--teal-light);
+            border-left: 5px solid var(--teal);
+            color: var(--ink);
+        }
+
+        .outcome-item.warning {
+            background: var(--danger-bg);
+            border-left: 5px solid var(--danger-text);
+            color: var(--ink);
+        }
+
+        /* Simple Footer */
+        .simple-footer {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--cw-radius);
+            padding: 22px 28px;
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            font-size: 13.5px;
+            color: var(--muted);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .simple-footer strong {
+            color: var(--ink);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .step-item, .summary-chip {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html" class="active"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="eyebrow"><span class="drop"></span>Công ty cổ phần cấp nước Sơn La</div>
+  <h1>QUY TRÌNH THỰC HIỆN <span class="highlight-text">PHÂN HỆ CÔNG VIỆC CITYWORK</span></h1>
+  <p class="sub">Văn bản hướng dẫn quy trình thực hiện công việc trên phân hệ CityWork ban hành theo quy định công ty.</p>
+</header>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="clean-container">
+
+  <!-- BẢNG TỔNG HỢP CÁC LƯU Ý QUAN TRỌNG NHẤT -->
+  <div class="key-notes-summary">
+    <h3><span>⚠️</span> BẢNG TỔNG HỢP CÁC LƯU Ý QUAN TRỌNG CẦN NHỚ</h3>
+    <div class="summary-grid">
+      <div class="summary-chip">
+        <span class="chip-icon">📌</span>
+        <div><strong>Tạo phiếu giao việc (Bước 2):</strong> Bắt buộc chọn thêm Giám đốc đơn vị & Tổng đài vào danh sách nhận báo cáo.</div>
+      </div>
+      <div class="summary-chip">
+        <span class="chip-icon">📷</span>
+        <div><strong>Báo hoàn thành (Bước 3):</strong> Phải điền rõ nguyên nhân - giải pháp & chụp ảnh công việc / biên bản làm việc.</div>
+      </div>
+      <div class="summary-chip">
+        <span class="chip-icon">⏱️</span>
+        <div><strong>Thời gian xử lý (Bước 4):</strong> Công việc mất nước hoàn thành trong <strong>2 giờ</strong>. Công việc khác theo CSKH.</div>
+      </div>
+      <div class="summary-chip">
+        <span class="chip-icon">🚨</span>
+        <div><strong>Chậm tiến độ / Báo đỏ (Bước 6):</strong> Tổng đài báo cáo Lãnh đạo đơn vị và Ban Tổng giám đốc.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-list">
+
+    <!-- BƯỚC 1 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">1</div>
+          <div class="step-icon-avatar">📞</div>
+        </div>
+        <h3 class="step-heading">BƯỚC 1</h3>
+      </div>
+      <p class="step-text">Tổng đài tiếp nhận thông tin từ các nguồn, cập nhật đầy đủ thông tin vào phiếu yêu cầu.</p>
+    </div>
+
+    <!-- BƯỚC 2 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">2</div>
+          <div class="step-icon-avatar">📱</div>
+        </div>
+        <h3 class="step-heading">ĐỘI TRƯỞNG QUẢN LÝ MẠNG LƯỚI TIẾP NHẬN PHIẾU: VÀO APP CẤP NƯỚC TRONG PHÂN HỆ CÔNG VIỆC, TẠO PHIẾU GIAO VIỆC.</h3>
+      </div>
+      <div class="prominent-note">
+        <div class="note-tag">⚠️ LƯU Ý BẮT BUỘC (i)</div>
+        <div class="note-body">(i) Chọn thêm người nhận báo cáo bao gồm những người liên quan tới công việc trong đó có Giám đốc đơn vị và Tổng đài (Để nắm được công việc).</div>
+      </div>
+    </div>
+
+    <!-- BƯỚC 3 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">3</div>
+          <div class="step-icon-avatar">🛠️</div>
+        </div>
+        <h3 class="step-heading">NGƯỜI THỰC HIỆN CÔNG VIỆC TIẾP NHẬN CÔNG VIỆC - THỰC HIỆN - BÁO HOÀN THÀNH.</h3>
+      </div>
+      <div class="prominent-note">
+        <div class="note-tag">⚠️ LƯU Ý BẮT BUỘC (i)</div>
+        <div class="note-body">(i) Báo cáo hoàn thành công việc phải điền rõ nguyên nhân - giải pháp và chụp ảnh phần công việc đã làm có thể chụp lại biên bản làm việc.</div>
+      </div>
+    </div>
+
+    <!-- BƯỚC 4 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">4</div>
+          <div class="step-icon-avatar">⏱️</div>
+        </div>
+        <h3 class="step-heading">ĐỘI TRƯỞNG THEO DÕI, GIÁM SÁT, KIỂM TRA TIẾN ĐỘ CÔNG VIỆC:</h3>
+      </div>
+      <div class="prominent-note">
+        <div class="note-tag">⚠️ LƯU Ý VỀ THỜI GIAN (i)</div>
+        <div class="note-body">(i) Với những công việc mất nước thời gian hoàn thành là 2 giờ. Với những công việc còn lại thời gian hoàn thành theo quy trình CSKH.</div>
+      </div>
+    </div>
+
+    <!-- BƯỚC 5 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">5</div>
+          <div class="step-icon-avatar">📊</div>
+        </div>
+        <h3 class="step-heading">TỔNG ĐÀI ĐO LƯỜNG ĐÁNH GIÁ KẾT QUẢ CÔNG VIỆC:</h3>
+      </div>
+      <div class="prominent-note">
+        <div class="note-tag">⚠️ LƯU Ý NGHIỆM THU (i)</div>
+        <div class="note-body">(i) Sau thời gian quy định theo quy trình CSKH tổng đài mặc định sẽ gọi cho khách hàng.</div>
+      </div>
+    </div>
+
+    <!-- BƯỚC 6 -->
+    <div class="step-item">
+      <div class="step-header">
+        <div class="step-badge-wrap">
+          <div class="step-badge">6</div>
+          <div class="step-icon-avatar">📋</div>
+        </div>
+        <h3 class="step-heading">KẾT QUẢ THỰC HIỆN:</h3>
+      </div>
+      <div class="outcome-group">
+        <div class="outcome-item success">
+          <span class="out-icon">✅</span>
+          <div><strong>Hoàn thành đúng thời gian:</strong> Hoàn thành đúng thời gian quy định -> Kết thúc công việc</div>
+        </div>
+        <div class="outcome-item warning">
+          <span class="out-icon">🚨</span>
+          <div><strong>Chưa hoàn thành / Chậm tiến độ (Báo đỏ):</strong> Chưa hoàn thành công việc và hoàn thành bị báo đỏ là hoàn thành chậm so với thời gian quy định, tổng đài báo cáo lãnh đạo đơn vị và ban Tổng giám đốc.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIMPLE FOOTER -->
+  <div class="simple-footer">
+    <div><strong>CÔNG TY CỔ PHẦN CẤP NƯỚC SƠN LA</strong></div>
+    <div>Hotline: <strong>1900.63.67.61</strong> | Zalo: <strong>Công ty cổ phần cấp nước Sơn La</strong></div>
+    <div>FB: <strong>CTCPCapNuocSonLa</strong> | Web: <strong>http://capnuocsonla.vn</strong></div>
+  </div>
+
+</div>
+
+<script>
+// Theme Toggle Script
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', current);
+  localStorage.setItem('theme', current);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+}
+document.addEventListener('DOMContentLoaded', initTheme);
+
+// Scroll to Top Script
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (btn) {
+    if (window.scrollY > 300) btn.classList.add('show');
+    else btn.classList.remove('show');
+  }
+});
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>

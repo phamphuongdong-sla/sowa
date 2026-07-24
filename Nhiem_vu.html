@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Công Nhiệm Vụ 2026 — Cấp Nước Sơn La</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Modern Control Bar */
+        .task-control-bar {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: -38px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 5;
+        }
+
+        .search-box-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .search-box-wrap input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg-solid);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box-wrap input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px var(--teal-light);
+        }
+
+        .search-box-wrap .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .filter-tab-btn {
+            border: 1px solid var(--card-border);
+            background: var(--card-bg-solid);
+            color: var(--muted);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-body);
+        }
+
+        .filter-tab-btn:hover {
+            color: var(--teal);
+            border-color: var(--teal);
+        }
+
+        .filter-tab-btn.active {
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+            color: #FFFFFF;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Objectives cards */
+        .obj-card {
+            text-align: center;
+            padding: 26px 20px;
+        }
+
+        .obj-card .obj-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 68px;
+            height: 68px;
+            border-radius: 16px;
+            background: var(--teal-light);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .obj-card h3 {
+            font-size: 17px;
+            color: var(--ink);
+            margin: 0 0 8px;
+            font-weight: 800;
+        }
+
+        .obj-card p {
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* Leadership Executive Panel */
+        .leader-panel {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-md);
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+        }
+
+        .leader-aside {
+            background: linear-gradient(135deg, #0F172A, #070C14);
+            color: #fff;
+            padding: 42px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .leader-aside::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.25), transparent 70%);
+        }
+
+        .leader-aside .avatar-glow {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .leader-aside h3 {
+            font-size: 21px;
+            margin: 0 0 4px;
+            color: #ffffff;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+
+        .leader-aside .leader-role {
+            color: #F59E0B;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: .08em;
+            font-family: var(--font-mono);
+            background: rgba(245, 158, 11, 0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .leader-body {
+            padding: 34px 40px;
+        }
+
+        .leader-body h4 {
+            font-size: 18px;
+            color: var(--ink);
+            margin: 0 0 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--teal);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .leader-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 14px;
+        }
+
+        .leader-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--ink);
+            background: var(--card-bg-solid);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .leader-list li .li-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            color: var(--teal);
+        }
+
+        @media (max-width: 820px) {
+            .leader-panel { grid-template-columns: 1fr; }
+            .leader-aside { padding: 32px 20px; }
+            .leader-body { padding: 24px 20px; }
+        }
+
+        /* Unit Distribution Sidebar Items */
+        .unit-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 18px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .unit-item:hover {
+            transform: translateX(4px);
+            border-color: var(--card-hover-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .unit-item .unit-name {
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 14px;
+            font-family: var(--font-body);
+        }
+
+        .unit-item .unit-count {
+            color: var(--teal);
+            font-size: 12.5px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            background: var(--teal-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* Staff Role Cards */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+        }
+
+        .staff-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--card-hover-border);
+        }
+
+        .role-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .role-card-header h3 {
+            margin: 0 0 2px;
+            font-size: 18px;
+            color: var(--ink);
+            font-weight: 800;
+        }
+
+        .role-card-header .role-subtitle {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-family: var(--font-mono);
+        }
+
+        .role-detail {
+            font-size: 13.5px;
+            color: var(--ink);
+            line-height: 1.7;
+            margin: 0 0 10px;
+            background: var(--card-bg-solid);
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .role-detail strong {
+            color: var(--teal-dark);
+        }
+
+        /* Chart sizing */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+
+        /* Coordination section */
+        .coord-section {
+            background: linear-gradient(135deg, #0F172A, #090D16);
+            color: #fff;
+            padding: 48px 36px;
+            margin-top: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .coord-section h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #34D399;
+            margin: 0 0 36px;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            font-family: var(--font-display);
+        }
+
+        .coord-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .coord-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 22px;
+            border-radius: 14px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .coord-step:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .coord-step .step-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+            color: #ffffff;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-family: var(--font-mono);
+            margin-bottom: 14px;
+        }
+
+        .coord-step p {
+            color: #94A3B8;
+            font-size: 13.5px;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .coord-step p strong {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html" class="active"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+    <div class="eyebrow"><span class="drop"></span>PHÒNG QUẢN LÝ KHÁCH HÀNG · CÔNG TY CỔ PHẦN CẤP NƯỚC SƠN LA</div>
+    <h1>PHÂN CÔNG NHIỆM VỤ <span class="highlight-text">NĂM 2026</span></h1>
+    <p class="sub">Quyết định số 12/QĐ-CNSL ngày 15/01/2026 — Phân công nhiệm vụ chi tiết cho Ban Trưởng phòng, Trợ lý Giám đốc và Chuyên viên Phòng Quản lý Khách hàng.</p>
+</header>
+
+<div class="wrap">
+
+    <!-- CONTROL & SEARCH BAR -->
+    <div class="task-control-bar no-print">
+        <div class="search-box-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="taskSearchInput" placeholder="Tìm nhanh nhân viên, công việc, đơn vị phụ trách..." onkeyup="filterTasks()">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab-btn active" onclick="filterCategory('all', this)">Tất cả</button>
+            <button class="filter-tab-btn" onclick="filterCategory('leader', this)">Trưởng phòng</button>
+            <button class="filter-tab-btn" onclick="filterCategory('invoice', this)">Hóa đơn & Đơn vị</button>
+            <button class="filter-tab-btn" onclick="filterCategory('cskh', this)">CSKH & Tổng đài</button>
+            <button class="filter-tab-btn" onclick="filterCategory('payment', this)">Kênh Thu hộ</button>
+            <button class="filter-tab-btn" onclick="filterCategory('web', this)">Website & Hình ảnh</button>
+        </div>
+    </div>
+
+    <!-- OBJECTIVES SECTION -->
+    <div class="section-title" style="margin-top: 0;">
+        <h2>Mục Tiêu Trọng Tâm</h2>
+        <span class="tag">Kế hoạch 2026</span>
+    </div>
+
+    <div class="grid-3 mb-lg">
+        <div class="s-card accent-gold obj-card">
+            <span class="obj-icon">⚖️</span>
+            <h3>Tuân Thủ Pháp Luật</h3>
+            <p>Đảm bảo thực hiện đúng chính sách, quy chế và quy định của nhà nước và công ty.</p>
+        </div>
+        <div class="s-card accent-teal obj-card">
+            <span class="obj-icon">📈</span>
+            <h3>Phát Triển Dữ Liệu</h3>
+            <p>Tối ưu hóa quản trị dữ liệu khách hàng, phân nhóm đối tượng giá và phát triển thị trường.</p>
+        </div>
+        <div class="s-card accent-navy obj-card">
+            <span class="obj-icon">🤝</span>
+            <h3>Nâng Cao Dịch Vụ</h3>
+            <p>Cải thiện chất lượng chăm sóc khách hàng, tối ưu hóa quy trình tiếp nhận & xử lý phản hồi.</p>
+        </div>
+    </div>
+
+    <!-- LEADERSHIP SECTION -->
+    <div class="task-item-wrap" data-category="leader">
+        <div class="section-title">
+            <h2>Trách Nhiệm Lãnh Đạo Phòng</h2>
+            <span class="tag">Trưởng phòng</span>
+        </div>
+
+        <div class="leader-panel mb-lg">
+            <div class="leader-aside">
+                <div class="avatar-glow">👤</div>
+                <h3>Đ/c Phạm Phương Đông</h3>
+                <span class="leader-role">Trưởng phòng</span>
+            </div>
+            <div class="leader-body">
+                <h4>Mục Tiêu & Trách Nhiệm Cốt Lõi <span class="badge badge-teal">Điều Hành Chung</span></h4>
+                <ul class="leader-list">
+                    <li>
+                        <span class="li-icon">✔</span>
+                        <span><strong>Quản lý toàn diện:</strong> Chịu trách nhiệm trước Ban Tổng giám đốc về mọi hoạt động và tuân thủ quy chế nội bộ.</span>
+                    </li>
+                    <li>
+                        <span class="li-icon">📢</span>
+                        <span><strong>Quản trị Truyền thông:</strong> Kiểm soát thông tin Fanpage chính thức, duyệt bài viết, hình ảnh & video clip truyền thông.</span>
+                    </li>
+                    <li>
+                        <span class="li-icon">📊</span>
+                        <span><strong>Phân tích & Chiến lược:</strong> Đánh giá số liệu sản xuất kinh doanh, phân nhóm đối tượng tiêu thụ và đề xuất giải pháp tăng sản lượng.</span>
+                    </li>
+                    <li>
+                        <span class="li-icon">💻</span>
+                        <span><strong>Quản trị Phần mềm:</strong> Điều hành hệ thống CityWork.vn và đôn đốc phát triển khách hàng mới.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA VISUALIZATION SECTION -->
+    <div class="section-title">
+        <h2>Phân Bổ Quản Lý Đơn Vị & Khối Lượng</h2>
+        <span class="tag">Trực quan hóa</span>
+    </div>
+
+    <div class="grid-3 mb-lg">
+        <div class="unit-item left-teal">
+            <span class="unit-name">Nguyễn Thu Phương</span>
+            <span class="unit-count">05 Đơn vị phụ trách</span>
+        </div>
+        <div class="unit-item left-navy">
+            <span class="unit-name">Nguyễn Diệu Linh</span>
+            <span class="unit-count">04 Đơn vị phụ trách</span>
+        </div>
+        <div class="unit-item left-gold">
+            <span class="unit-name">Nguyễn Đức Trung</span>
+            <span class="unit-count">03 Đơn vị phụ trách</span>
+        </div>
+    </div>
+
+    <div class="grid-2 mb-lg">
+        <div class="chart-card">
+            <h4>Số Lượng Đơn Vị Phụ Trách Theo Nhân Viên</h4>
+            <p class="desc">Biểu đồ cột — phân bổ địa bàn quản lý trực thuộc</p>
+            <div class="chart-container">
+                <canvas id="unitDistChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h4>Phân Bổ Khối Lượng Chức Năng Phòng QLKH</h4>
+            <p class="desc">Biểu đồ tròn — tỷ trọng nhóm nhiệm vụ năm 2026</p>
+            <div class="chart-container">
+                <canvas id="functionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAFF ROLES GRID -->
+    <div class="section-title">
+        <h2>Chi Tiết Nhiệm Vụ Chuyên Viên</h2>
+        <span class="tag">Đội ngũ chuyên trách</span>
+    </div>
+
+    <div class="staff-grid mb-lg" id="staffGrid">
+
+        <!-- CARD 1: PHƯƠNG -->
+        <div class="staff-card accent-teal task-item-wrap" data-category="invoice">
+            <div class="role-card-header">
+                <div class="icon-circle teal">🧾</div>
+                <div>
+                    <h3>Nguyễn Thu Phương</h3>
+                    <span class="role-subtitle" style="color: var(--teal);">Chuyên môn &amp; Hóa đơn</span>
+                </div>
+            </div>
+            <div class="role-detail"><strong>🔹 Phụ trách chung:</strong> Đôn đốc, kiểm tra nghiệp vụ và báo cáo tổng hợp.</div>
+            <div class="role-detail"><strong>🔹 Hóa đơn điện tử:</strong> Quản lý phát hành, điều chỉnh, làm việc với nhà cung cấp Viettel / VNPT / Misa.</div>
+            <div class="role-detail"><strong>🔹 Địa bàn quản lý (5):</strong> XNCN 1, XNCN 2, CNCN Quỳnh Nhai, Mường La, Sốp Cộp.</div>
+            <div class="role-detail"><strong>🔹 Báo cáo chuyên đề:</strong> Tổng hợp báo cáo kết quả SXKD & Sản lượng chuỗi 2010–2026.</div>
+            <div class="role-detail"><strong>🔹 Quản lý vật tư:</strong> Theo dõi máy in nhiệt, pin di động & văn phòng phẩm.</div>
+        </div>
+
+        <!-- CARD 2: TRUNG -->
+        <div class="staff-card accent-gold task-item-wrap" data-category="web">
+            <div class="role-card-header">
+                <div class="icon-circle gold">🌐</div>
+                <div>
+                    <h3>Nguyễn Đức Trung</h3>
+                    <span class="role-subtitle" style="color: var(--gold);">Website &amp; Thiết kế</span>
+                </div>
+            </div>
+            <div class="role-detail"><strong>🔹 Quản trị Website:</strong> Biên tập bài viết capnuocsonla.vn & thiết kế Maquette banner quảng cáo.</div>
+            <div class="role-detail"><strong>🔹 Địa bàn quản lý (3):</strong> CNCN Yên Châu, Bắc Yên, Thuận Châu.</div>
+            <div class="role-detail"><strong>🔹 Hỗ trợ kỹ thuật:</strong> Hướng dẫn đơn vị xử lý sự cố ghi chỉ số, theo dõi đồng hồ tổng / Block.</div>
+            <div class="role-detail"><strong>🔹 Báo cáo biến động:</strong> Khách hàng phát triển mới, hủy hợp đồng, 3 tháng không có sản lượng.</div>
+        </div>
+
+        <!-- CARD 3: LINH -->
+        <div class="staff-card accent-navy task-item-wrap" data-category="payment">
+            <div class="role-card-header">
+                <div class="icon-circle navy">💰</div>
+                <div>
+                    <h3>Nguyễn Diệu Linh</h3>
+                    <span class="role-subtitle" style="color: var(--cyan);">Kênh Thu Hộ &amp; Tài Chính</span>
+                </div>
+            </div>
+            <div class="role-detail"><strong>🔹 Thu hộ tiền nước:</strong> Làm việc với hệ thống ngân hàng, ví điện tử, đối soát thu hộ hàng tháng.</div>
+            <div class="role-detail"><strong>🔹 Địa bàn quản lý (4):</strong> CNCN Mai Sơn, Mộc Châu, Phù Yên, Sông Mã.</div>
+            <div class="role-detail"><strong>🔹 Hỗ trợ nghiệp vụ:</strong> Giải quyết vướng mắc ghi chốt chỉ số & dữ liệu thanh toán.</div>
+            <div class="role-detail"><strong>🔹 Báo cáo đối soát:</strong> Tổng hợp số liệu thu hộ kênh điện tử, lưu trữ Google Drive.</div>
+        </div>
+
+        <!-- CARD 4: TÁM -->
+        <div class="staff-card left-gold task-item-wrap" data-category="cskh">
+            <div class="role-card-header">
+                <div class="icon-circle gold">📞</div>
+                <div>
+                    <h3>Lù Thị Tám</h3>
+                    <span class="role-subtitle" style="color: var(--gold);">CSKH &amp; Tổng Đài</span>
+                </div>
+            </div>
+            <div class="role-detail"><strong>🔹 Tổng đài CSKH:</strong> Trực tổng đài 1900.636761, Fanpage & Zalo OA tiếp nhận yêu cầu.</div>
+            <div class="role-detail"><strong>🔹 Vận hành CityWork:</strong> Theo dõi & đôn đốc tiến độ phiếu công việc trên ứng dụng.</div>
+            <div class="role-detail"><strong>🔹 Truyền thông SMS:</strong> Gửi tin nhắn SMS sản lượng, thông báo sự cố & xác nhận lắp đặt.</div>
+            <div class="role-detail"><strong>🔹 Báo cáo CSKH:</strong> Báo cáo chất lượng phản hồi và đo lường sự hài lòng khách hàng.</div>
+        </div>
+
+    </div>
+
+    <!-- COORDINATION PROTOCOL -->
+    <div class="coord-section">
+        <h2>Quy Trình Phối Hợp & Điều Hành</h2>
+
+        <div class="coord-steps">
+            <div class="coord-step">
+                <div class="step-badge">1. Chủ Động Địa Bàn</div>
+                <p>Cá nhân phụ trách đơn vị nào phải <strong>chủ động</strong> hướng dẫn, kiểm tra và giải quyết vướng mắc cho đơn vị đó, hỗ trợ linh hoạt khi có phát sinh.</p>
+            </div>
+
+            <div class="coord-step">
+                <div class="step-badge">2. Cơ Cấu Phối Hợp</div>
+                <p>Các Đ/c Trung, Linh, Tám chịu sự chỉ đạo trực tiếp về chuyên môn của <strong>Đ/c Phương</strong>, cùng Trưởng phòng và Ban Giám đốc.</p>
+            </div>
+
+            <div class="coord-step">
+                <div class="step-badge">3. Số Hóa Lưu Trữ</div>
+                <p>Mọi báo cáo, mẫu chứng từ phải được cập nhật đồng bộ lên <strong>Google Drive</strong> và lưu trữ hồ sơ theo chuẩn ISO.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="rpt-footer">
+  Phòng Quản lý Khách hàng — Công ty cổ phần cấp nước Sơn La.
+</footer>
+
+<script>
+    // Search Filter
+    function filterTasks() {
+        const query = document.getElementById('taskSearchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.task-item-wrap, .staff-card');
+        items.forEach(el => {
+            const text = el.innerText.toLowerCase();
+            el.style.display = text.includes(query) ? '' : 'none';
+        });
+    }
+
+    // Category Filter
+    function filterCategory(cat, btn) {
+        document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const items = document.querySelectorAll('.task-item-wrap');
+        items.forEach(el => {
+            if (cat === 'all' || el.getAttribute('data-category') === cat) {
+                el.style.display = '';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    // Charts Initialization
+    const tbNavy = '#06B6D4';
+    const tbTeal = '#10B981';
+    const tbGold = '#F59E0B';
+
+    const ctxUnit = document.getElementById('unitDistChart').getContext('2d');
+    new Chart(ctxUnit, {
+        type: 'bar',
+        data: {
+            labels: ["Nguyễn Thu Phương", "Nguyễn Diệu Linh", "Nguyễn Đức Trung"],
+            datasets: [{
+                label: 'Số Lượng Đơn Vị Phụ Trách',
+                data: [5, 4, 3],
+                backgroundColor: [tbTeal, tbNavy, tbGold],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+
+    const ctxFunc = document.getElementById('functionChart').getContext('2d');
+    new Chart(ctxFunc, {
+        type: 'doughnut',
+        data: {
+            labels: ["Quản Lý Đơn Vị", "Hóa Đơn & Tài Chính", "CSKH & Truyền Thông", "Báo Cáo & Phân Tích"],
+            datasets: [{
+                data: [40, 25, 20, 15],
+                backgroundColor: [tbTeal, tbNavy, tbGold, '#64748B'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // Theme Toggle Script
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', current);
+      localStorage.setItem('theme', current);
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+    }
+    document.addEventListener('DOMContentLoaded', initTheme);
+
+    // Scroll to Top Script
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('backToTop');
+      if (btn) {
+        if (window.scrollY > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+      }
+    });
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>

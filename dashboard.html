@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Phân Tích — Cấp Nước Sơn La</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --color-k1: var(--teal);
+            --color-k2: var(--gold);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 25px;
+        }
+
+        .dropzone-box {
+            background: var(--card-bg);
+            border: 2px dashed var(--card-border);
+            padding: 28px 22px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dropzone-box.period-1 { border-color: var(--teal); }
+        .dropzone-box.period-2 { border-color: var(--gold); }
+        .dropzone-box:hover { transform: translateY(-3px); border-color: var(--teal-dark); box-shadow: var(--shadow-md); }
+
+        .file-status { font-size: 13px; font-weight: 700; margin-top: 10px; color: var(--muted); }
+
+        .filter-timeline-wrapper {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-title { font-weight: 800; color: var(--ink); font-size: 15px; }
+
+        .month-chip-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .month-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 20px; border: 1px solid var(--card-border);
+            background: var(--card-bg-solid); font-size: 12.5px; font-weight: 600; color: var(--ink);
+            cursor: pointer; user-select: none; transition: all 0.2s;
+        }
+        .month-chip:has(input:checked) { background: var(--teal-light); border-color: var(--teal); color: var(--teal); font-weight: 700; }
+        .month-chip input { accent-color: var(--teal); cursor: pointer; }
+        .btn-chip {
+            padding: 8px 16px; border-radius: 10px; border: 1px solid var(--card-border);
+            background: var(--card-bg-solid); font-size: 12.5px; font-weight: 700; color: var(--ink); cursor: pointer; font-family: var(--font-body);
+            transition: all 0.2s ease;
+        }
+        .btn-chip:hover { border-color: var(--teal); color: var(--teal); }
+
+        .action-bar { text-align: center; margin-bottom: 35px; }
+        .btn-process {
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+            color: white; border: none; padding: 16px 60px;
+            font-size: 16px; font-weight: 800; border-radius: 12px;
+            cursor: pointer; transition: all 0.25s ease;
+            font-family: var(--font-body);
+            letter-spacing: .02em;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+        }
+        .btn-process:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45); }
+
+        .section-wrapper {
+            background: var(--card-bg); backdrop-filter: blur(12px); padding: 30px; border-radius: 16px;
+            box-shadow: var(--shadow-sm); margin-bottom: 35px;
+            border: 1px solid var(--card-border);
+        }
+
+        .chart-box-title {
+            font-size: 18px; font-weight: 800; color: var(--ink);
+            margin-bottom: 8px; padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+            font-family: var(--font-display);
+        }
+        .chart-box-subtitle { font-size: 13px; color: var(--muted); margin: 8px 0 15px 0; line-height: 1.6; font-family: var(--font-body); }
+
+        .legend-indicator-box {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .dot-k1 { width: 12px; height: 12px; background-color: var(--color-k1); border-radius: 3px; }
+        .dot-k2 { width: 12px; height: 12px; background-color: var(--color-k2); border-radius: 3px; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            border-left: 4px solid var(--teal);
+            box-shadow: var(--shadow-sm);
+        }
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-mono); }
+        .kpi-value { font-size: 24px; font-weight: 800; color: var(--ink); margin: 8px 0 4px 0; font-family: var(--font-mono); }
+        .kpi-sub { font-size: 12.5px; color: var(--muted); font-family: var(--font-body); }
+        .kpi-periods { font-size: 12px; color: var(--muted); margin-top: 6px; font-family: var(--font-body); }
+
+        .pie-charts-flex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .pie-sub-card {
+            background: var(--card-bg-solid);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+        }
+        .pie-sub-title { font-size: 14px; font-weight: 800; color: var(--ink); margin-bottom: 5px; text-transform: uppercase; }
+
+        .charts-two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+        @media(max-width: 1024px) { .charts-two-columns { grid-template-columns: 1fr; } }
+
+        .data-table-custom { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; font-family: var(--font-mono); }
+        .data-table-custom th { background-color: var(--card-bg-solid); color: var(--ink); font-weight: 800; padding: 12px 10px; border: 1px solid var(--line); text-align: center; font-family: var(--font-display); font-size: 12px; }
+        .data-table-custom td { padding: 10px 12px; border: 1px solid var(--line); text-align: right; color: var(--ink); }
+        .data-table-custom td:nth-child(2), .data-table-custom td:nth-child(3), .data-table-custom td:nth-child(4), .data-table-custom td:nth-child(5) {
+            text-align: left;
+        }
+        .data-table-custom tr:hover td { background-color: var(--teal-light); }
+
+        .row-total { background-color: var(--teal-light) !important; font-weight: 800; border-top: 2px solid var(--teal); color: var(--ink); }
+        .txt-up { color: #10B981; font-weight: 800; }
+        .txt-down { color: var(--danger-text); font-weight: 800; }
+
+        .loading-mask {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85); color: white; z-index: 9999;
+            justify-content: center; align-items: center; font-size: 18px; flex-direction: column;
+            backdrop-filter: blur(12px);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html" class="active"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div id="loading-screen" class="loading-mask">
+    <div style="border: 4px solid rgba(255,255,255,0.2); border-top: 4px solid var(--teal); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 15px;"></div>
+    <div id="loading-text">Đang tải và đồng bộ cấu trúc hệ thống dữ liệu...</div>
+</div>
+
+<header class="masthead">
+    <div class="eyebrow"><span class="drop"></span>PHÂN TÍCH DỮ LIỆU HÓA ĐƠN</div>
+    <h1>DASHBOARD TỔNG THỂ <span class="highlight-text">NGÀNH CẤP NƯỚC</span></h1>
+    <p class="sub">Đối chiếu sản lượng tiêu thụ, doanh thu và cơ cấu khách hàng giữa hai kỳ hóa đơn tiền nước — tự động quy đổi nhóm giá nước giữa các hệ mã đối tượng giá khác nhau theo từng năm.</p>
+</header>
+      <path d="M0,60 L0,38 L90,18 L170,34 L260,10 L360,30 L460,16 L560,36 L660,14 L760,32 L860,20 L960,38 L1060,12 L1140,30 L1200,20 L1200,60 Z" fill="#EEEBE0"></path>
+    </svg>
+</div>
+
+<div class="wrap" style="padding-top: 34px;">
+    <div class="upload-grid">
+        <div class="dropzone-box period-1" onclick="document.getElementById('files-p1').click()">
+            <input type="file" id="files-p1" multiple accept=".xlsx, .xls, .csv" style="display:none" onchange="readPeriodFiles(this.files, 1)">
+            <h3 style="margin:0; color:var(--teal);">📂 NẠP FILE HÓA ĐƠN KỲ 1 (Kỳ Trước)</h3>
+            <p style="margin:6px 0 0 0; font-size:12.5px; color:var(--muted);">Màu đồ thị đại diện: 🔵 Xanh Dương</p>
+            <div id="status-p1" class="file-status">Chưa chọn tệp</div>
+        </div>
+        <div class="dropzone-box period-2" onclick="document.getElementById('files-p2').click()">
+            <input type="file" id="files-p2" multiple accept=".xlsx, .xls, .csv" style="display:none" onchange="readPeriodFiles(this.files, 2)">
+            <h3 style="margin:0; color:var(--gold);">📂 NẠP FILE HÓA ĐƠN KỲ 2 (Kỳ Sau)</h3>
+            <p style="margin:6px 0 0 0; font-size:12.5px; color:var(--muted);">Màu đồ thị đại diện: 🟡 Vàng Cam</p>
+            <div id="status-p2" class="file-status">Chưa chọn tệp</div>
+        </div>
+    </div>
+
+    <div class="filter-timeline-wrapper" style="flex-direction:column; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div class="filter-title">🕒 Chọn Tháng/Năm Đưa Vào Đối Chiếu (hỗ trợ nhiều tháng mỗi kỳ, VD 12 tháng/kỳ)</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn-chip" onclick="applyMonthPreset('ALL')">✅ Chọn tất cả</button>
+                <button type="button" class="btn-chip" onclick="applyMonthPreset('CUNG_KY')">🔁 Cùng kỳ (khớp số tháng)</button>
+                <button type="button" class="btn-chip" onclick="applyMonthPreset('LIEN_KE')">➡️ Liền kề (tháng trước sát Kỳ 2)</button>
+                <button type="button" class="btn-chip" onclick="applyMonthPreset('CLEAR')">✖️ Bỏ chọn tất cả</button>
+            </div>
+        </div>
+        <div class="chart-box-subtitle" style="margin:8px 0 0 0;">Hệ thống tự liệt kê các tháng có thật trong dữ liệu đã nạp — tick chọn đúng (những) tháng muốn đối chiếu cho mỗi kỳ. Khi nạp cả năm (12 tháng/kỳ), dùng nút "Cùng kỳ" để tự động khớp đúng các tháng trùng nhau, hoặc tick tay để so sánh lũy kế nhiều tháng.</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:15px;">
+            <div>
+                <div style="font-size:12.5px; font-weight:700; color:var(--teal); margin-bottom:8px;">🔵 Các tháng có trong dữ liệu Kỳ 1:</div>
+                <div class="month-chip-container" id="month-selector-p1"><span style="color:var(--muted); font-size:12.5px;">Chưa có dữ liệu — vui lòng nạp tệp Kỳ 1</span></div>
+            </div>
+            <div>
+                <div style="font-size:12.5px; font-weight:700; color:var(--gold); margin-bottom:8px;">🟡 Các tháng có trong dữ liệu Kỳ 2:</div>
+                <div class="month-chip-container" id="month-selector-p2"><span style="color:var(--muted); font-size:12.5px;">Chưa có dữ liệu — vui lòng nạp tệp Kỳ 2</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="btn-process" onclick="executeDualPeriodAnalysis()">XỬ LÝ DỮ LIỆU & KHỞI TẠO DASHBOARD TỔNG THỂ</button>
+    </div>
+
+    <div class="section-wrapper" id="trend-section" style="display:none;">
+        <div class="chart-box-title"><span>📈 Xu Hướng Sản Lượng Tiêu Thụ Theo Tháng (Toàn Bộ Dữ Liệu Đã Nạp)</span></div>
+        <div class="chart-box-subtitle">Biểu đồ này luôn hiển thị đầy đủ các tháng có trong dữ liệu đã nạp cho mỗi kỳ (không phụ thuộc vào lựa chọn tháng ở bộ lọc phía trên) — hữu ích để quan sát tính mùa vụ và xu hướng dài hạn khi nạp nhiều tháng/năm (VD 12 tháng/kỳ) thay vì chỉ so sánh 2 cột đơn lẻ.</div>
+        <div style="height: 360px; position: relative;">
+            <canvas id="chartMonthlyTrend"></canvas>
+        </div>
+    </div>
+
+    <div class="section-wrapper" id="kpi-section" style="display:none;">
+        <div class="chart-box-title"><span>📌 Chỉ Số Tổng Quan Ngành Nước (KPI)</span></div>
+        <div class="chart-box-subtitle">Các chỉ số cốt lõi trong vận hành cấp nước: sản lượng tiêu thụ, doanh thu, đơn giá bình quân và tỷ lệ khách hàng không phát sinh sản lượng. "Không phát sinh sản lượng" được tính theo TỔNG sản lượng cộng dồn của khách hàng qua TOÀN BỘ các tháng trong kỳ (không tính theo từng hóa đơn/tháng riêng lẻ) — nếu khách hàng có ít nhất 1 tháng dùng nước trong kỳ thì không bị tính là "không sản lượng", kể cả khi các tháng còn lại bằng 0.</div>
+        <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="chart-box-title">
+            <span>📊 Đối Chiếu Sản Lượng Theo Nhóm Giá Nước (Kỳ 1 vs Kỳ 2)</span>
+            <div class="legend-indicator-box">
+                <div class="legend-item"><div class="dot-k1"></div> Kỳ 1 (Trái)</div>
+                <div class="legend-item"><div class="dot-k2"></div> Kỳ 2 (Phải)</div>
+            </div>
+        </div>
+        <div class="chart-box-subtitle">* Nhóm giá nước 1–6 được quy đổi tự động từ nhiều hệ mã đối tượng giá khác nhau giữa các năm (ví dụ: "Nhom1SH" và "V11(1000)" đều được xếp vào Nhóm 1) để đối chiếu đúng bản chất biểu giá giữa hai kỳ.<br>* Các mã KHÔNG thuộc 6 nhóm giá nước tiêu chuẩn (SC_, VH_, NSNT, HDKI...) là mã đặc thù/phụ phí/hợp đồng riêng — được hiển thị TÁCH RIÊNG từng loại, không gộp chung vào một nhãn "Khác" để tránh đánh đồng các đối tượng khác bản chất. Tên gọi chính thức của 6 nhóm giá theo Quyết định 79 sẽ được cập nhật khi có văn bản.</div>
+        <div class="pie-charts-flex-grid" id="pie-charts-container">
+            <div style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 20px;">Hệ thống đang chờ nạp tệp dữ liệu để vẽ biểu đồ so sánh...</div>
+        </div>
+    </div>
+
+    <div class="charts-two-columns">
+        <div class="section-wrapper">
+            <div class="chart-box-title">
+                <span>💧 So Sánh Sản Lượng Theo Nguồn Nước Cấp (Kỳ 1 vs Kỳ 2)</span>
+            </div>
+            <div style="height: 340px; position: relative;">
+                <canvas id="chartWaterSource"></canvas>
+            </div>
+        </div>
+
+        <div class="section-wrapper">
+            <div class="chart-box-title">
+                <span>📈 So Sánh Sản Lượng Theo Bậc Thang Tiêu Thụ (Kỳ 1 vs Kỳ 2)</span>
+            </div>
+            <div style="height: 340px; position: relative;">
+                <canvas id="chartConsumptionLevel"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="chart-box-title">
+            <span>💰 Cơ Cấu Doanh Thu Theo Thành Phần Phí (Kỳ 1 vs Kỳ 2)</span>
+        </div>
+        <div class="chart-box-subtitle">Tiền nước (thanhTien), thuế GTGT (phiVAT), phí bảo vệ môi trường đối với nước thải sinh hoạt (phiBVMT) và phí duy trì đấu nối — bốn thành phần cấu thành tổng tiền hóa đơn (tongTien).</div>
+        <div style="height: 340px; position: relative;">
+            <canvas id="chartRevenueComposition"></canvas>
+        </div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="chart-box-title">
+            <span>📊 Bảng Đối Chiếu Sản Lượng & Khách Hàng Theo Đơn Vị</span>
+        </div>
+        <table class="data-table-custom" id="summary-comparison-table">
+            <thead>
+                <tr>
+                    <th rowspan="2">Mã Đơn Vị (DV)</th>
+                    <th colspan="3">Tổng Số Khách Hàng (Hộ)</th>
+                    <th colspan="3">KH Không Sản Lượng (Tổng cả kỳ = 0 m³)</th>
+                    <th colspan="3">Tổng Sản Lượng Tiêu Thụ (m³)</th>
+                </tr>
+                <tr>
+                    <th>Kỳ 1</th><th>Kỳ 2</th><th>Chênh Lệch</th>
+                    <th>Kỳ 1</th><th>Kỳ 2</th><th>Chênh Lệch</th>
+                    <th>Kỳ 1</th><th>Kỳ 2</th><th>Chênh Lệch</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="10" style="text-align:center; color:var(--muted);">Hệ thống đang sẵn sàng, vui lòng tải tệp...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="chart-box-title">
+            <span>💵 Bảng Đối Chiếu Doanh Thu & Đơn Giá Bình Quân Theo Đơn Vị</span>
+        </div>
+        <div class="chart-box-subtitle">Đơn giá bình quân = Tổng tiền hóa đơn (tongTien) / Tổng sản lượng tiêu thụ (m³) — phản ánh cơ cấu khách hàng theo nhóm giá của từng đơn vị.</div>
+        <table class="data-table-custom" id="revenue-comparison-table">
+            <thead>
+                <tr>
+                    <th rowspan="2">Mã Đơn Vị (DV)</th>
+                    <th colspan="3">Tổng Doanh Thu (VNĐ)</th>
+                    <th colspan="2">Đơn Giá Bình Quân (VNĐ/m³)</th>
+                </tr>
+                <tr>
+                    <th>Kỳ 1</th><th>Kỳ 2</th><th>Chênh Lệch</th>
+                    <th>Kỳ 1</th><th>Kỳ 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="6" style="text-align:center; color:var(--muted);">Hệ thống đang sẵn sàng, vui lòng tải tệp...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="chart-box-title">
+            <span>💎 Phân Tích Nhóm Khách Hàng Tiêu Thụ Cao Nhất</span>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div>
+                    <label style="font-size:13.5px; font-weight:700; margin-right:6px;">Đơn vị (DV):</label>
+                    <select id="unit-rank-selector" class="select-filter" onchange="renderTopRankTables()"></select>
+                </div>
+                <div>
+                    <label style="font-size:13.5px; font-weight:700; margin-right:6px; color: var(--teal);">Quy mô hiển thị:</label>
+                    <select id="top-size-selector" class="select-filter" onchange="renderTopRankTables()">
+                        <option value="10">Top 10</option>
+                        <option value="15">Top 15</option>
+                        <option value="20">Top 20</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4 id="title-highest" style="margin: 0 0 15px 0; color: var(--navy); text-transform: uppercase; font-size:14px; font-weight: 700; letter-spacing: 0.3px;">🔼 Khách Hàng Sản Lượng Lớn, Biến Động & Tỷ Trọng Tác Động Vận Hành</h4>
+            <table class="data-table-custom" id="table-top-highest">
+                <thead>
+                    <tr>
+                        <th>Hạng</th>
+                        <th>Mã Khách Hàng</th>
+                        <th>Tên Khách Hàng</th>
+                        <th>Địa Chỉ</th>
+                        <th>Mã Tuyến</th>
+                        <th>Kỳ 1 (m³)</th>
+                        <th>Kỳ 2 (m³)</th>
+                        <th>Chênh Lệch (m³)</th>
+                        <th>% Biến Động</th>
+                        <th>Tỷ Trọng Tác Động</th>
+                        <th>Doanh Thu Kỳ 2 (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="11" style="text-align:center; color:var(--muted);">Hệ thống đang chờ kích hoạt phân tích...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="rpt-footer">
+  Phòng Quản lý Khách hàng — Công ty cổ phần cấp nước Sơn La.
+</footer>
+
+<script>
+    let datasetPeriod1 = [];
+    let datasetPeriod2 = [];
+    let topMaxByUnit = {};
+    let totalVolByUnitP2 = {};
+    let activePieInstances = [];
+
+    function showMask(text) {
+        document.getElementById('loading-text').innerText = text;
+        document.getElementById('loading-screen').style.display = 'flex';
+    }
+    function hideMask() { document.getElementById('loading-screen').style.display = 'none'; }
+
+    function readPeriodFiles(files, periodNum) {
+        if(files.length === 0) return;
+        showMask(`Đang đọc tệp dữ liệu Kỳ ${periodNum}...`);
+
+        let targetDataset = [];
+        let completed = 0;
+
+        Array.from(files).forEach(file => {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let data = new Uint8Array(e.target.result);
+                let workbook = XLSX.read(data, { type: 'array' });
+                let sheet = workbook.Sheets[workbook.SheetNames[0]];
+                let rows = XLSX.utils.sheet_to_json(sheet);
+                targetDataset = targetDataset.concat(rows);
+                completed++;
+
+                if(completed === files.length) {
+                    if(periodNum === 1) datasetPeriod1 = targetDataset;
+                    else datasetPeriod2 = targetDataset;
+
+                    document.getElementById(`status-p1`).innerHTML = `🔵 Nhận ${datasetPeriod1.length.toLocaleString('vi-VN')} hóa đơn Kỳ 1`;
+                    document.getElementById(`status-p2`).innerHTML = `🟡 Nhận ${datasetPeriod2.length.toLocaleString('vi-VN')} hóa đơn Kỳ 2`;
+                    populateMonthSelectors();
+                    hideMask();
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    // ==== Bộ chọn Tháng/Năm linh hoạt (thay cho bộ lọc cố định cũ) ====
+    // Thiết kế cho trường hợp mỗi kỳ có thể chứa nhiều tháng (VD 12 tháng/kỳ):
+    // hệ thống liệt kê đúng các tháng có thật trong dữ liệu, người dùng tick chọn
+    // (những) tháng cần đối chiếu, có nút preset để thao tác nhanh.
+    function getMonthKey(row) {
+        let y = parseInt(row['nam']) || 0;
+        let m = parseInt(row['thang']) || 0;
+        return `${y}-${String(m).padStart(2, '0')}`;
+    }
+
+    function renderMonthChipList(dataset, containerId) {
+        let container = document.getElementById(containerId);
+        if (dataset.length === 0) {
+            container.innerHTML = `<span style="color:var(--muted); font-size:12.5px;">Chưa có dữ liệu</span>`;
+            return;
+        }
+        let keys = Array.from(new Set(dataset.map(getMonthKey))).sort();
+        container.innerHTML = keys.map(k => {
+            let [y, m] = k.split('-');
+            return `<label class="month-chip"><input type="checkbox" value="${k}" checked> Th.${parseInt(m)}/${y}</label>`;
+        }).join('');
+    }
+
+    function populateMonthSelectors() {
+        renderMonthChipList(datasetPeriod1, 'month-selector-p1');
+        renderMonthChipList(datasetPeriod2, 'month-selector-p2');
+    }
+
+    function applyMonthPreset(type) {
+        let boxesP1 = document.querySelectorAll('#month-selector-p1 input');
+        let boxesP2 = document.querySelectorAll('#month-selector-p2 input');
+        if (boxesP1.length === 0 && boxesP2.length === 0) {
+            alert('Vui lòng tải tệp dữ liệu trước khi chọn khoảng thời gian!');
+            return;
+        }
+        if (type === 'ALL') {
+            boxesP1.forEach(b => b.checked = true);
+            boxesP2.forEach(b => b.checked = true);
+        } else if (type === 'CLEAR') {
+            boxesP1.forEach(b => b.checked = false);
+            boxesP2.forEach(b => b.checked = false);
+        } else if (type === 'CUNG_KY') {
+            // Tick các tháng của Kỳ 1 mà TRÙNG số tháng với dữ liệu Kỳ 2 (dù khác năm); Kỳ 2 chọn toàn bộ.
+            let p2MonthNums = new Set(Array.from(boxesP2).map(b => parseInt(b.value.split('-')[1])));
+            boxesP1.forEach(b => { b.checked = p2MonthNums.has(parseInt(b.value.split('-')[1])); });
+            boxesP2.forEach(b => b.checked = true);
+        } else if (type === 'LIEN_KE') {
+            // Kỳ 2 chọn toàn bộ; Kỳ 1 chỉ tick đúng tháng liền trước tháng nhỏ nhất của Kỳ 2.
+            boxesP2.forEach(b => b.checked = true);
+            let p2Keys = Array.from(boxesP2).map(b => b.value).sort();
+            if (p2Keys.length > 0) {
+                let [minY, minM] = p2Keys[0].split('-').map(Number);
+                let prevM = minM - 1, prevY = minY;
+                if (prevM === 0) { prevM = 12; prevY -= 1; }
+                let prevKey = `${prevY}-${String(prevM).padStart(2, '0')}`;
+                boxesP1.forEach(b => { b.checked = (b.value === prevKey); });
+            }
+        }
+    }
+
+    function getFilteredByMonths(dataset, containerId) {
+        let checked = new Set(Array.from(document.querySelectorAll(`#${containerId} input:checked`)).map(el => el.value));
+        if (checked.size === 0) return [];
+        return dataset.filter(r => checked.has(getMonthKey(r)));
+    }
+
+    // Chuẩn hóa mã Đơn Vị (DV) = 12 huyện/thành phố quản lý cấp nước của Sơn La
+    // (BY=Bắc Yên, YC=Yên Châu, QN=Quỳnh Nhai, MC=Mộc Châu, ML=Mường La, MS=Mai Sơn,
+    //  PY=Phù Yên, SC=Sốp Cộp, SM=Sông Mã, TC=Thuận Châu, TP1/TP2=Thành phố, VH=Vân Hồ).
+    // CHỈ chuẩn hóa khác biệt viết hoa/thường (VD "Tp1" -> "TP1_"), TUYỆT ĐỐI KHÔNG gộp các
+    // đơn vị hành chính khác nhau vào chung 1 mã — Mộc Châu và Vân Hồ là 2 huyện tách biệt,
+    // gộp chung sẽ làm sai lệch toàn bộ số liệu đối chiếu theo đơn vị.
+    function normalizeDV(rawDv) {
+        let dv = rawDv ? String(rawDv).trim().toUpperCase() : 'KHAC_';
+        if (dv.endsWith('_')) return dv;
+        return dv + '_';
+    }
+
+    // Quy đổi Nhóm Giá Nước (1-6) từ NHIỀU hệ mã đối tượng giá khác nhau giữa các kỳ/năm.
+    // Ví dụ thực tế: kỳ dùng mã "Nhom1SH"/"Nhom2DV"/"Nhom3SX"... trong khi kỳ khác dùng mã
+    // biểu giá cũ dạng "V11(1000)"/"V21(600)"/"V31(600)" — chữ số đầu sau "V" chính là số
+    // thứ tự Nhóm giá nước theo biểu giá. Nếu quy về đúng số Nhóm, hai kỳ mới đối chiếu được
+    // đúng bản chất thay vì lệch hết vào "Mức Khác" như khi so khớp chuỗi ký tự nguyên văn.
+    //
+    // Các mã KHÔNG thuộc 6 nhóm giá nước tiêu chuẩn (SC_, VH_, NSNT, HDKI...) là mã đặc thù/
+    // phụ phí/hợp đồng riêng — KHÔNG được gộp chung vào một nhãn "Khác" (sẽ đánh đồng những
+    // đối tượng khác bản chất nhau), mà tách riêng theo đúng tiền tố để người dùng tự nhận diện
+    // và đối chiếu lại tên gọi chính thức theo Quyết định 79 khi có văn bản.
+    function extractGroupKey(pGroup) {
+        let raw = String(pGroup || '').trim().toUpperCase();
+        if (!raw) return 'Đặc thù: (Trống)';
+
+        let mNhom = raw.match(/NH[OÓ]M\s*([1-6])/);
+        if (mNhom) return `Nhóm ${mNhom[1]}`;
+        let mV = raw.match(/^V([1-6])\d/);
+        if (mV) return `Nhóm ${mV[1]}`;
+
+        if (raw.includes('NSNT')) return 'Đặc thù: NSNT (Nước sạch nông thôn)';
+        if (raw.startsWith('SC_') || raw === 'SC') return 'Đặc thù: SC_';
+        if (raw.startsWith('VH_') || raw === 'VH') return 'Đặc thù: VH_';
+        if (raw.startsWith('HDKI')) return 'Đặc thù: HDKI';
+        if (raw.startsWith('GKBVMT') || raw.includes('BVMT')) return 'Đặc thù: Phí BVMT riêng';
+        return `Đặc thù: ${raw}`;
+    }
+
+    function executeDualPeriodAnalysis() {
+        if(datasetPeriod1.length === 0 || datasetPeriod2.length === 0) {
+            alert('Vui lòng tải tệp dữ liệu liên kỳ lên trước khi bắt đầu xử lý!');
+            return;
+        }
+        showMask('Đang khởi tạo cấu trúc Dashboard Tổng Thể...');
+
+        setTimeout(() => {
+            let filteredP1 = getFilteredByMonths(datasetPeriod1, 'month-selector-p1');
+            let filteredP2 = getFilteredByMonths(datasetPeriod2, 'month-selector-p2');
+
+            if (filteredP1.length === 0 || filteredP2.length === 0) {
+                alert('Không có dữ liệu trong (những) tháng đang chọn. Vui lòng tick lại tháng/năm cần đối chiếu ở bộ lọc phía trên.');
+                hideMask();
+                return;
+            }
+
+            document.getElementById('trend-section').style.display = 'block';
+            renderMonthlyTrendChart(datasetPeriod1, datasetPeriod2);
+
+            let groupCompareData = {};
+            let waterSourceCompare = {};
+            let consumptionLevelCompare = {};
+            let revenueComposition = {
+                'Tiền nước': { p1: 0, p2: 0 },
+                'Thuế GTGT': { p1: 0, p2: 0 },
+                'Phí BVMT': { p1: 0, p2: 0 },
+                'Phí duy trì đấu nối': { p1: 0, p2: 0 }
+            };
+
+            // customerAgg: nguồn dữ liệu DUY NHẤT cho mọi số liệu theo KHÁCH HÀNG (không theo từng
+            // dòng hóa đơn). Mỗi kỳ có thể gồm nhiều tháng (VD 12 tháng/kỳ) — nếu đếm "KH không
+            // sản lượng" theo từng dòng hóa đơn=0 sẽ sai, vì 1 khách hàng có thể tháng này dùng
+            // nước, tháng khác thì không, cộng dồn cả kỳ lại KHÔNG phải 0. Ở đây ta CỘNG DỒN sản
+            // lượng của từng khách hàng qua toàn bộ các tháng thuộc kỳ đó, rồi mới xét khách hàng
+            // nào có TỔNG CẢ KỲ = 0 m³ — đúng bản chất "khách hàng không phát sinh sản lượng
+            // trong cả kỳ" thay vì chỉ đúng ở một hóa đơn/tháng riêng lẻ.
+            let customerAgg = {};
+            function ensureCust(key, row, dv, cid) {
+                if (!customerAgg[key]) {
+                    customerAgg[key] = {
+                        dv: dv, id: cid,
+                        name: row['tenKhachHang'] || 'N/A', address: row['diaChi'] || 'N/A', route: row['maTuyenDoc'] || 'N/A',
+                        p1_vol: 0, p2_vol: 0, p1_rev: 0, p2_rev: 0, p1_present: false, p2_present: false
+                    };
+                }
+                return customerAgg[key];
+            }
+
+            let kpi = {
+                vol_p1: 0, vol_p2: 0,
+                rev_p1: 0, rev_p2: 0,
+                zero_p1: 0, zero_p2: 0,
+                cust_p1: 0, cust_p2: 0
+            };
+
+            // Kỳ 1
+            filteredP1.forEach(row => {
+                let vol = Number(row['tieuThu']) || 0;
+                let rev = Number(row['tongTien']) || 0;
+                let pGroup = String(row['maDoiTuongGia'] || 'Khác').trim();
+                let mainGroup = extractGroupKey(pGroup);
+                let sourceWater = row['haiNguon'] || 'Chưa xác định';
+                let levelStr = String(row['mucTieuThu'] || 'Chưa phân lớp').trim();
+
+                if(!groupCompareData[mainGroup]) groupCompareData[mainGroup] = { p1: 0, p2: 0 };
+                groupCompareData[mainGroup].p1 += vol;
+
+                if(!waterSourceCompare[sourceWater]) waterSourceCompare[sourceWater] = { p1: 0, p2: 0 };
+                waterSourceCompare[sourceWater].p1 += vol;
+
+                if(!consumptionLevelCompare[levelStr]) consumptionLevelCompare[levelStr] = { p1: 0, p2: 0 };
+                consumptionLevelCompare[levelStr].p1 += vol;
+
+                revenueComposition['Tiền nước'].p1 += Number(row['thanhTien']) || 0;
+                revenueComposition['Thuế GTGT'].p1 += Number(row['phiVAT']) || 0;
+                revenueComposition['Phí BVMT'].p1 += Number(row['phiBVMT']) || 0;
+                revenueComposition['Phí duy trì đấu nối'].p1 += Number(row['phiDuyTriDauNoi']) || 0;
+
+                kpi.vol_p1 += vol;
+                kpi.rev_p1 += rev;
+
+                let cid = row['maKhachHang'];
+                if (cid) {
+                    let dv = normalizeDV(row['DV']);
+                    let c = ensureCust(`${dv}_${cid}`, row, dv, cid);
+                    c.p1_vol += vol;
+                    c.p1_rev += rev;
+                    c.p1_present = true;
+                }
+            });
+
+            // Kỳ 2
+            filteredP2.forEach(row => {
+                let vol = Number(row['tieuThu']) || 0;
+                let rev = Number(row['tongTien']) || 0;
+                let pGroup = String(row['maDoiTuongGia'] || 'Khác').trim();
+                let mainGroup = extractGroupKey(pGroup);
+                let sourceWater = row['haiNguon'] || 'Chưa xác định';
+                let levelStr = String(row['mucTieuThu'] || 'Chưa phân lớp').trim();
+
+                if(!groupCompareData[mainGroup]) groupCompareData[mainGroup] = { p1: 0, p2: 0 };
+                groupCompareData[mainGroup].p2 += vol;
+
+                if(!waterSourceCompare[sourceWater]) waterSourceCompare[sourceWater] = { p1: 0, p2: 0 };
+                waterSourceCompare[sourceWater].p2 += vol;
+
+                if(!consumptionLevelCompare[levelStr]) consumptionLevelCompare[levelStr] = { p1: 0, p2: 0 };
+                consumptionLevelCompare[levelStr].p2 += vol;
+
+                revenueComposition['Tiền nước'].p2 += Number(row['thanhTien']) || 0;
+                revenueComposition['Thuế GTGT'].p2 += Number(row['phiVAT']) || 0;
+                revenueComposition['Phí BVMT'].p2 += Number(row['phiBVMT']) || 0;
+                revenueComposition['Phí duy trì đấu nối'].p2 += Number(row['phiDuyTriDauNoi']) || 0;
+
+                kpi.vol_p2 += vol;
+                kpi.rev_p2 += rev;
+
+                let cid = row['maKhachHang'];
+                if (cid) {
+                    let dv = normalizeDV(row['DV']);
+                    let c = ensureCust(`${dv}_${cid}`, row, dv, cid);
+                    c.p2_vol += vol;
+                    c.p2_rev += rev;
+                    c.p2_present = true;
+                }
+            });
+
+            // Tổng hợp số khách hàng / khách hàng không sản lượng (theo TỔNG cả kỳ, không theo từng hóa đơn)
+            let metricsUnit = {};
+            let uniqueUnits = new Set();
+            totalVolByUnitP2 = {};
+
+            Object.values(customerAgg).forEach(c => {
+                uniqueUnits.add(c.dv);
+                if (!metricsUnit[c.dv]) {
+                    metricsUnit[c.dv] = { p1_custs: 0, p2_custs: 0, p1_zero: 0, p2_zero: 0, p1_rev: 0, p2_rev: 0 };
+                }
+                let m = metricsUnit[c.dv];
+                if (c.p1_present) {
+                    m.p1_custs++;
+                    m.p1_rev += c.p1_rev;
+                    if (c.p1_vol === 0) { m.p1_zero++; kpi.zero_p1++; }
+                    kpi.cust_p1++;
+                }
+                if (c.p2_present) {
+                    m.p2_custs++;
+                    m.p2_rev += c.p2_rev;
+                    if (c.p2_vol === 0) { m.p2_zero++; kpi.zero_p2++; }
+                    kpi.cust_p2++;
+                    totalVolByUnitP2[c.dv] = (totalVolByUnitP2[c.dv] || 0) + c.p2_vol;
+                }
+            });
+
+            renderKPICards(kpi);
+            renderGroupComparisonCharts(groupCompareData);
+            renderWaterSourceCompareChart(waterSourceCompare);
+            renderConsumptionLevelCompareChart(consumptionLevelCompare);
+            renderRevenueCompositionChart(revenueComposition);
+
+            // Sản lượng theo Đơn Vị vẫn cộng dồn theo TỪNG DÒNG HÓA ĐƠN (không phụ thuộc có mã KH hay
+            // không) để khớp đúng tổng sản lượng toàn hệ thống như các KPI/biểu đồ khác ở trên.
+            let volByUnit = {};
+            filteredP1.forEach(row => {
+                let dv = normalizeDV(row['DV']);
+                if (!volByUnit[dv]) volByUnit[dv] = { p1_vol: 0, p2_vol: 0 };
+                volByUnit[dv].p1_vol += Number(row['tieuThu']) || 0;
+                uniqueUnits.add(dv);
+            });
+            filteredP2.forEach(row => {
+                let dv = normalizeDV(row['DV']);
+                if (!volByUnit[dv]) volByUnit[dv] = { p1_vol: 0, p2_vol: 0 };
+                volByUnit[dv].p2_vol += Number(row['tieuThu']) || 0;
+                uniqueUnits.add(dv);
+            });
+
+            const tbodySummary = document.querySelector('#summary-comparison-table tbody');
+            const tbodyRevenue = document.querySelector('#revenue-comparison-table tbody');
+            tbodySummary.innerHTML = '';
+            tbodyRevenue.innerHTML = '';
+            let t_p1_c = 0, t_p2_c = 0, t_p1_z = 0, t_p2_z = 0, t_p1_v = 0, t_p2_v = 0, t_p1_r = 0, t_p2_r = 0;
+
+            Array.from(uniqueUnits).sort().forEach(u => {
+                let m = metricsUnit[u] || { p1_custs: 0, p2_custs: 0, p1_zero: 0, p2_zero: 0, p1_rev: 0, p2_rev: 0 };
+                let v = volByUnit[u] || { p1_vol: 0, p2_vol: 0 };
+                let p1_c = m.p1_custs; let p2_c = m.p2_custs;
+                let p1_z = m.p1_zero; let p2_z = m.p2_zero;
+                let p1_v = v.p1_vol; let p2_v = v.p2_vol;
+                let p1_r = m.p1_rev; let p2_r = m.p2_rev;
+
+                t_p1_c += p1_c; t_p2_c += p2_c;
+                t_p1_z += p1_z; t_p2_z += p2_z;
+                t_p1_v += p1_v; t_p2_v += p2_v;
+                t_p1_r += p1_r; t_p2_r += p2_r;
+
+                tbodySummary.innerHTML += `<tr>
+                    <td style="text-align: left;"><strong>${u}</strong></td>
+                    <td>${p1_c.toLocaleString('vi-VN')}</td><td>${p2_c.toLocaleString('vi-VN')}</td><td>${formatDiff(p2_c - p1_c)}</td>
+                    <td>${p1_z.toLocaleString('vi-VN')}</td><td>${p2_z.toLocaleString('vi-VN')}</td><td>${formatDiff(p2_z - p1_z)}</td>
+                    <td>${p1_v.toLocaleString('vi-VN')}</td><td>${p2_v.toLocaleString('vi-VN')}</td><td>${formatDiff(p2_v - p1_v, ' m³')}</td>
+                </tr>`;
+
+                let avgPrice1 = p1_v > 0 ? Math.round(p1_r / p1_v) : 0;
+                let avgPrice2 = p2_v > 0 ? Math.round(p2_r / p2_v) : 0;
+                tbodyRevenue.innerHTML += `<tr>
+                    <td style="text-align: left;"><strong>${u}</strong></td>
+                    <td>${p1_r.toLocaleString('vi-VN')}</td><td>${p2_r.toLocaleString('vi-VN')}</td><td>${formatDiff(p2_r - p1_r, ' đ')}</td>
+                    <td>${avgPrice1.toLocaleString('vi-VN')} đ</td><td>${avgPrice2.toLocaleString('vi-VN')} đ</td>
+                </tr>`;
+            });
+
+            tbodySummary.innerHTML += `<tr class="row-total">
+                <td style="text-align: left;">TỔNG CỘNG HỆ THỐNG</td>
+                <td>${t_p1_c.toLocaleString('vi-VN')}</td><td>${t_p2_c.toLocaleString('vi-VN')}</td><td>${formatDiff(t_p2_c - t_p1_c)}</td>
+                <td>${t_p1_z.toLocaleString('vi-VN')}</td><td>${t_p2_z.toLocaleString('vi-VN')}</td><td>${formatDiff(t_p2_z - t_p1_z)}</td>
+                <td>${t_p1_v.toLocaleString('vi-VN')} m³</td><td>${t_p2_v.toLocaleString('vi-VN')} m³</td><td>${formatDiff(t_p2_v - t_p1_v, ' m³')}</td>
+            </tr>`;
+
+            let t_avg1 = t_p1_v > 0 ? Math.round(t_p1_r / t_p1_v) : 0;
+            let t_avg2 = t_p2_v > 0 ? Math.round(t_p2_r / t_p2_v) : 0;
+            tbodyRevenue.innerHTML += `<tr class="row-total">
+                <td style="text-align: left;">TỔNG CỘNG HỆ THỐNG</td>
+                <td>${t_p1_r.toLocaleString('vi-VN')} đ</td><td>${t_p2_r.toLocaleString('vi-VN')} đ</td><td>${formatDiff(t_p2_r - t_p1_r, ' đ')}</td>
+                <td>${t_avg1.toLocaleString('vi-VN')} đ</td><td>${t_avg2.toLocaleString('vi-VN')} đ</td>
+            </tr>`;
+
+            // Bảng xếp hạng khách hàng tiêu thụ hàng đầu — dùng lại chính customerAgg (đã cộng dồn
+            // đúng theo cả kỳ), không xây dựng lại từ đầu.
+            topMaxByUnit = {};
+            Object.values(customerAgg).forEach(cust => {
+                let u = cust.dv;
+                if(!topMaxByUnit[u]) topMaxByUnit[u] = [];
+                topMaxByUnit[u].push(cust);
+            });
+
+            let unitRankSelector = document.getElementById('unit-rank-selector');
+            unitRankSelector.innerHTML = '';
+            Object.keys(topMaxByUnit).sort().forEach(u => {
+                topMaxByUnit[u].sort((a,b) => b.p2_vol - a.p2_vol);
+                unitRankSelector.innerHTML += `<option value="${u}">${u}</option>`;
+            });
+
+            document.getElementById('kpi-section').style.display = 'block';
+            if(Object.keys(topMaxByUnit).length > 0) renderTopRankTables();
+            hideMask();
+        }, 50);
+    }
+
+    function formatDiff(value, unit = '') {
+        if(value > 0) return `<span class="txt-up">▲ +${value.toLocaleString('vi-VN')}${unit}</span>`;
+        if(value < 0) return `<span class="txt-down">▼ ${value.toLocaleString('vi-VN')}${unit}</span>`;
+        return `<span style="color:var(--muted); font-weight:600;">0${unit}</span>`;
+    }
+
+    function formatPctChip(p1, p2) {
+        if(p1 === 0) return p2 > 0 ? `<span class="txt-up">Mới phát sinh</span>` : `<span style="color:var(--muted);">—</span>`;
+        let pct = ((p2 - p1) / p1) * 100;
+        let sign = pct > 0 ? '▲ +' : (pct < 0 ? '▼ ' : '');
+        let cls = pct > 0 ? 'txt-up' : (pct < 0 ? 'txt-down' : '');
+        return `<span class="${cls}">${sign}${pct.toFixed(1)}%</span>`;
+    }
+
+    function renderKPICards(kpi) {
+        const grid = document.getElementById('kpi-grid');
+        let custP1 = kpi.cust_p1, custP2 = kpi.cust_p2;
+        let zeroPct1 = custP1 > 0 ? (kpi.zero_p1 / custP1 * 100) : 0;
+        let zeroPct2 = custP2 > 0 ? (kpi.zero_p2 / custP2 * 100) : 0;
+        let avgPrice1 = kpi.vol_p1 > 0 ? Math.round(kpi.rev_p1 / kpi.vol_p1) : 0;
+        let avgPrice2 = kpi.vol_p2 > 0 ? Math.round(kpi.rev_p2 / kpi.vol_p2) : 0;
+        let avgVolCust1 = custP1 > 0 ? (kpi.vol_p1 / custP1) : 0;
+        let avgVolCust2 = custP2 > 0 ? (kpi.vol_p2 / custP2) : 0;
+
+        const cards = [
+            { label: 'Tổng Sản Lượng Tiêu Thụ', v1: kpi.vol_p1, v2: kpi.vol_p2, fmt: v => v.toLocaleString('vi-VN') + ' m³' },
+            { label: 'Tổng Doanh Thu', v1: kpi.rev_p1, v2: kpi.rev_p2, fmt: v => v.toLocaleString('vi-VN') + ' đ' },
+            { label: 'Đơn Giá Bình Quân', v1: avgPrice1, v2: avgPrice2, fmt: v => v.toLocaleString('vi-VN') + ' đ/m³' },
+            { label: 'Tổng Số Khách Hàng', v1: custP1, v2: custP2, fmt: v => v.toLocaleString('vi-VN') + ' hộ' },
+            { label: 'Tỷ Lệ KH Không Sản Lượng (Cả Kỳ)', v1: zeroPct1, v2: zeroPct2, fmt: v => v.toFixed(2) + ' %' },
+            { label: 'Sản Lượng B.Quân / Khách Hàng', v1: avgVolCust1, v2: avgVolCust2, fmt: v => v.toFixed(1) + ' m³' }
+        ];
+
+        grid.innerHTML = cards.map(c => `
+            <div class="kpi-card">
+                <div class="kpi-label">${c.label}</div>
+                <div class="kpi-value">${c.fmt(c.v2)}</div>
+                <div class="kpi-sub">${formatPctChip(c.v1, c.v2)} so với Kỳ 1</div>
+                <div class="kpi-periods">Kỳ 1: ${c.fmt(c.v1)}</div>
+            </div>
+        `).join('');
+    }
+
+    function renderGroupComparisonCharts(groupCompareData) {
+        activePieInstances.forEach(inst => inst.destroy());
+        activePieInstances = [];
+
+        const container = document.getElementById('pie-charts-container');
+        container.innerHTML = '';
+
+        const allKeys = Object.keys(groupCompareData);
+        if (allKeys.length === 0) {
+            container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 20px;">Không có dữ liệu đối tượng giá.</div>`;
+            return;
+        }
+
+        // Tách riêng: (1) 6 nhóm giá nước tiêu chuẩn, sắp theo thứ tự 1->6
+        // (2) mã đặc thù ngoài nhóm chuẩn, mỗi loại giữ nhãn riêng, không gộp chung "Khác"
+        const standardKeys = allKeys
+            .filter(k => k.startsWith('Nhóm '))
+            .sort((a, b) => parseInt(a.replace('Nhóm ', '')) - parseInt(b.replace('Nhóm ', '')));
+        const specialKeys = allKeys
+            .filter(k => !k.startsWith('Nhóm '))
+            .sort();
+
+        let html = '';
+        let renderQueue = [];
+
+        if (standardKeys.length > 0) {
+            html += `<div style="grid-column: 1 / -1; font-size:13px; font-weight:700; color:var(--navy); margin:4px 0 -6px 0;">📗 6 Nhóm Giá Nước Tiêu Chuẩn</div>`;
+        }
+        standardKeys.forEach((groupName, idx) => {
+            let canvasId = `group-bar-std-${idx}`;
+            html += `
+                <div class="pie-sub-card">
+                    <div class="pie-sub-title" style="color: var(--navy); margin-bottom:12px;">📊 ${groupName}</div>
+                    <div style="height: 200px; position: relative;"><canvas id="${canvasId}"></canvas></div>
+                </div>`;
+            renderQueue.push({ canvasId, dataObj: groupCompareData[groupName] });
+        });
+
+        if (specialKeys.length > 0) {
+            html += `<div style="grid-column: 1 / -1; font-size:13px; font-weight:700; color:var(--gold); margin:18px 0 -6px 0; padding-top:14px; border-top:1px dashed var(--line);">🏷️ Mã Đặc Thù Ngoài 6 Nhóm Tiêu Chuẩn (từng loại tách riêng, chờ đối chiếu tên chính thức theo Quyết định 79)</div>`;
+        }
+        specialKeys.forEach((groupName, idx) => {
+            let canvasId = `group-bar-spec-${idx}`;
+            html += `
+                <div class="pie-sub-card" style="background:#fffbeb; border-color:#fde68a;">
+                    <div class="pie-sub-title" style="color: var(--gold); margin-bottom:12px;">🏷️ ${groupName}</div>
+                    <div style="height: 200px; position: relative;"><canvas id="${canvasId}"></canvas></div>
+                </div>`;
+            renderQueue.push({ canvasId, dataObj: groupCompareData[groupName] });
+        });
+
+        container.innerHTML = html;
+
+        setTimeout(() => {
+            renderQueue.forEach(({ canvasId, dataObj }) => {
+                let canvasEl = document.getElementById(canvasId);
+                if (!canvasEl) return;
+                let ctx = canvasEl.getContext('2d');
+                let newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Kỳ 1', 'Kỳ 2'],
+                        datasets: [{
+                            label: 'Sản lượng (m³)',
+                            data: [dataObj.p1, dataObj.p2],
+                            backgroundColor: ['#2E8F73', '#A97B2E'], // teal and gold
+                            borderRadius: 6,
+                            barThickness: 45
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    },
+                    plugins: [{
+                        id: 'barValueLabel',
+                        afterDatasetsDraw(chart) {
+                            const { ctx } = chart;
+                            ctx.save(); ctx.font = 'bold 11px Arial'; ctx.fillStyle = '#1e293b'; ctx.textAlign = 'center';
+                            chart.getDatasetMeta(0).data.forEach((bar, index) => {
+                                let val = chart.data.datasets[0].data[index];
+                                ctx.fillText(`${val.toLocaleString('vi-VN')} m³`, bar.x, bar.y - 8);
+                            });
+                        }
+                    }]
+                });
+                activePieInstances.push(newChart);
+            });
+        }, 10);
+    }
+
+    function renderWaterSourceCompareChart(waterSourceCompare) {
+        if(window.chartSourceInst) window.chartSourceInst.destroy();
+        let labels = Object.keys(waterSourceCompare).sort();
+        let p1_values = labels.map(l => waterSourceCompare[l].p1);
+        let p2_values = labels.map(l => waterSourceCompare[l].p2);
+
+        let ctx = document.getElementById('chartWaterSource').getContext('2d');
+        window.chartSourceInst = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Kỳ 1 (m³)', data: p1_values, backgroundColor: '#2E8F73', borderRadius: 4 },
+                    { label: 'Kỳ 2 (m³)', data: p2_values, backgroundColor: '#A97B2E', borderRadius: 4 }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderConsumptionLevelCompareChart(consumptionLevelCompare) {
+        if(window.chartLevelInst) window.chartLevelInst.destroy();
+        let labels = Object.keys(consumptionLevelCompare).sort((a,b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+        let p1_values = labels.map(l => consumptionLevelCompare[l].p1);
+        let p2_values = labels.map(l => consumptionLevelCompare[l].p2);
+
+        let ctx = document.getElementById('chartConsumptionLevel').getContext('2d');
+        window.chartLevelInst = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Kỳ 1 (m³)', data: p1_values, backgroundColor: '#2E8F73', borderRadius: 4 },
+                    { label: 'Kỳ 2 (m³)', data: p2_values, backgroundColor: '#A97B2E', borderRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderMonthlyTrendChart(p1Raw, p2Raw) {
+        if (window.chartTrendInst) window.chartTrendInst.destroy();
+        let monthLabels = Array.from({ length: 12 }, (_, i) => `Tháng ${i + 1}`);
+        let p1ByMonth = new Array(12).fill(0);
+        let p2ByMonth = new Array(12).fill(0);
+        p1Raw.forEach(r => { let m = parseInt(r['thang']); if (m >= 1 && m <= 12) p1ByMonth[m - 1] += Number(r['tieuThu']) || 0; });
+        p2Raw.forEach(r => { let m = parseInt(r['thang']); if (m >= 1 && m <= 12) p2ByMonth[m - 1] += Number(r['tieuThu']) || 0; });
+
+        let ctx = document.getElementById('chartMonthlyTrend').getContext('2d');
+        window.chartTrendInst = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: monthLabels,
+                datasets: [
+                    { label: 'Kỳ 1 (m³)', data: p1ByMonth, borderColor: '#2E8F73', backgroundColor: 'rgba(46,143,115,0.12)', fill: true, tension: 0.3, pointRadius: 4, spanGaps: true },
+                    { label: 'Kỳ 2 (m³)', data: p2ByMonth, borderColor: '#A97B2E', backgroundColor: 'rgba(169,123,46,0.12)', fill: true, tension: 0.3, pointRadius: 4, spanGaps: true }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('vi-VN')} m³` } }
+                },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderRevenueCompositionChart(revenueComposition) {
+        if(window.chartRevenueInst) window.chartRevenueInst.destroy();
+        let labels = Object.keys(revenueComposition);
+        let p1_values = labels.map(l => revenueComposition[l].p1);
+        let p2_values = labels.map(l => revenueComposition[l].p2);
+
+        let ctx = document.getElementById('chartRevenueComposition').getContext('2d');
+        window.chartRevenueInst = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Kỳ 1 (VNĐ)', data: p1_values, backgroundColor: '#2E8F73', borderRadius: 4 },
+                    { label: 'Kỳ 2 (VNĐ)', data: p2_values, backgroundColor: '#A97B2E', borderRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('vi-VN')} đ` } }
+                },
+                scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString('vi-VN') } } }
+            }
+        });
+    }
+
+    function renderTopRankTables() {
+        let u = document.getElementById('unit-rank-selector').value;
+        let limitSize = parseInt(document.getElementById('top-size-selector').value) || 10;
+        let unitTotalP2 = totalVolByUnitP2[u] || 1;
+
+        document.getElementById('title-highest').innerText = `🔼 Top ${limitSize} Khách Hàng Tiêu Thụ Lớn Nhất Tại Đơn Vị: ${u}`;
+        const tbodyMax = document.querySelector('#table-top-highest tbody');
+        tbodyMax.innerHTML = '';
+
+        let listMax = topMaxByUnit[u] ? topMaxByUnit[u].slice(0, limitSize) : [];
+        let sumP1 = 0, sumP2 = 0, sumDiff = 0, sumRev = 0;
+
+        listMax.forEach((c, idx) => {
+            let diff = c.p2_vol - c.p1_vol;
+            sumP1 += c.p1_vol; sumP2 += c.p2_vol; sumDiff += diff; sumRev += c.p2_rev;
+
+            let pctChangeStr = "Mới";
+            if(c.p1_vol > 0) {
+                let change = ((diff / c.p1_vol) * 100).toFixed(1);
+                pctChangeStr = change > 0 ? `+${change}%` : `${change}%`;
+            }
+            let impactPct = ((c.p2_vol / unitTotalP2) * 100).toFixed(2) + "%";
+
+            tbodyMax.innerHTML += `<tr>
+                <td style="text-align:center;"><strong>${idx + 1}</strong></td>
+                <td><code>${c.id}</code></td>
+                <td><strong>${c.name}</strong></td>
+                <td>${c.address}</td>
+                <td>${c.route}</td>
+                <td style="text-align:right;">${c.p1_vol.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right; font-weight:700; color:var(--teal);">${c.p2_vol.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;">${formatDiff(diff)}</td>
+                <td style="text-align:right; font-weight:600; color:${diff >= 0 ? '#1F7A54' : 'var(--danger-text)'};">${pctChangeStr}</td>
+                <td style="text-align:right; font-weight:700; color:var(--navy);">${impactPct}</td>
+                <td style="text-align:right; font-weight:600; color:var(--navy);">${c.p2_rev.toLocaleString('vi-VN')}</td>
+            </tr>`;
+        });
+
+        if(listMax.length > 0) {
+            let totalPctChange = sumP1 > 0 ? ((sumDiff / sumP1) * 100).toFixed(1) + "%" : "100%";
+            let totalImpact = ((sumP2 / unitTotalP2) * 100).toFixed(2) + "%";
+            tbodyMax.innerHTML += `<tr class="row-total">
+                <td colspan="5" style="text-align:right; font-weight:800;">TỔNG CỘNG NHÓM TOP:</td>
+                <td style="text-align:right;">${sumP1.toLocaleString('vi-VN')} m³</td>
+                <td style="text-align:right; color:var(--teal);">${sumP2.toLocaleString('vi-VN')} m³</td>
+                <td style="text-align:right;">${formatDiff(sumDiff)}</td>
+                <td style="text-align:right; color:#1F7A54;">${sumDiff > 0 ? '+' + totalPctChange : totalPctChange}</td>
+                <td style="text-align:right; color:var(--navy);">${totalImpact}</td>
+                <td style="text-align:right; color:var(--navy);">${sumRev.toLocaleString('vi-VN')}</td>
+            </tr>`;
+        } else {
+            tbodyMax.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--muted);">Không có dữ liệu phù hợp.</td></tr>`;
+        }
+    }
+
+// Theme Toggle Script
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', current);
+  localStorage.setItem('theme', current);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+}
+document.addEventListener('DOMContentLoaded', initTheme);
+
+// Scroll to Top Script
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (btn) {
+    if (window.scrollY > 300) btn.classList.add('show');
+    else btn.classList.remove('show');
+  }
+});
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>

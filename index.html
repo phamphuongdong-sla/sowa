@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>Báo Cáo Sản Xuất Kinh Doanh — Cấp Nước Sơn La</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty cổ phần cấp nước Sơn La</div>
+  <h1>BÁO CÁO KẾT QUẢ <span class="highlight-text">SẢN XUẤT KINH DOANH</span></h1>
+  <p class="sub">Hệ thống tổng hợp trực quan sản lượng nước thương phẩm, nước phát ra và tỷ lệ thất thoát theo từng đơn vị trực thuộc, đối chiếu đa chiều theo thời gian.</p>
+</header>
+
+<div class="wrap">
+  <div class="panel" id="dataPanel">
+    <h2>Nguồn dữ liệu</h2>
+    <div class="hint" id="dataStatusText">Đang tải dữ liệu từ Google Sheets…</div>
+    <div id="retryWrap" style="display:none;margin-top:10px;">
+      <button class="btn-apply" id="retryBtn" style="margin-left:0;">Thử tải lại</button>
+    </div>
+  </div>
+
+  <div id="reportBody" style="display:none;">
+  <div class="panel">
+    <h2>Tham số đối chiếu</h2>
+    <div class="hint">Chọn các năm cần so sánh và một khoảng thời gian áp dụng đồng nhất cho tất cả các năm đã chọn.</div>
+    <div class="filters">
+      <div class="filter-group">
+        <label class="grouplabel">Các năm đối chiếu</label>
+        <div class="years-grid" id="yearsGrid"></div>
+      </div>
+      <div class="filter-group">
+        <label class="grouplabel">Khoảng thời gian trong năm</label>
+        <select id="periodSelect">
+          <option value="full">Cả năm</option>
+          <option value="q1">Quý I (Tháng 1–3)</option>
+          <option value="q2">Quý II (Tháng 4–6)</option>
+          <option value="q3">Quý III (Tháng 7–9)</option>
+          <option value="q4">Quý IV (Tháng 10–12)</option>
+          <option value="h1">6 tháng đầu năm (Tháng 1–6)</option>
+          <option value="h2">6 tháng cuối năm (Tháng 7–12)</option>
+          <option value="month">Theo tháng cụ thể…</option>
+        </select>
+        <div id="monthWrap">
+          <select id="monthSelect"></select>
+        </div>
+      </div>
+      <button class="btn-apply" id="applyBtn">Cập nhật báo cáo</button>
+    </div>
+  </div>
+
+  <div class="panel" id="execSummaryPanel" style="display:none;">
+    <h2>Tóm tắt điều hành</h2>
+    <div class="hint">Tự động tổng hợp theo bộ lọc năm/kỳ hiện tại.</div>
+    <ul id="execSummaryList" style="margin:0;padding-left:20px;line-height:1.7;color:var(--ink);"></ul>
+  </div>
+
+  <div class="filters no-print" style="margin-bottom:22px;">
+    <button class="btn-apply" id="exportExcelBtn" style="margin-left:0;background:var(--teal);">⬇ Xuất Excel</button>
+    <button class="btn-apply" id="exportPdfBtn" style="background:var(--navy);">🖨 Xuất PDF / In</button>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="compare-wrap">
+    <div class="section-title" style="margin-top:0;">
+      <h3>Đối chiếu xu hướng Toàn Công ty theo năm</h3>
+      <span class="tag">Cùng kỳ so sánh</span>
+    </div>
+    <div class="table-scroll">
+      <table class="datatable" id="compareTable" style="min-width:900px;"></table>
+    </div>
+  </div>
+
+  <div class="compare-wrap">
+    <div class="section-title" style="margin-top:0;">
+      <h3>Xếp hạng biến động sản lượng theo đơn vị</h3>
+      <span class="tag" id="rankTag">So kỳ gần nhất</span>
+    </div>
+    <div class="hint" style="margin-bottom:14px;"> Dữ liệu báo cáo tỷ lệ Hoàn thành kế hoạch & tỷ lệ Thất thoát thực tế được hiển thị theo số năm tham chiếu từ bộ lọc năm và lấy năm gần nhất.</div>
+    <div class="table-scroll">
+      <table class="datatable" id="rankTable" style="min-width:1100px;"></table>
+    </div>
+  </div>
+
+  <div id="yearBlocks"></div>
+
+  <div class="compare-wrap">
+    <div class="section-title" style="margin-top:0;">
+      <h3>So sánh tháng liền kề trong năm</h3>
+      <span class="tag">Tháng này so tháng trước</span>
+    </div>
+    <div class="hint">Chọn một năm bất kỳ để xem biến động sản lượng giữa các tháng liền kề trong năm đó (độc lập với bộ lọc năm/kỳ ở trên).</div>
+    <div class="filters" style="margin-bottom:16px;">
+      <div class="filter-group">
+        <label class="grouplabel">Năm xem theo tháng</label>
+        <select id="momYearSelect"></select>
+      </div>
+      <div class="filter-group">
+        <label class="grouplabel">Chỉ tiêu (bảng theo đơn vị)</label>
+        <select id="momMetricSelect">
+          <option value="tieuthu">Sản lượng nước thương phẩm (m³)</option>
+          <option value="phatraGoc">Sản lượng nước phát ra (m³)</option>
+        </select>
+      </div>
+    </div>
+
+    <h4 style="margin:6px 0 8px;color:var(--navy);font-size:14.5px;">Toàn Công ty theo từng tháng</h4>
+    <div class="table-scroll">
+      <table class="datatable" id="momTotalTable" style="min-width:1300px;"></table>
+    </div>
+
+    <h4 style="margin:22px 0 8px;color:var(--navy);font-size:14.5px;">Theo từng đơn vị — <span id="momMetricLabel"></span></h4>
+    <div class="hint" style="margin-bottom:10px;">Nền xanh nhạt: tăng so với tháng trước · Nền đỏ nhạt: giảm so với tháng trước. Tháng 1 so sánh với Tháng 12 của năm liền trước (nếu có dữ liệu).</div>
+    <div class="table-scroll">
+      <table class="datatable" id="momUnitTable" style="min-width:1300px;"></table>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>Biểu đồ xu hướng sản lượng — So sánh cùng kỳ theo tháng qua các năm</h3>
+    <span class="tag">Trục hoành = Tháng 1–12 · Mỗi đường là 1 năm</span>
+  </div>
+  <div class="chart-card">
+    <div class="desc" style="margin-bottom:10px;">Chồng các năm lên cùng một trục Tháng 1–12 để nhìn rõ nhất mức tăng/giảm của từng tháng qua các năm (không phụ thuộc bộ lọc "Khoảng thời gian" ở trên, luôn hiển thị đủ 12 tháng cho các năm đã chọn).</div>
+    <div class="filters" style="margin-bottom:4px;">
+      <div class="filter-group">
+        <label class="grouplabel">Phạm vi xem</label>
+        <select id="overlayUnitSelect"></select>
+      </div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4>Biểu đồ 1 — Sản lượng nước thương phẩm theo tháng, chồng các năm</h4>
+    <div class="desc">Nhìn theo cột dọc tại mỗi tháng để so sánh ngay năm nào cao hơn/thấp hơn.</div>
+    <div class="chart-holder"><canvas id="chartOverlayTP"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h4>Biểu đồ 2 — Sản lượng nước phát ra theo tháng, chồng các năm</h4>
+    <div class="desc">Nhìn theo cột dọc tại mỗi tháng để so sánh ngay năm nào cao hơn/thấp hơn.</div>
+    <div class="chart-holder"><canvas id="chartOverlaySL"></canvas></div>
+  </div>
+
+  <footer class="rpt-footer">
+   Thiết kế và phát triển tháng 7 năm 2026 bởi Phạm Phương Đông — Phòng Quản lý Khách hàng, Công ty cổ phần cấp nước Sơn La.
+  </footer>
+  </div>
+</div>
+
+<script>
+/* ---------- Cấu hình chung ---------- */
+const UNITS = [
+  ['TP1','XNCN TP số 1'],
+  ['TP2','XNCN TP số 2'],
+  ['MS','XN Mai Sơn'],
+  ['MC','CNCN Mộc Châu'],
+  ['YC','CNCN Yên Châu'],
+  ['PY','CNCN Phù Yên'],
+  ['BY','CNCN Bắc Yên'],
+  ['SM','CNCN Sông Mã'],
+  ['SC','CNCN Sốp Cộp'],
+  ['TC','CNCN Thuận Châu'],
+  ['ML','CNCN Mường La'],
+  ['QN','CNCN Quỳnh Nhai']
+];
+const UNIT_COLORS = ['#1B4A3E','#B0501F','#2E8F73','#A97B2E','#6B4E8E','#1F7A54',
+  '#C76B3C','#2C6B7C','#9A3A1E','#4F7942','#8E6B3A','#4A5B8E'];
+const PERIODS = {
+  full:{label:'Cả năm', months:[1,2,3,4,5,6,7,8,9,10,11,12]},
+  q1:{label:'Quý I', months:[1,2,3]},
+  q2:{label:'Quý II', months:[4,5,6]},
+  q3:{label:'Quý III', months:[7,8,9]},
+  q4:{label:'Quý IV', months:[10,11,12]},
+  h1:{label:'6 tháng đầu năm', months:[1,2,3,4,5,6]},
+  h2:{label:'6 tháng cuối năm', months:[7,8,9,10,11,12]}
+};
+for(let m=1;m<=12;m++) PERIODS['m'+m] = {label:'Tháng '+m, months:[m]};
+
+const fmtInt = new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0});
+const fmtDec2 = new Intl.NumberFormat('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtDec3 = new Intl.NumberFormat('vi-VN',{minimumFractionDigits:3,maximumFractionDigits:3});
+function n0(v){ return isFinite(v) ? fmtInt.format(Math.round(v)) : '-'; }
+function n2(v){ return isFinite(v) ? fmtDec2.format(v) : '-'; }
+function n3(v){ return isFinite(v) ? fmtDec3.format(v) : '-'; }
+
+/* ---------- Chỉ mục dữ liệu (nạp động từ file .xlsx) ---------- */
+// FACT row: [nam, thang, ma, soho, phatra, svbic, tieuthu, dien, tiendaunoi, dichvuthoatnuoc, tiennuoc]
+let FACT = [];
+let IDX = {};
+let YEARS_AVAILABLE = new Set();
+let YEARS_SORTED = [];
+let KH_IDX = {}; // { year: {code: {tieuthu, phatra, doanhthu}} }
+let HAS_KH_DATA = false;
+
+function buildKHIndex(rows){
+  KH_IDX = {};
+  HAS_KH_DATA = false;
+  rows.forEach(r=>{
+    const [nam, ma, khTieuThu, khTyLeThatThoat] = r;
+    if(nam===null || nam===undefined || !ma) return;
+    const hasAny = [khTieuThu, khTyLeThatThoat].some(v=> v!==null && v!==undefined && v!=='');
+    if(!hasAny) return;
+    HAS_KH_DATA = true;
+    KH_IDX[nam] = KH_IDX[nam] || {};
+    KH_IDX[nam][ma] = {
+      tieuthu: khTieuThu || null,
+      tyLeThatThoat: (khTyLeThatThoat===null||khTyLeThatThoat===undefined||khTyLeThatThoat==='') ? null : Number(khTyLeThatThoat)
+    };
+  });
+}
+
+function buildIndex(){
+  IDX = {};
+  YEARS_AVAILABLE = new Set();
+  FACT.forEach(r=>{
+    const [nam,thang,ma,soho,phatra,svbic,tieuthu,dien,tiendaunoi,dichvuthoatnuoc,tiennuoc] = r;
+    if(nam===null || nam===undefined || !ma) return;
+    YEARS_AVAILABLE.add(nam);
+    IDX[nam] = IDX[nam] || {};
+    IDX[nam][thang] = IDX[nam][thang] || {};
+    IDX[nam][thang][ma] = {soho,phatra,svbic,tieuthu,dien,tiendaunoi,dichvuthoatnuoc,tiennuoc};
+  });
+  YEARS_SORTED = Array.from(YEARS_AVAILABLE).sort((a,b)=>a-b);
+}
+
+function effPhat(code,row){
+  if(code==='TP1'||code==='TP2'){
+    const svbic = (row.svbic!==null && row.svbic!==undefined) ? row.svbic : 0;
+    return (row.phatra||0) - svbic;
+  }
+  return row.phatra;
+}
+
+/* Tổng hợp 1 đơn vị trong 1 năm theo danh sách tháng đã chọn */
+function aggUnit(code, year, months){
+  const s = {soho:0,tieuthu:0,dien:0,tiendaunoi:0,dichvuthoatnuoc:0,tiennuoc:0,phatra:0,phatraGoc:0,hasData:false};
+  const sortedMonths = months.slice().sort((a,b)=>a-b);
+  sortedMonths.forEach(m=>{
+    const row = IDX[year] && IDX[year][m] && IDX[year][m][code];
+    if(!row) return;
+    s.hasData = true;
+    s.tieuthu += row.tieuthu||0;
+    s.dien += row.dien||0;
+    s.tiendaunoi += row.tiendaunoi||0;
+    s.dichvuthoatnuoc += row.dichvuthoatnuoc||0;
+    s.tiennuoc += row.tiennuoc||0;
+    s.phatra += effPhat(code,row)||0; // Phát ra đã trừ SL mua SVBIC (chỉ dùng nội bộ để tính suất tiêu hao điện)
+    s.phatraGoc += row.phatra||0; // Phát ra gốc, CHƯA trừ SVBIC (dùng cho tỷ lệ thất thoát: toàn bộ nước vào mạng lưới đều có thể thất thoát)
+    s.soho = row.soho||0; // giữ giá trị tháng cuối kỳ có dữ liệu (chỉ tiêu thời điểm)
+  });
+  return s;
+}
+
+function deriveMetrics(s){
+  const phatraGoc = (s.phatraGoc!==undefined && s.phatraGoc!==null) ? s.phatraGoc : s.phatra;
+  const tyLeThatThoat = phatraGoc>0 ? (phatraGoc - s.tieuthu)/phatraGoc*100 : 0;
+  const suatPhat = s.phatra>0 ? s.dien/s.phatra : 0;
+  const suatTieuThu = s.tieuthu>0 ? s.dien/s.tieuthu : 0;
+  const giaBanBQ = s.tieuthu>0 ? s.tiennuoc/s.tieuthu : 0;
+  const tongTienHang = s.tiennuoc + s.tiendaunoi; // Thành tiền thương phẩm + Thành tiền chi phí duy trì đấu nối
+  const thueGTGT = tongTienHang*0.05;
+  const dichVuThoatNuoc = s.dichvuthoatnuoc||0;
+  const tongCong = tongTienHang + thueGTGT + dichVuThoatNuoc;
+  return {...s, phatraGoc, tyLeThatThoat, suatPhat, suatTieuThu, giaBanBQ, thueGTGT, dichVuThoatNuoc, tongCong, tongTienHang};
+}
+
+function buildYearTable(year, months){
+  const rows = UNITS.map(([code,name])=>{
+    const agg = aggUnit(code, year, months);
+    return {code, name, ...deriveMetrics(agg)};
+  });
+  const totalRaw = rows.reduce((acc,r)=>{
+    acc.soho += r.soho; acc.tieuthu += r.tieuthu; acc.dien += r.dien;
+    acc.tiendaunoi += r.tiendaunoi; acc.dichvuthoatnuoc += r.dichVuThoatNuoc||0;
+    acc.tiennuoc += r.tiennuoc; acc.phatra += r.phatra; acc.phatraGoc += r.phatraGoc||0;
+    return acc;
+  },{soho:0,tieuthu:0,dien:0,tiendaunoi:0,dichvuthoatnuoc:0,tiennuoc:0,phatra:0,phatraGoc:0});
+  const total = {code:'TC', name:'Tổng cộng toàn Công ty', ...deriveMetrics(totalRaw)};
+  return {rows, total};
+}
+
+/* ---------- Trạng thái bộ lọc ---------- */
+let selectedYears = [];
+let selectedPeriodKey = 'h1';
+
+function initFilters(){
+  const grid = document.getElementById('yearsGrid');
+  YEARS_SORTED.forEach(y=>{
+    const chip = document.createElement('div');
+    chip.className='year-chip';
+    chip.textContent = y;
+    chip.dataset.year = y;
+    chip.addEventListener('click',()=>{ chip.classList.toggle('active'); });
+    grid.appendChild(chip);
+  });
+  const defaults = [2024,2025,2026].filter(y=>YEARS_AVAILABLE.has(y));
+  const useDefaults = defaults.length ? defaults : YEARS_SORTED.slice(-3);
+  Array.from(grid.children).forEach(c=>{
+    if(useDefaults.includes(Number(c.dataset.year))) c.classList.add('active');
+  });
+
+  const monthSelect = document.getElementById('monthSelect');
+  for(let m=1;m<=12;m++){
+    const opt = document.createElement('option');
+    opt.value = 'm'+m; opt.textContent = 'Tháng '+m;
+    monthSelect.appendChild(opt);
+  }
+  document.getElementById('periodSelect').value='h1';
+  document.getElementById('periodSelect').addEventListener('change', e=>{
+    document.getElementById('monthWrap').style.display = e.target.value==='month' ? 'block':'none';
+  });
+  document.getElementById('applyBtn').addEventListener('click', render);
+
+  const momYearSelect = document.getElementById('momYearSelect');
+  YEARS_SORTED.forEach(y=>{
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    momYearSelect.appendChild(opt);
+  });
+  momYearSelect.value = useDefaults.length ? useDefaults[useDefaults.length-1] : YEARS_SORTED[YEARS_SORTED.length-1];
+  momYearSelect.addEventListener('change', renderMoM);
+  document.getElementById('momMetricSelect').addEventListener('change', renderMoM);
+
+  const overlaySelect = document.getElementById('overlayUnitSelect');
+  const optAll = document.createElement('option');
+  optAll.value = 'ALL'; optAll.textContent = 'Toàn Công ty (Tổng)';
+  overlaySelect.appendChild(optAll);
+  UNITS.forEach(([code,name])=>{
+    const opt = document.createElement('option');
+    opt.value = code; opt.textContent = name;
+    overlaySelect.appendChild(opt);
+  });
+  overlaySelect.addEventListener('change', renderOverlayCharts);
+
+  document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
+  document.getElementById('exportPdfBtn').addEventListener('click', exportToPdf);
+}
+
+function getSelectedYears(){
+  return Array.from(document.querySelectorAll('.year-chip.active')).map(c=>Number(c.dataset.year)).sort((a,b)=>a-b);
+}
+function getSelectedPeriodKey(){
+  const v = document.getElementById('periodSelect').value;
+  if(v==='month') return document.getElementById('monthSelect').value;
+  return v;
+}
+
+/* ---------- Render KPI ---------- */
+function renderKPI(years, periodKey){
+  const holder = document.getElementById('kpiRow');
+  holder.innerHTML='';
+  const months = PERIODS[periodKey].months;
+  const results = years.map(y=>buildYearTable(y, months).total);
+  const last = results[results.length-1];
+  const prev = results.length>1 ? results[results.length-2] : null;
+
+  function deltaHTML(curr, prevVal, invert, unit, isRatio){
+    if(prev===null || prevVal===null || !isFinite(prevVal)){
+      return '<div class="delta flat">Không có kỳ trước để so sánh</div>';
+    }
+    const diff = curr - prevVal;
+    const pct = prevVal!==0 ? (diff/Math.abs(prevVal)*100) : null;
+    const up = diff>=0;
+    const good = invert ? !up : up;
+    const cls = Math.abs(diff)<1e-9 ? 'flat' : (good ? 'down' : 'up');
+    const arrow = Math.abs(diff)<1e-9 ? '►' : (up ? '▲' : '▼');
+    const sign = up ? '+' : '';
+    const diffStr = isRatio
+      ? sign + n2(diff) + ' điểm %'
+      : sign + n0(diff) + (unit ? ' '+unit : '');
+    const pctStr = pct===null ? '' : ` (${sign}${n2(Math.abs(pct))}%)`;
+    return `<div class="delta ${cls}">${arrow} ${diffStr}${pctStr} so với ${years[years.length-2]}</div>`;
+  }
+
+  const cards = [
+    ['Sản lượng thương phẩm (m³)', n0(last.tieuthu), last.tieuthu, prev?prev.tieuthu:null, false, 'm³', false],
+    ['Sản lượng nước phát ra (m³)', n0(last.phatraGoc), last.phatraGoc, prev?prev.phatraGoc:null, false, 'm³', false],
+    ['Tỷ lệ thất thoát (%)', n2(last.tyLeThatThoat)+'%', last.tyLeThatThoat, prev?prev.tyLeThatThoat:null, true, '', true],
+    ['Điện năng tiêu thụ (kWh)', n0(last.dien), last.dien, prev?prev.dien:null, true, 'kWh', false],
+    ['Giá bán bình quân (đ/m³)', n0(last.giaBanBQ), last.giaBanBQ, prev?prev.giaBanBQ:null, false, 'đ/m³', false],
+    ['Tổng cộng thanh toán (đ)', n0(last.tongCong), last.tongCong, prev?prev.tongCong:null, false, 'đ', false],
+  ];
+  cards.forEach(([label,val,curr,prevVal,invert,unit,isRatio])=>{
+    const div = document.createElement('div');
+    div.className='kpi';
+    div.innerHTML = `<div class="label">${label} — Năm ${years[years.length-1]}</div><div class="value">${val}</div>${deltaHTML(curr,prevVal,invert,unit,isRatio)}`;
+    holder.appendChild(div);
+  });
+}
+
+/* ---------- Render bảng đối chiếu theo năm (Toàn Công ty) ---------- */
+function renderCompareTable(years, periodKey){
+  const months = PERIODS[periodKey].months;
+  const metrics = [
+    ['Sản lượng nước thương phẩm (m³)', r=>n0(r.tieuthu)],
+    ['Sản lượng nước phát ra (m³)', r=>n0(r.phatraGoc)],
+    ['Tỷ lệ thất thoát (%)', r=>n2(r.tyLeThatThoat)+'%', r=>r.tyLeThatThoat>15],
+    ['Điện năng tiêu thụ (kWh)', r=>n0(r.dien)],
+    ['Suất tiêu hao điện năng phát (kWh/m³)', r=>n3(r.suatPhat)],
+    ['Suất tiêu hao điện năng tiêu thụ (kWh/m³)', r=>n3(r.suatTieuThu)],
+    ['Tổng tiền hàng trước thuế (đ)', r=>n0(r.tongTienHang)],
+    ['Giá bán bình quân (đ/m³)', r=>n0(r.giaBanBQ)],
+    ['Tổng cộng thanh toán (đ)', r=>n0(r.tongCong)],
+  ];
+  const totals = years.map(y=>buildYearTable(y, months).total);
+  let html = '<thead><tr class="g1"><th style="text-align:left;">Chỉ tiêu (Toàn Công ty)</th>' +
+    years.map(y=>`<th>Năm ${y}</th>`).join('') + '</tr></thead><tbody>';
+  metrics.forEach(([label, fmt, warnFn])=>{
+    html += '<tr><td class="name">'+label+'</td>' +
+      totals.map(r=>{
+        const cls = warnFn && warnFn(r) ? ' class="warn"' : '';
+        return `<td${cls}>${fmt(r)}</td>`;
+      }).join('') + '</tr>';
+  });
+  html += '</tbody>';
+  document.getElementById('compareTable').innerHTML = html;
+}
+
+/* ---------- Render bảng chi tiết theo từng năm ---------- */
+function yoyCell(curr, prevVal, hasPrev){
+  if(!hasPrev || prevVal===undefined || prevVal===null) return '<span class="yoy-flat">n/a</span>';
+  const diff = curr - prevVal;
+  const pct = prevVal!==0 ? diff/Math.abs(prevVal)*100 : null;
+  const up = diff>=0;
+  const flat = Math.abs(diff) < 1e-9;
+  const cls = flat ? 'yoy-flat' : (up ? 'yoy-up' : 'yoy-down');
+  const arrow = flat ? '►' : (up ? '▲' : '▼');
+  const sign = up ? '+' : '';
+  const pctStr = pct===null ? '' : ` (${sign}${n2(Math.abs(pct))}%)`;
+  return `<span class="${cls}">${arrow} ${sign}${n0(diff)}${pctStr}</span>`;
+}
+
+function renderYearBlocks(years, periodKey){
+  const holder = document.getElementById('yearBlocks');
+  holder.innerHTML = '';
+  const months = PERIODS[periodKey].months;
+  years.forEach(year=>{
+    const {rows, total} = buildYearTable(year, months);
+    const hasPrevYear = IDX[year-1] !== undefined;
+    const prevData = hasPrevYear ? buildYearTable(year-1, months) : null;
+    const prevByCode = {};
+    if(prevData) prevData.rows.forEach(r=> prevByCode[r.code]=r);
+
+    const block = document.createElement('div');
+    block.className = 'year-block';
+
+    const head = document.createElement('div');
+    head.className='yb-head';
+    head.innerHTML = `<span>Năm ${year} — Tổng hợp sản lượng 12 đơn vị</span><span class="period">${PERIODS[periodKey].label}</span>`;
+    block.appendChild(head);
+
+    const scroll = document.createElement('div');
+    scroll.className='table-scroll';
+    const table = document.createElement('table');
+    table.className='datatable';
+    table.innerHTML = `
+      <thead>
+        <tr class="g1">
+          <th rowspan="2">TT</th>
+          <th rowspan="2">Tên đơn vị</th>
+          <th colspan="2">Chi phí duy trì đấu nối</th>
+          <th colspan="3">Sản lượng nước thương phẩm</th>
+          <th colspan="2">Sản lượng nước phát ra</th>
+          <th rowspan="2">Tỷ lệ thất thoát<br>(%)</th>
+          <th rowspan="2">Điện năng tiêu thụ<br>(kWh)</th>
+          <th rowspan="2">Suất hao điện phát<br>(kWh/m³)</th>
+          <th rowspan="2">Suất hao điện tiêu thụ<br>(kWh/m³)</th>
+          <th rowspan="2">Tổng tiền hàng<br>trước thuế (đ)</th>
+          <th rowspan="2">Giá bán bình quân<br>(đ/m³)</th>
+          <th rowspan="2">Thuế GTGT 5%<br>(đ)</th>
+          <th rowspan="2">Dịch vụ<br>thoát nước (đ)</th>
+          <th rowspan="2">Tổng cộng<br>thanh toán (đ)</th>
+        </tr>
+        <tr class="g2">
+          <th>Số hộ</th><th>Thành tiền (đ)</th>
+          <th>S.lượng (m³)</th><th>Thành tiền (đ)</th><th>Δ so với ${year-1}</th>
+          <th>m³</th><th>Δ so với ${year-1}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>`;
+    const tbody = table.querySelector('tbody');
+    rows.forEach((r,i)=>{
+      const tr = document.createElement('tr');
+      const warn = r.tyLeThatThoat>15;
+      const pr = prevByCode[r.code];
+      tr.innerHTML = `
+        <td class="tt">${i+1}</td>
+        <td class="name">${r.name}</td>
+        <td>${n0(r.soho)}</td>
+        <td>${n0(r.tiendaunoi)}</td>
+        <td>${n0(r.tieuthu)}</td>
+        <td>${n0(r.tiennuoc)}</td>
+        <td>${yoyCell(r.tieuthu, pr?pr.tieuthu:undefined, hasPrevYear && pr && pr.hasData)}</td>
+        <td>${n0(r.phatraGoc)}</td>
+        <td>${yoyCell(r.phatraGoc, pr?pr.phatraGoc:undefined, hasPrevYear && pr && pr.hasData)}</td>
+        <td${warn?' class="warn"':''}>${n2(r.tyLeThatThoat)}</td>
+        <td>${n0(r.dien)}</td>
+        <td>${n3(r.suatPhat)}</td>
+        <td>${n3(r.suatTieuThu)}</td>
+        <td>${n0(r.tongTienHang)}</td>
+        <td>${n0(r.giaBanBQ)}</td>
+        <td>${n0(r.thueGTGT)}</td>
+        <td>${r.dichVuThoatNuoc? n0(r.dichVuThoatNuoc):'-'}</td>
+        <td>${n0(r.tongCong)}</td>`;
+      tbody.appendChild(tr);
+    });
+    const trT = document.createElement('tr');
+    trT.className='total';
+    const warnT = total.tyLeThatThoat>15;
+    const prT = prevData ? prevData.total : null;
+    trT.innerHTML = `
+      <td class="tt">–</td>
+      <td class="name">Tổng cộng:</td>
+      <td>${n0(total.soho)}</td>
+      <td>${n0(total.tiendaunoi)}</td>
+      <td>${n0(total.tieuthu)}</td>
+      <td>${n0(total.tiennuoc)}</td>
+      <td>${yoyCell(total.tieuthu, prT?prT.tieuthu:undefined, hasPrevYear)}</td>
+      <td>${n0(total.phatraGoc)}</td>
+      <td>${yoyCell(total.phatraGoc, prT?prT.phatraGoc:undefined, hasPrevYear)}</td>
+      <td${warnT?' class="warn"':''}>${n2(total.tyLeThatThoat)}</td>
+      <td>${n0(total.dien)}</td>
+      <td>${n3(total.suatPhat)}</td>
+      <td>${n3(total.suatTieuThu)}</td>
+      <td>${n0(total.tongTienHang)}</td>
+      <td>${n0(total.giaBanBQ)}</td>
+      <td>${n0(total.thueGTGT)}</td>
+      <td>${total.dichVuThoatNuoc? n0(total.dichVuThoatNuoc):'-'}</td>
+      <td>${n0(total.tongCong)}</td>`;
+    tbody.appendChild(trT);
+
+    scroll.appendChild(table);
+    block.appendChild(scroll);
+
+    const note = document.createElement('div');
+    note.className='legend-note';
+    note.innerHTML = '<span class="swatch"></span> Ô tô màu đỏ nhạt: Tỷ lệ thất thoát vượt quá 15% — cần rà soát chống thất thoát nước. &nbsp;|&nbsp; Δ so với năm trước: <span class="yoy-up">▲ tăng</span> / <span class="yoy-down">▼ giảm</span> so với cùng kỳ năm liền trước (không phụ thuộc năm có được chọn lọc hay không).';
+    block.appendChild(note);
+
+    holder.appendChild(block);
+  });
+}
+
+/* ---------- Bảng xếp hạng biến động sản lượng ---------- */
+function renderRankTable(years, periodKey){
+  const months = PERIODS[periodKey].months;
+  const tag = document.getElementById('rankTag');
+  if(years.length<2){
+    tag.textContent = 'Cần chọn ít nhất 2 năm';
+    document.getElementById('rankTable').innerHTML =
+      '<thead><tr class="g1"><th>Thông báo</th></tr></thead><tbody><tr><td>Vui lòng chọn ít nhất 2 năm để xếp hạng biến động sản lượng.</td></tr></tbody>';
+    return;
+  }
+  const yA = years[years.length-2], yB = years[years.length-1];
+  tag.textContent = `${yA} → ${yB}`;
+  const A = buildYearTable(yA, months).rows;
+  const B = buildYearTable(yB, months).rows;
+  const byCodeA = {}; A.forEach(r=> byCodeA[r.code]=r);
+
+  let list = B.map(r=>{
+    const a = byCodeA[r.code];
+    const diffTP = r.tieuthu - (a?a.tieuthu:0);
+    const pctTP = (a && a.tieuthu) ? diffTP/Math.abs(a.tieuthu)*100 : null;
+    const diffPR = r.phatraGoc - (a?a.phatraGoc:0);
+    const pctPR = (a && a.phatraGoc) ? diffPR/Math.abs(a.phatraGoc)*100 : null;
+
+    const kh = (HAS_KH_DATA && KH_IDX[yB]) ? KH_IDX[yB][r.code] : null;
+    let khPct = null, khTotal = null, khThatThoat = null, khThatThoatDiff = null;
+    if(kh){
+      if(kh.tieuthu){
+        khPct = kh.tieuthu>0 ? r.tieuthu/kh.tieuthu*100 : null;
+        khTotal = kh.tieuthu;
+      }
+      if(kh.tyLeThatThoat!==null && kh.tyLeThatThoat!==undefined){
+        khThatThoat = kh.tyLeThatThoat;
+        khThatThoatDiff = r.tyLeThatThoat - kh.tyLeThatThoat;
+      }
+    }
+
+    return {name:r.name, aTP:a?a.tieuthu:0, bTP:r.tieuthu, diffTP, pctTP,
+             aPR:a?a.phatraGoc:0, bPR:r.phatraGoc, diffPR, pctPR,
+             tyLeThatThoat:r.tyLeThatThoat, khPct, khTotal, khThatThoat, khThatThoatDiff};
+  });
+  list.sort((x,y)=> (y.pctTP===null?-999:y.pctTP) - (x.pctTP===null?-999:x.pctTP));
+
+  // Tính dòng Tổng cộng toàn Công ty
+  const totalA = buildYearTable(yA, months).total;
+  const totalB = buildYearTable(yB, months).total;
+  const diffTPT = totalB.tieuthu - totalA.tieuthu;
+  const pctTPT = totalA.tieuthu ? diffTPT/Math.abs(totalA.tieuthu)*100 : null;
+  const diffPRT = totalB.phatraGoc - totalA.phatraGoc;
+  const pctPRT = totalA.phatraGoc ? diffPRT/Math.abs(totalA.phatraGoc)*100 : null;
+  let khPctT = null, khTotalT = null, khThatThoatT = null, khThatThoatDiffT = null;
+  if(HAS_KH_DATA && KH_IDX[yB]){
+    let sumKh = 0, hasKh = false, sumTT = 0, cntTT = 0;
+    UNITS.forEach(([code])=>{
+      const kh = KH_IDX[yB][code];
+      if(!kh) return;
+      if(kh.tieuthu){ sumKh += kh.tieuthu; hasKh = true; }
+      if(kh.tyLeThatThoat!==null && kh.tyLeThatThoat!==undefined){ sumTT += kh.tyLeThatThoat; cntTT++; }
+    });
+    if(hasKh){ khTotalT = sumKh; khPctT = sumKh>0 ? totalB.tieuthu/sumKh*100 : null; }
+    if(cntTT>0){ khThatThoatT = sumTT/cntTT; khThatThoatDiffT = totalB.tyLeThatThoat - khThatThoatT; }
+  }
+
+  const khCols = HAS_KH_DATA ? `<th rowspan="2"> tỷ lệ hoàn thành<br>/(kế hoạch)</th><th rowspan="2">tỷ lệ thất thoát thực tế<br>/(kế hoạch)</th>` : '';
+  let html = `<thead><tr class="g1">
+    <th rowspan="2">Hạng</th><th rowspan="2">Đơn vị</th>
+    <th colspan="4">Sản lượng nước thương phẩm (m³)</th>
+    <th colspan="4">Sản lượng nước phát ra (m³)</th>
+    ${khCols}
+    </tr><tr class="g2">
+    <th>${yA}</th><th>${yB}</th><th>Chênh lệch</th><th>% thay đổi</th>
+    <th>${yA}</th><th>${yB}</th><th>Chênh lệch</th><th>% thay đổi</th>
+    </tr></thead><tbody>`;
+  list.forEach((r,i)=>{
+    const upTP = r.diffTP>=0, clsTP = upTP?'yoy-up':'yoy-down';
+    const upPR = r.diffPR>=0, clsPR = upPR?'yoy-up':'yoy-down';
+    let khCells = '';
+    if(HAS_KH_DATA){
+      const khPctCell = r.khPct===null ? '-' :
+        `<span class="${r.khPct>=100?'yoy-up':'yoy-down'}">${n2(r.khPct)}% / ${n0(r.khTotal)}</span>`;
+      const khTTCell = r.khThatThoat===null ? '-' :
+        `<span class="${r.khThatThoatDiff<=0?'yoy-up':'yoy-down'}">${n2(r.tyLeThatThoat)}% / ${n2(r.khThatThoat)}%</span>`;
+      khCells = `<td>${khPctCell}</td><td>${khTTCell}</td>`;
+    }
+    html += `<tr>
+      <td class="tt">${i+1}</td>
+      <td class="name">${r.name}</td>
+      <td>${n0(r.aTP)}</td><td>${n0(r.bTP)}</td>
+      <td class="${clsTP}">${upTP?'+':''}${n0(r.diffTP)}</td>
+      <td class="${clsTP}">${r.pctTP===null?'-':(upTP?'+':'')+n2(r.pctTP)+'%'}</td>
+      <td>${n0(r.aPR)}</td><td>${n0(r.bPR)}</td>
+      <td class="${clsPR}">${upPR?'+':''}${n0(r.diffPR)}</td>
+      <td class="${clsPR}">${r.pctPR===null?'-':(upPR?'+':'')+n2(r.pctPR)+'%'}</td>
+      ${khCells}
+    </tr>`;
+  });
+
+  // Dòng Tổng cộng
+  const upTPT = diffTPT>=0, clsTPT = upTPT?'yoy-up':'yoy-down';
+  const upPRT = diffPRT>=0, clsPRT = upPRT?'yoy-up':'yoy-down';
+  let khCellsT = '';
+  if(HAS_KH_DATA){
+    const khPctCellT = khPctT===null ? '-' :
+      `<span class="${khPctT>=100?'yoy-up':'yoy-down'}">${n2(khPctT)}% / ${n0(khTotalT)}</span>`;
+    const khTTCellT = khThatThoatT===null ? '-' :
+      `<span class="${khThatThoatDiffT<=0?'yoy-up':'yoy-down'}">${n2(totalB.tyLeThatThoat)}% / ${n2(khThatThoatT)}%</span>`;
+    khCellsT = `<td>${khPctCellT}</td><td>${khTTCellT}</td>`;
+  }
+  html += `<tr class="total">
+    <td class="tt">–</td>
+    <td class="name">Tổng cộng toàn Công ty</td>
+    <td>${n0(totalA.tieuthu)}</td><td>${n0(totalB.tieuthu)}</td>
+    <td class="${clsTPT}">${upTPT?'+':''}${n0(diffTPT)}</td>
+    <td class="${clsTPT}">${pctTPT===null?'-':(upTPT?'+':'')+n2(pctTPT)+'%'}</td>
+    <td>${n0(totalA.phatraGoc)}</td><td>${n0(totalB.phatraGoc)}</td>
+    <td class="${clsPRT}">${upPRT?'+':''}${n0(diffPRT)}</td>
+    <td class="${clsPRT}">${pctPRT===null?'-':(upPRT?'+':'')+n2(pctPRT)+'%'}</td>
+    ${khCellsT}
+  </tr>`;
+
+  html += '</tbody>';
+  document.getElementById('rankTable').innerHTML = html;
+}
+
+/* ---------- Biểu đồ xu hướng sản lượng ---------- */
+function buildTimePoints(years, months){
+  const monthSet = new Set(months);
+  const pts = [];
+  years.forEach(y=>{
+    for(let m=1;m<=12;m++){
+      if(!monthSet.has(m)) continue;
+      if(IDX[y] && IDX[y][m]) pts.push({year:y, month:m});
+    }
+  });
+  pts.sort((a,b)=> a.year-b.year || a.month-b.month);
+  return pts;
+}
+
+function monthMetric(year, month, key){
+  const out = {};
+  let tot = 0;
+  UNITS.forEach(([code])=>{
+    const row = IDX[year] && IDX[year][month] && IDX[year][month][code];
+    if(!row){ out[code] = null; return; }
+    const v = key==='tieuthu' ? (row.tieuthu||0) : (row.phatra||0);
+    out[code] = v;
+    tot += v;
+  });
+  out.TOTAL = tot;
+  return out;
+}
+
+let CHARTS = {};
+function destroyCharts(){
+  Object.values(CHARTS).forEach(c=>c && c.destroy());
+  CHARTS = {};
+}
+
+function renderChart(canvasId, key, axisLabel){
+  const years = getSelectedYears();
+  const periodKey = getSelectedPeriodKey();
+  const months = PERIODS[periodKey].months;
+  const pts = buildTimePoints(years, months);
+  const labels = pts.map(p=> String(p.month).padStart(2,'0')+'/'+p.year);
+  const allData = pts.map(p=> monthMetric(p.year,p.month,key));
+
+  const datasets = [];
+  datasets.push({
+    type:'bar',
+    label:'Toàn Công ty',
+    data: allData.map(d=>d.TOTAL),
+    backgroundColor:'rgba(27,74,62,0.16)',
+    borderColor:'#1B4A3E',
+    borderWidth:1,
+    yAxisID:'y',
+    order:2
+  });
+  UNITS.forEach(([code,name],i)=>{
+    datasets.push({
+      type:'line',
+      label:name,
+      data: allData.map(d=> d[code]),
+      borderColor: UNIT_COLORS[i],
+      backgroundColor: UNIT_COLORS[i],
+      borderWidth:1.6,
+      pointRadius:2,
+      spanGaps:true,
+      tension:.25,
+      yAxisID:'y1',
+      order:1
+    });
+  });
+
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  CHARTS[canvasId] = new Chart(ctx,{
+    type:'bar',
+    data:{labels, datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'bottom', labels:{boxWidth:12, font:{size:10.5}}},
+        tooltip:{callbacks:{label:function(c){
+          const v=c.parsed.y;
+          return c.dataset.label+': '+ (v===null||v===undefined? 'n/a' : n0(v));
+        }}}
+      },
+      scales:{
+        y:{position:'left', title:{display:true,text:axisLabel+' (Tổng Công ty)'}, grid:{color:'#eef1f2'}},
+        y1:{position:'right', title:{display:true,text:axisLabel+' (từng đơn vị)'}, grid:{drawOnChartArea:false}},
+        x:{ticks:{maxRotation:60,minRotation:0,autoSkip:true,maxTicksLimit:24}}
+      }
+    }
+  });
+}
+
+function renderAllCharts(){
+  destroyCharts();
+  renderOverlayCharts();
+}
+
+/* ---------- Biểu đồ chồng năm theo tháng (so sánh cùng kỳ) ---------- */
+const YEAR_COLORS = ['#1B4A3E','#B0501F','#2E8F73','#A97B2E','#6B4E8E','#1F7A54',
+  '#C76B3C','#2C6B7C','#9A3A1E','#4F7942','#8E6B3A','#4A5B8E'];
+
+function monthlySeriesForOverlay(year, unitCode, key){
+  const arr = [];
+  for(let m=1;m<=12;m++){
+    if(unitCode==='ALL'){
+      let tot=0, has=false;
+      UNITS.forEach(([code])=>{
+        const row = IDX[year] && IDX[year][m] && IDX[year][m][code];
+        if(row){ has=true; tot += key==='tieuthu' ? (row.tieuthu||0) : (row.phatra||0); }
+      });
+      arr.push(has ? tot : null);
+    } else {
+      const row = IDX[year] && IDX[year][m] && IDX[year][m][unitCode];
+      arr.push(row ? (key==='tieuthu' ? (row.tieuthu||0) : (row.phatra||0)) : null);
+    }
+  }
+  return arr;
+}
+
+function renderOverlayChart(canvasId, key, axisLabel){
+  let years = getSelectedYears();
+  if(years.length===0) years = [YEARS_SORTED[YEARS_SORTED.length-1]];
+  const unitSel = document.getElementById('overlayUnitSelect');
+  const unitCode = unitSel ? unitSel.value : 'ALL';
+  const unitLabel = unitCode==='ALL' ? 'Toàn Công ty (Tổng)' : (UNITS.find(u=>u[0]===unitCode)||[,unitCode])[1];
+  const labels = Array.from({length:12},(_,i)=>'Tháng '+(i+1));
+
+  const datasets = years.map((y,i)=>({
+    type:'line',
+    label:String(y),
+    data: monthlySeriesForOverlay(y, unitCode, key),
+    borderColor: YEAR_COLORS[i % YEAR_COLORS.length],
+    backgroundColor: YEAR_COLORS[i % YEAR_COLORS.length],
+    borderWidth:2.4,
+    pointRadius:3.5,
+    pointHoverRadius:5.5,
+    spanGaps:true,
+    tension:.25
+  }));
+
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  CHARTS[canvasId] = new Chart(ctx,{
+    type:'line',
+    data:{labels, datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'bottom', labels:{boxWidth:12, font:{size:11}}},
+        tooltip:{callbacks:{label:function(c){
+          const v=c.parsed.y;
+          return 'Năm '+c.dataset.label+': '+ (v===null||v===undefined? 'n/a' : n0(v));
+        }}}
+      },
+      scales:{
+        y:{title:{display:true,text:axisLabel+' — '+unitLabel}, grid:{color:'#eef1f2'}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderOverlayCharts(){
+  if(!document.getElementById('overlayUnitSelect')) return;
+  if(CHARTS['chartOverlayTP']){ CHARTS['chartOverlayTP'].destroy(); delete CHARTS['chartOverlayTP']; }
+  if(CHARTS['chartOverlaySL']){ CHARTS['chartOverlaySL'].destroy(); delete CHARTS['chartOverlaySL']; }
+  renderOverlayChart('chartOverlayTP','tieuthu','Sản lượng thương phẩm (m³)');
+  renderOverlayChart('chartOverlaySL','phatra','Sản lượng phát ra (m³)');
+}
+
+/* ---------- So sánh tháng liền kề trong năm ---------- */
+function monthAggAll(year, month){
+  const byUnit = {};
+  UNITS.forEach(([code])=>{
+    const row = IDX[year] && IDX[year][month] && IDX[year][month][code];
+    if(!row){ byUnit[code] = null; return; }
+    const s = {
+      soho: row.soho||0, tieuthu: row.tieuthu||0, dien: row.dien||0,
+      tiendaunoi: row.tiendaunoi||0, dichvuthoatnuoc: row.dichvuthoatnuoc||0,
+      tiennuoc: row.tiennuoc||0, phatra: effPhat(code,row)||0, phatraGoc: row.phatra||0
+    };
+    byUnit[code] = deriveMetrics(s);
+  });
+  const totalRaw = UNITS.reduce((acc,[code])=>{
+    const u = byUnit[code];
+    if(!u) return acc;
+    acc.soho+=u.soho; acc.tieuthu+=u.tieuthu; acc.dien+=u.dien;
+    acc.tiendaunoi+=u.tiendaunoi; acc.dichvuthoatnuoc+=u.dichVuThoatNuoc||0;
+    acc.tiennuoc+=u.tiennuoc; acc.phatra+=u.phatra; acc.phatraGoc+=u.phatraGoc||0;
+    return acc;
+  },{soho:0,tieuthu:0,dien:0,tiendaunoi:0,dichvuthoatnuoc:0,tiennuoc:0,phatra:0,phatraGoc:0});
+  return {total: deriveMetrics(totalRaw), byUnit};
+}
+
+function renderMoM(){
+  const yearSel = document.getElementById('momYearSelect');
+  if(!yearSel.value) return;
+  const year = Number(yearSel.value);
+  const metricKey = document.getElementById('momMetricSelect').value;
+  document.getElementById('momMetricLabel').textContent =
+    metricKey==='tieuthu' ? 'Sản lượng nước thương phẩm (m³)' : 'Sản lượng nước phát ra (m³)';
+
+  const monthsData = [];
+  for(let m=1;m<=12;m++) monthsData.push(monthAggAll(year,m));
+  const prevDec = IDX[year-1] ? monthAggAll(year-1,12) : null;
+
+  // Bảng Toàn Công ty theo tháng
+  let html = '<thead><tr class="g1">' +
+    '<th>Tháng</th><th>SL thương phẩm (m³)</th><th>Δ so tháng trước</th>' +
+    '<th>SL phát ra (m³)</th><th>Δ so tháng trước</th>' +
+    '<th>Tỷ lệ thất thoát (%)</th><th>Điện năng tiêu thụ (kWh)</th>' +
+    '<th>Giá bán bình quân (đ/m³)</th><th>Tổng cộng thanh toán (đ)</th></tr></thead><tbody>';
+  for(let m=1;m<=12;m++){
+    const cur = monthsData[m-1].total;
+    const prev = m===1 ? (prevDec ? prevDec.total : null) : monthsData[m-2].total;
+    const warn = cur.tyLeThatThoat>15;
+    html += `<tr>
+      <td class="name">Tháng ${m}</td>
+      <td>${n0(cur.tieuthu)}</td>
+      <td>${yoyCell(cur.tieuthu, prev?prev.tieuthu:undefined, !!prev)}</td>
+      <td>${n0(cur.phatraGoc)}</td>
+      <td>${yoyCell(cur.phatraGoc, prev?prev.phatraGoc:undefined, !!prev)}</td>
+      <td${warn?' class="warn"':''}>${n2(cur.tyLeThatThoat)}</td>
+      <td>${n0(cur.dien)}</td>
+      <td>${n0(cur.giaBanBQ)}</td>
+      <td>${n0(cur.tongCong)}</td>
+    </tr>`;
+  }
+  html += '</tbody>';
+  document.getElementById('momTotalTable').innerHTML = html;
+
+  // Bảng theo đơn vị (heatmap tăng/giảm theo tháng)
+  let html2 = '<thead><tr class="g1"><th style="text-align:left;">Đơn vị</th>' +
+    Array.from({length:12},(_,i)=>`<th>Th ${i+1}</th>`).join('') + '</tr></thead><tbody>';
+  UNITS.forEach(([code,name])=>{
+    html2 += `<tr><td class="name">${name}</td>`;
+    for(let m=1;m<=12;m++){
+      const cur = monthsData[m-1].byUnit[code];
+      const curVal = cur ? cur[metricKey] : null;
+      let prevVal = null;
+      if(m===1){
+        prevVal = (prevDec && prevDec.byUnit[code]) ? prevDec.byUnit[code][metricKey] : null;
+      } else {
+        const pu = monthsData[m-2].byUnit[code];
+        prevVal = pu ? pu[metricKey] : null;
+      }
+      let cls = '';
+      let content = '<span class="yoy-flat">n/a</span>';
+      if(curVal!==null && curVal!==undefined){
+        content = n0(curVal);
+        if(prevVal!==null && prevVal!==undefined){
+          const diff = curVal - prevVal;
+          cls = Math.abs(diff)<1e-9 ? 'mom-flat-bg' : (diff>0 ? 'mom-up-bg' : 'mom-down-bg');
+        }
+      }
+      html2 += `<td class="mom-cell ${cls}">${content}</td>`;
+    }
+    html2 += '</tr>';
+  });
+  html2 += '</tbody>';
+  document.getElementById('momUnitTable').innerHTML = html2;
+}
+
+/* ---------- Tóm tắt điều hành ---------- */
+function renderExecSummary(years, periodKey){
+  const panel = document.getElementById('execSummaryPanel');
+  const list = document.getElementById('execSummaryList');
+  if(years.length===0){ panel.style.display='none'; return; }
+  const months = PERIODS[periodKey].months;
+  const totals = years.map(y=>buildYearTable(y, months).total);
+  const last = totals[totals.length-1];
+  const prev = totals.length>1 ? totals[totals.length-2] : null;
+  const lastYear = years[years.length-1];
+  const prevYear = years.length>1 ? years[years.length-2] : null;
+  const items = [];
+
+  items.push(`Kỳ báo cáo: <strong>${PERIODS[periodKey].label}</strong>, năm <strong>${lastYear}</strong> — Sản lượng nước thương phẩm đạt <strong>${n0(last.tieuthu)} m³</strong>, sản lượng nước phát ra <strong>${n0(last.phatraGoc)} m³</strong>, tỷ lệ thất thoát <strong>${n2(last.tyLeThatThoat)}%</strong>.`);
+
+  if(prev){
+    const diffTP = last.tieuthu - prev.tieuthu;
+    const pctTP = prev.tieuthu ? diffTP/Math.abs(prev.tieuthu)*100 : null;
+    const dir = diffTP>=0 ? 'tăng' : 'giảm';
+    items.push(`So với ${prevYear}, sản lượng thương phẩm ${dir} <strong>${n0(Math.abs(diffTP))} m³</strong>${pctTP!==null?` (${dir} ${n2(Math.abs(pctTP))}%)`:''}.`);
+    const diffTT = last.tyLeThatThoat - prev.tyLeThatThoat;
+    const dirTT = diffTT>=0 ? 'tăng' : 'giảm';
+    items.push(`Tỷ lệ thất thoát ${dirTT} <strong>${n2(Math.abs(diffTT))} điểm %</strong> so với cùng kỳ ${prevYear}${last.tyLeThatThoat>15?' — hiện đang <strong>vượt ngưỡng 15%</strong>, cần rà soát chống thất thoát.':'.'}`);
+  }
+
+  // Đơn vị biến động mạnh nhất (nếu đủ 2 năm)
+  if(years.length>=2){
+    const yA = years[years.length-2], yB = years[years.length-1];
+    const A = buildYearTable(yA, months).rows, B = buildYearTable(yB, months).rows;
+    const byA = {}; A.forEach(r=> byA[r.code]=r);
+    let best=null, worst=null;
+    B.forEach(r=>{
+      const a = byA[r.code];
+      if(!a || !a.tieuthu) return;
+      const pct = (r.tieuthu-a.tieuthu)/Math.abs(a.tieuthu)*100;
+      if(!best || pct>best.pct) best={name:r.name, pct};
+      if(!worst || pct<worst.pct) worst={name:r.name, pct};
+    });
+    if(best) items.push(`Đơn vị tăng trưởng mạnh nhất: <strong>${best.name}</strong> (${best.pct>=0?'+':''}${n2(best.pct)}%). Đơn vị giảm nhiều nhất: <strong>${worst.name}</strong> (${worst.pct>=0?'+':''}${n2(worst.pct)}%).`);
+  }
+
+  list.innerHTML = items.map(t=>`<li>${t}</li>`).join('');
+  panel.style.display = '';
+}
+
+/* ---------- Xuất Excel ---------- */
+function exportToExcel(){
+  const years = getSelectedYears();
+  const periodKey = getSelectedPeriodKey();
+  if(years.length===0){ alert('Vui lòng chọn ít nhất 1 năm trước khi xuất.'); return; }
+  const months = PERIODS[periodKey].months;
+  const wb = XLSX.utils.book_new();
+
+  const cmpHeader = ['Chỉ tiêu (Toàn Công ty)', ...years.map(y=>'Năm '+y)];
+  const cmpMetrics = [
+    ['Sản lượng nước thương phẩm (m³)', r=>Math.round(r.tieuthu)],
+    ['Sản lượng nước phát ra (m³)', r=>Math.round(r.phatraGoc)],
+    ['Tỷ lệ thất thoát (%)', r=>Number(r.tyLeThatThoat.toFixed(2))],
+    ['Điện năng tiêu thụ (kWh)', r=>Math.round(r.dien)],
+    ['Tổng tiền hàng trước thuế (đ)', r=>Math.round(r.tongTienHang)],
+    ['Giá bán bình quân (đ/m³)', r=>Math.round(r.giaBanBQ)],
+    ['Tổng cộng thanh toán (đ)', r=>Math.round(r.tongCong)],
+  ];
+  const cmpTotals = years.map(y=>buildYearTable(y, months).total);
+  const cmpAoa = [cmpHeader, ...cmpMetrics.map(([label,fmt])=>[label, ...cmpTotals.map(fmt)])];
+  const wsCmp = XLSX.utils.aoa_to_sheet(cmpAoa);
+  XLSX.utils.book_append_sheet(wb, wsCmp, 'DoiChieuNam');
+
+  years.forEach(year=>{
+    const {rows, total} = buildYearTable(year, months);
+    const header = ['TT','Tên đơn vị','Số hộ','Chi phí đấu nối (đ)','SL thương phẩm (m³)','Thành tiền (đ)',
+      'SL phát ra (m³)','Tỷ lệ thất thoát (%)','Điện năng (kWh)','Suất hao điện phát (kWh/m³)',
+      'Suất hao điện tiêu thụ (kWh/m³)','Tổng tiền hàng (đ)','Giá bán BQ (đ/m³)','Thuế GTGT (đ)',
+      'Dịch vụ thoát nước (đ)','Tổng cộng thanh toán (đ)'];
+    const aoa = [header];
+    rows.forEach((r,i)=> aoa.push([i+1, r.name, Math.round(r.soho), Math.round(r.tiendaunoi), Math.round(r.tieuthu),
+      Math.round(r.tiennuoc), Math.round(r.phatraGoc), Number(r.tyLeThatThoat.toFixed(2)), Math.round(r.dien),
+      Number(r.suatPhat.toFixed(3)), Number(r.suatTieuThu.toFixed(3)), Math.round(r.tongTienHang), Math.round(r.giaBanBQ),
+      Math.round(r.thueGTGT), r.dichVuThoatNuoc?Math.round(r.dichVuThoatNuoc):0, Math.round(r.tongCong)]));
+    aoa.push(['','Tổng cộng:', Math.round(total.soho), Math.round(total.tiendaunoi), Math.round(total.tieuthu),
+      Math.round(total.tiennuoc), Math.round(total.phatraGoc), Number(total.tyLeThatThoat.toFixed(2)), Math.round(total.dien),
+      Number(total.suatPhat.toFixed(3)), Number(total.suatTieuThu.toFixed(3)), Math.round(total.tongTienHang), Math.round(total.giaBanBQ),
+      Math.round(total.thueGTGT), total.dichVuThoatNuoc?Math.round(total.dichVuThoatNuoc):0, Math.round(total.tongCong)]);
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    XLSX.utils.book_append_sheet(wb, ws, 'Nam_'+year);
+  });
+
+  XLSX.writeFile(wb, 'BaoCao_SanXuatKinhDoanh_'+years.join('-')+'.xlsx');
+}
+
+function exportToPdf(){
+  window.print();
+}
+
+
+function render(){
+  let years = getSelectedYears();
+  if(years.length===0){
+    years = [YEARS_SORTED[YEARS_SORTED.length-1]];
+    const chip = document.querySelector(`.year-chip[data-year="${years[0]}"]`);
+    if(chip) chip.classList.add('active');
+  }
+  const periodKey = getSelectedPeriodKey();
+  renderKPI(years, periodKey);
+  renderExecSummary(years, periodKey);
+  renderCompareTable(years, periodKey);
+  renderRankTable(years, periodKey);
+  renderYearBlocks(years, periodKey);
+  renderAllCharts();
+}
+
+/* ---------- Nạp dữ liệu trực tiếp từ Google Sheets (có fallback file cục bộ) ---------- */
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1v0fQAmk92s8UuIxzKesEjEM0WQZ1l724jEprxpNTVrA/export?format=xlsx';
+const XLSX_FILENAME = 'DuLieu_Fact_Dimension.xlsx';
+const SHEET_NAME = 'Fact_SanXuat';
+
+function parseWorkbookBuffer(buf){
+  const wb = XLSX.read(buf, {type:'array'});
+  const sheet = wb.Sheets[SHEET_NAME] || wb.Sheets[wb.SheetNames[0]];
+  if(!sheet) throw new Error('Không tìm thấy sheet dữ liệu trong file.');
+  const raw = XLSX.utils.sheet_to_json(sheet, {header:1, raw:true, defval:null});
+  const dataRows = raw.slice(1).filter(r=> r && r.length && r[2]!==null && r[2]!==undefined && r[2]!=='');
+  FACT = dataRows.map(r=> [
+    r[0], r[1], r[2],
+    r[3]||0, r[4]||0,
+    (r[5]===undefined||r[5]==='')?null:r[5],
+    r[6]||0, r[7]||0, r[8]||0, r[9]||0, r[10]||0
+  ]);
+  buildIndex();
+  if(YEARS_SORTED.length===0) throw new Error('File không chứa dữ liệu hợp lệ.');
+
+  const khSheet = wb.Sheets['Fact_KeHoach'];
+  if(khSheet){
+    const khRaw = XLSX.utils.sheet_to_json(khSheet, {header:1, raw:true, defval:null});
+    const khRows = khRaw.slice(1).filter(r=> r && r.length && r[0]!==null && r[1]);
+    buildKHIndex(khRows);
+  } else {
+    KH_IDX = {}; HAS_KH_DATA = false;
+  }
+}
+
+function showReport(){
+  document.getElementById('reportBody').style.display='';
+  try{
+    initFilters();
+    render();
+    renderMoM();
+  }catch(renderErr){
+    console.error('Lỗi khi dựng báo cáo/biểu đồ:', renderErr);
+    const el = document.getElementById('dataStatusText');
+    el.innerHTML += '<br><span style="color:#9A3A1E;">⚠ Dữ liệu đã tải thành công nhưng có lỗi khi dựng báo cáo: '+renderErr.message+'</span>';
+  }
+}
+
+function setStatus(html){
+  document.getElementById('dataStatusText').innerHTML = html;
+}
+
+function showLoadError(reason){
+  setStatus('Không thể nạp dữ liệu từ Google Sheets hoặc file <code>'+XLSX_FILENAME+'</code>'+(reason?' ('+reason+')':'')+
+    '. Vui lòng kiểm tra kết nối mạng hoặc đặt file <code>'+XLSX_FILENAME+'</code> cùng thư mục, sau đó bấm "Thử tải lại".');
+  document.getElementById('retryWrap').style.display='block';
+}
+
+document.getElementById('retryBtn').addEventListener('click', bootLoadData);
+
+async function bootLoadData(){
+  document.getElementById('retryWrap').style.display='none';
+  setStatus('Đang tải dữ liệu trực tiếp từ <strong>Google Sheets</strong>…');
+  let loadedSource = '';
+  
+  try {
+    const resp = await fetch(GOOGLE_SHEET_URL, {cache:'no-store'});
+    if(!resp.ok) throw new Error('Google Sheets HTTP '+resp.status);
+    const buf = await resp.arrayBuffer();
+    parseWorkbookBuffer(buf);
+    loadedSource = 'Google Sheets (trực tiếp)';
+  } catch(gsErr) {
+    console.warn('Không tự nạp được từ Google Sheets, chuyển sang file cục bộ:', gsErr);
+    setStatus('Không tải được từ Google Sheets, đang nạp từ file cục bộ <code>'+XLSX_FILENAME+'</code>…');
+    try {
+      const resp = await fetch('./'+XLSX_FILENAME, {cache:'no-store'});
+      if(!resp.ok) throw new Error('Local file HTTP '+resp.status);
+      const buf = await resp.arrayBuffer();
+      parseWorkbookBuffer(buf);
+      loadedSource = 'file cục bộ ('+XLSX_FILENAME+')';
+    } catch(err) {
+      console.warn('Không tự nạp được file dữ liệu cục bộ:', err);
+      showLoadError(gsErr.message || err.message);
+      return;
+    }
+  }
+
+  setStatus('Tải dữ liệu thành công từ <strong>'+loadedSource+'</strong> — dữ liệu các năm: '+YEARS_SORTED[0]+'–'+YEARS_SORTED[YEARS_SORTED.length-1]+'.');
+  showReport();
+}
+
+bootLoadData();
+
+// Theme Toggle Script
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', current);
+  localStorage.setItem('theme', current);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+}
+document.addEventListener('DOMContentLoaded', initTheme);
+
+// Scroll to Top Script
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (btn) {
+    if (window.scrollY > 300) btn.classList.add('show');
+    else btn.classList.remove('show');
+  }
+});
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>

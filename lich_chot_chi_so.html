@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Ghi Chốt Chỉ Số Nước Mới</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* ---- Page-specific: Lịch chốt chỉ số ---- */
+        .schedule-intro {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 32px;
+        }
+        .schedule-intro p {
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+
+        /* Group cards */
+        .group-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .group-card .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+        .group-card .card-icon.navy { background: #e0ebe6; }
+        .group-card .card-icon.teal { background: var(--teal-light); }
+        .group-card .card-icon.gold { background: #f5edd8; }
+
+        .group-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-family: var(--font-body);
+        }
+        .group-units {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Date badges */
+        .date-badge {
+            text-align: center;
+            padding: 16px 12px;
+            border-radius: 10px;
+            color: #fff;
+            margin-top: auto;
+        }
+        .date-badge.navy-bg {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+        }
+        .date-badge.teal-bg {
+            background: linear-gradient(135deg, var(--teal) 0%, #1c6e56 100%);
+        }
+        .date-badge.gold-bg {
+            background: linear-gradient(135deg, var(--gold) 0%, #7d5a1e 100%);
+        }
+        .date-badge .date-label {
+            display: block;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            opacity: .85;
+            margin-bottom: 4px;
+            font-family: var(--font-body);
+        }
+        .date-badge .date-value {
+            font-size: 26px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            letter-spacing: .04em;
+        }
+
+        /* Footer info bar */
+        .info-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line);
+            flex-wrap: wrap;
+        }
+        .info-bar .info-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            max-width: 480px;
+        }
+        .info-bar .info-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--teal-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .info-bar .info-text {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .info-bar .info-right {
+            text-align: right;
+        }
+        .info-bar .info-right .authority {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--navy);
+            font-family: var(--font-display);
+        }
+        .info-bar .info-right .approved {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Print button wrapper */
+        .print-actions {
+            text-align: center;
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+        .print-actions .btn-primary svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .info-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .info-bar .info-left {
+                flex-direction: column;
+                text-align: center;
+            }
+            .info-bar .info-right {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">💧</div>
+      <span>Cấp Nước Sơn La</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
+      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
+      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
+      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
+      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
+      <a href="lich_chot_chi_so.html" class="active"><span class="nav-icon">📅</span>Chốt chỉ số</a>
+      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
+      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+    </div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== MASTHEAD ===== -->
+<header class="masthead">
+  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty cổ phần cấp nước Sơn La</div>
+  <h1>LỊCH GHI CHỐT <span class="highlight-text">CHỈ SỐ NƯỚC MỚI</span></h1>
+  <p class="sub">Áp dụng cho toàn bộ các Xí nghiệp và Chi nhánh Cấp nước trực thuộc Công ty cổ phần cấp nước Sơn La.</p>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="wrap">
+    <div class="panel">
+        <h2>📅 Lịch ghi chốt chỉ số nước</h2>
+        <p class="hint">Phân chia theo nhóm đơn vị — ngày ghi chốt hàng tháng</p>
+    </div>
+
+    <!-- 3 Group Cards -->
+    <div class="grid-3">
+
+        <!-- Nhóm 1: Navy -->
+        <div class="s-card accent-navy group-card">
+            <div>
+                <div class="card-icon navy">🏢</div>
+                <div class="group-label">Nhóm Đơn vị 01</div>
+                <div class="group-units">XN1, XN2, Mai Sơn, Chiềng Pằn</div>
+            </div>
+            <div class="date-badge navy-bg">
+                <span class="date-label">Ngày ghi chốt</span>
+                <span class="date-value">24 – 27</span>
+            </div>
+        </div>
+
+        <!-- Nhóm 2: Teal -->
+        <div class="s-card accent-teal group-card">
+            <div>
+                <div class="card-icon teal">📍</div>
+                <div class="group-label">Nhóm Đơn vị 02</div>
+                <div class="group-units">Vân Hồ</div>
+            </div>
+            <div class="date-badge teal-bg">
+                <span class="date-label">Ngày ghi chốt</span>
+                <span class="date-value">22 – 25</span>
+            </div>
+        </div>
+
+        <!-- Nhóm 3: Gold -->
+        <div class="s-card accent-gold group-card">
+            <div>
+                <div class="card-icon gold">🛡️</div>
+                <div class="group-label">Nhóm Đơn vị 03</div>
+                <div class="group-units">Các đơn vị còn lại</div>
+            </div>
+            <div class="date-badge gold-bg">
+                <span class="date-label">Ngày ghi chốt</span>
+                <span class="date-value">25 – 28</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Info -->
+    <div class="info-bar">
+        <div class="info-left">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Yêu cầu các đơn vị nghiêm túc thực hiện để đảm bảo tính đồng bộ dữ liệu toàn công ty.
+            </p>
+        </div>
+        <div class="info-right">
+            <div class="authority">BAN LÃNH ĐẠO CÔNG TY</div>
+            <div class="approved">Đã phê duyệt hệ thống</div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <div class="print-actions no-print">
+        <button class="btn-primary" onclick="window.print()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            In hoặc Lưu PDF
+        </button>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="rpt-footer">
+  Phòng Quản lý Khách hàng — Công ty cổ phần cấp nước Sơn La.
+</footer>
+
+<script>
+// Theme Toggle Script
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', current);
+  localStorage.setItem('theme', current);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+}
+document.addEventListener('DOMContentLoaded', initTheme);
+
+// Scroll to Top Script
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (btn) {
+    if (window.scrollY > 300) btn.classList.add('show');
+    else btn.classList.remove('show');
+  }
+});
+</script>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+</body>
+</html>
