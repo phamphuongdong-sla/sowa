@@ -1,0 +1,21 @@
+{
+  "name": "Cấp Nước Sơn La",
+  "short_name": "CNSL",
+  "description": "Hệ thống quản lý Cấp Nước Sơn La",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0052cc",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
