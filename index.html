@@ -25,6 +25,163 @@
     });
   }
 </script>
+<style>
+/* ---- Styles for Unit-specific Drill-down & Copy System ---- */
+.unit-copy-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-copy-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-copy-action:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-copy-excel {
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.btn-copy-excel:hover {
+  background: var(--teal);
+  color: #fff;
+}
+.btn-copy-text {
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563EB;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+.btn-copy-text:hover {
+  background: #2563EB;
+  color: #fff;
+}
+.btn-copy-monthly {
+  background: var(--gold-light);
+  color: #D97706;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.btn-copy-monthly:hover {
+  background: #D97706;
+  color: #fff;
+}
+
+.unit-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.unit-kpi-card {
+  background: var(--card-bg-solid);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.unit-kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--teal);
+}
+.unit-kpi-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+.unit-kpi-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+  font-family: var(--font-display);
+  line-height: 1.25;
+}
+.unit-kpi-sub {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.unit-expert-box {
+  background: var(--card-bg-solid);
+  border-left: 4px solid var(--teal);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+  border-top: 1px solid var(--card-border);
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+}
+.unit-expert-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.unit-expert-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.unit-expert-badge {
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+}
+.unit-expert-content {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.unit-expert-list {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.unit-expert-list li {
+  margin-bottom: 4px;
+}
+
+.category-row td {
+  background: var(--bg-page) !important;
+  font-weight: 800 !important;
+  color: var(--navy) !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-top: 2px solid var(--card-border) !important;
+  border-bottom: 1.5px solid var(--card-border) !important;
+  padding: 10px 14px !important;
+}
+</style>
 </head>
 <body>
 <nav class="site-nav">
@@ -155,6 +312,76 @@
     <div class="hint" style="margin-bottom:14px;"> Dữ liệu báo cáo tỷ lệ Hoàn thành kế hoạch & tỷ lệ Thất thoát thực tế được hiển thị theo số năm tham chiếu từ bộ lọc năm và lấy năm gần nhất.</div>
     <div class="table-scroll">
       <table class="datatable" id="rankTable" style="min-width:1100px;"></table>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       HỒ SƠ PHÂN TÍCH CHUYÊN SÂU TỪNG ĐƠN VỊ (BỘ LỌC ĐA CHỈ TIÊU & COPY)
+       ================================================================ -->
+  <div class="compare-wrap" id="unitDrilldownWrap">
+    <div class="section-title" style="margin-top:0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h3>🏛️ Phân tích Chuyên sâu & Đối chiếu Chỉ tiêu riêng từng Đơn vị</h3>
+        <span class="tag">Hồ sơ Quản lý Cấp nước · Đa chỉ tiêu Kỹ thuật & Kinh doanh</span>
+      </div>
+      <!-- Copy Actions Toolbar -->
+      <div class="unit-copy-toolbar no-print">
+        <button type="button" class="btn-copy-action btn-copy-excel" id="copyUnitTableBtn" title="Sao chép bảng đa chỉ tiêu để dán trực tiếp vào Microsoft Excel hoặc Google Sheets">
+          <span>📋</span> Sao chép bảng (Excel)
+        </button>
+        <button type="button" class="btn-copy-action btn-copy-text" id="copyUnitReportBtn" title="Sao chép bản tóm tắt giao ban định dạng sẵn để gửi Zalo/Viber/Email cho Lãnh đạo">
+          <span>📝</span> Sao chép báo cáo (Zalo/Viber)
+        </button>
+        <button type="button" class="btn-copy-action btn-copy-monthly" id="copyUnitMonthlyBtn" title="Sao chép bảng chi tiết 12 tháng của đơn vị ra Excel">
+          <span>📊</span> Sao chép 12 tháng (Excel)
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Control for Unit -->
+    <div class="filters" style="margin-bottom:18px; background:var(--card-bg-solid); padding:16px; border-radius:14px; border:1px solid var(--card-border); gap:16px;">
+      <div class="filter-group" style="min-width:280px; flex:1;">
+        <label class="grouplabel" for="drilldownUnitSelect">🏢 Chọn Đơn vị trực thuộc cần phân tích</label>
+        <select id="drilldownUnitSelect" style="font-weight:700; font-size:14px; color:var(--teal); padding:10px 14px;"></select>
+      </div>
+      <div class="filter-group" style="min-width:220px;">
+        <label class="grouplabel">Kỳ đối chiếu hiện tại</label>
+        <div id="unitPeriodBadge" style="font-size:13px; font-weight:700; color:var(--navy); padding:10px 14px; background:var(--bg-page); border:1px solid var(--card-border); border-radius:10px;">
+          🎯 6 tháng đầu năm (Tháng 1–6)
+        </div>
+      </div>
+      <div class="filter-group" style="min-width:180px;">
+        <label class="grouplabel">Năm phân tích chi tiết 12T</label>
+        <select id="drilldownYearSelect" style="font-weight:600; padding:10px 14px;"></select>
+      </div>
+    </div>
+
+    <!-- 6 Executive KPI Highlight Cards for Unit -->
+    <div class="unit-kpi-grid" id="unitKpiGrid"></div>
+
+    <!-- Diagnostic & Recommendation Box from 30-year industry expert -->
+    <div class="unit-expert-box" id="unitExpertBox"></div>
+
+    <!-- Multi-year Metric Comparison Table -->
+    <div style="margin:22px 0 10px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;">
+      <h4 style="margin:0; font-size:15px; color:var(--navy); font-weight:800;" id="unitTableTitle">
+        1. Bảng Tổng hợp & Đối chiếu Đa chỉ tiêu theo các năm — [Tên đơn vị]
+      </h4>
+      <span style="font-size:12px; color:var(--muted); font-family:var(--font-mono);">Đơn vị tính: m³, kWh, đ, %, hộ</span>
+    </div>
+    <div class="table-scroll">
+      <table class="datatable" id="unitMetricsTable" style="min-width:1050px;"></table>
+    </div>
+
+    <!-- 12-Month Detailed Breakdown in Selected Year -->
+    <div style="margin:28px 0 10px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;">
+      <h4 style="margin:0; font-size:15px; color:var(--navy); font-weight:800;" id="unitMonthlyTitle">
+        2. Chi tiết Diễn biến 12 Tháng trong Năm — [Tên đơn vị]
+      </h4>
+      <span style="font-size:12px; color:var(--muted); font-family:var(--font-mono);">Số liệu hàng tháng theo chu kỳ đọc chỉ số</span>
+    </div>
+    <div class="table-scroll">
+      <table class="datatable" id="unitMonthlyTable" style="min-width:1200px;"></table>
     </div>
   </div>
 
@@ -528,6 +755,45 @@ function initFilters(){
 
   document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
   document.getElementById('exportPdfBtn').addEventListener('click', exportToPdf);
+
+  // Khởi tạo bộ chọn đơn vị phân tích chuyên sâu
+  const drilldownUnitSelect = document.getElementById('drilldownUnitSelect');
+  if(drilldownUnitSelect && drilldownUnitSelect.options.length === 0){
+    UNITS.forEach(([code,name])=>{
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = `${code} — ${name}`;
+      drilldownUnitSelect.appendChild(opt);
+    });
+    drilldownUnitSelect.addEventListener('change', () => {
+      renderUnitDrilldown(getSelectedYears(), getPeriodInfo());
+    });
+  }
+
+  // Khởi tạo bộ chọn năm phân tích chi tiết 12 tháng
+  const drilldownYearSelect = document.getElementById('drilldownYearSelect');
+  if(drilldownYearSelect && drilldownYearSelect.options.length === 0){
+    YEARS_SORTED.forEach(y=>{
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = 'Năm ' + y;
+      drilldownYearSelect.appendChild(opt);
+    });
+    drilldownYearSelect.value = YEARS_SORTED[YEARS_SORTED.length-1];
+    drilldownYearSelect.addEventListener('change', () => {
+      renderUnitDrilldown(getSelectedYears(), getPeriodInfo());
+    });
+  }
+
+  // Gắn sự kiện các nút Sao chép
+  const copyUnitTableBtn = document.getElementById('copyUnitTableBtn');
+  if(copyUnitTableBtn) copyUnitTableBtn.addEventListener('click', copyUnitTableToClipboard);
+
+  const copyUnitReportBtn = document.getElementById('copyUnitReportBtn');
+  if(copyUnitReportBtn) copyUnitReportBtn.addEventListener('click', copyUnitReportToClipboard);
+
+  const copyUnitMonthlyBtn = document.getElementById('copyUnitMonthlyBtn');
+  if(copyUnitMonthlyBtn) copyUnitMonthlyBtn.addEventListener('click', copyUnitMonthlyToClipboard);
 
   updatePeriodUI();
 }
@@ -1236,6 +1502,549 @@ function exportToPdf(){
   window.print();
 }
 
+/* ================================================================
+   HỒ SƠ PHÂN TÍCH CHUYÊN SÂU TỪNG ĐƠN VỊ & CÔNG CỤ SAO CHÉP
+   (Góc nhìn Chuyên gia Quản lý Cấp nước hơn 30 năm kinh nghiệm)
+   ================================================================ */
+
+function showToast(message, type = 'success'){
+  let container = document.getElementById('toastContainer');
+  if(!container){
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    container.id = 'toastContainer';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span style="font-size:16px;">${type==='error'?'⚠️':'✓'}</span> <span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 20);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
+
+function copyToClipboard(text, successMsg){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>{
+      showToast(successMsg, 'success');
+    }).catch(()=>{
+      fallbackCopyText(text, successMsg);
+    });
+  } else {
+    fallbackCopyText(text, successMsg);
+  }
+}
+
+function fallbackCopyText(text, successMsg){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(successMsg, 'success');
+  } catch(e){
+    alert('Không thể sao chép: ' + e);
+  }
+  document.body.removeChild(ta);
+}
+
+let CURRENT_UNIT_DRILLDOWN_DATA = null;
+
+function renderUnitDrilldown(years, periodInfo){
+  const unitSelect = document.getElementById('drilldownUnitSelect');
+  if(!unitSelect || !unitSelect.value) return;
+  const unitCode = unitSelect.value;
+  const unitObj = UNITS.find(u => u[0] === unitCode) || [unitCode, unitCode];
+  const unitName = unitObj[1];
+  const months = periodInfo.months;
+
+  // Cập nhật thẻ kỳ báo cáo
+  const periodBadge = document.getElementById('unitPeriodBadge');
+  if(periodBadge) periodBadge.textContent = '🎯 ' + periodInfo.label;
+
+  // Cập nhật tiêu đề bảng
+  const tableTitle = document.getElementById('unitTableTitle');
+  if(tableTitle) tableTitle.innerHTML = `1. Bảng Tổng hợp & Đối chiếu Đa chỉ tiêu theo các năm — <span style="color:var(--teal); font-weight:800;">${unitName}</span> (${periodInfo.label})`;
+  
+  const monthlyTitle = document.getElementById('unitMonthlyTitle');
+  const yearSelect = document.getElementById('drilldownYearSelect');
+  const selectedYear = Number(yearSelect ? yearSelect.value : years[years.length - 1]) || years[years.length - 1];
+  if(monthlyTitle) monthlyTitle.innerHTML = `2. Chi tiết Diễn biến 12 Tháng trong Năm ${selectedYear} — <span style="color:var(--teal); font-weight:800;">${unitName}</span>`;
+
+  // 1. Tính toán số liệu đa năm cho đơn vị được chọn
+  const multiYearData = years.map(y => {
+    const agg = aggUnit(unitCode, y, months);
+    const m = deriveMetrics(agg);
+    const thatThoatM3 = (m.phatraGoc || 0) - (m.tieuthu || 0);
+    const tieuThuBQHo = (m.soho > 0 && months.length > 0) ? (m.tieuthu / m.soho / months.length) : null;
+    const doanhThuBQHo = (m.soho > 0 && months.length > 0) ? (m.tongTienHang / m.soho / months.length) : null;
+    
+    // Nước mua ngoài SVBIC (nếu là TP1 hoặc TP2)
+    let svbicTotal = 0;
+    if(unitCode === 'TP1' || unitCode === 'TP2'){
+      months.forEach(month => {
+        const r = IDX[y] && IDX[y][month] && IDX[y][month][unitCode];
+        if(r && r.svbic) svbicTotal += r.svbic;
+      });
+    }
+
+    const kh = (HAS_KH_DATA && KH_IDX[y]) ? KH_IDX[y][unitCode] : null;
+    let khTieuThu = null, khTyLeHT = null, khThatThoat = null, khThatThoatDiff = null;
+    if(kh){
+      if(kh.tieuthu){
+        khTieuThu = kh.tieuthu;
+        khTyLeHT = kh.tieuthu > 0 ? (m.tieuthu / kh.tieuthu * 100) : null;
+      }
+      if(kh.tyLeThatThoat !== null && kh.tyLeThatThoat !== undefined){
+        khThatThoat = kh.tyLeThatThoat;
+        khThatThoatDiff = m.tyLeThatThoat - kh.tyLeThatThoat;
+      }
+    }
+
+    return {
+      year: y,
+      ...m,
+      thatThoatM3,
+      tieuThuBQHo,
+      doanhThuBQHo,
+      svbicTotal,
+      khTieuThu,
+      khTyLeHT,
+      khThatThoat,
+      khThatThoatDiff
+    };
+  });
+
+  const last = multiYearData[multiYearData.length - 1];
+  const prev = multiYearData.length > 1 ? multiYearData[multiYearData.length - 2] : null;
+
+  // 2. Render 6 Thẻ KPI nổi bật cho đơn vị
+  const kpiGrid = document.getElementById('unitKpiGrid');
+  if(kpiGrid && last){
+    let nrwBadge = '';
+    let nrwColor = 'var(--teal)';
+    if(last.tyLeThatThoat <= 10){
+      nrwBadge = '🌟 Xuất sắc (≤10%)';
+      nrwColor = 'var(--teal)';
+    } else if(last.tyLeThatThoat <= 15){
+      nrwBadge = '✓ Đạt chuẩn định mức';
+      nrwColor = 'var(--blue)';
+    } else if(last.tyLeThatThoat <= 20){
+      nrwBadge = '⚠️ Cảnh báo cao (>15%)';
+      nrwColor = 'var(--gold)';
+    } else {
+      nrwBadge = '🚨 Báo động đỏ (>20%)';
+      nrwColor = 'var(--danger-text)';
+    }
+
+    const yoyTPDiff = prev ? last.tieuthu - prev.tieuthu : null;
+    const yoyTPPct = (prev && prev.tieuthu) ? (yoyTPDiff / prev.tieuthu * 100) : null;
+    const yoyPRDiff = prev ? last.phatraGoc - prev.phatraGoc : null;
+    const yoyPRPct = (prev && prev.phatraGoc) ? (yoyPRDiff / prev.phatraGoc * 100) : null;
+    const yoyTTDiff = prev ? last.tyLeThatThoat - prev.tyLeThatThoat : null;
+    const yoyDTDiff = prev ? last.tongTienHang - prev.tongTienHang : null;
+    const yoyDTPct = (prev && prev.tongTienHang) ? (yoyDTDiff / prev.tongTienHang * 100) : null;
+
+    kpiGrid.innerHTML = `
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Nước Thương phẩm (m³)</div>
+        <div class="unit-kpi-val">${n0(last.tieuthu)}</div>
+        <div class="unit-kpi-sub ${yoyTPDiff !== null ? (yoyTPDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
+          ${yoyTPDiff !== null ? `${yoyTPDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyTPDiff)} m³ (${n2(Math.abs(yoyTPPct))}%)` : 'Năm ' + last.year}
+        </div>
+      </div>
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Nước Phát ra (m³)</div>
+        <div class="unit-kpi-val">${n0(last.phatraGoc)}</div>
+        <div class="unit-kpi-sub ${yoyPRDiff !== null ? (yoyPRDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
+          ${yoyPRDiff !== null ? `${yoyPRDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyPRDiff)} m³ (${n2(Math.abs(yoyPRPct))}%)` : 'Tổng bơm cấp'}
+        </div>
+      </div>
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Tỷ lệ Thất thoát (%)</div>
+        <div class="unit-kpi-val" style="color:${nrwColor};">${n2(last.tyLeThatThoat)}%</div>
+        <div class="unit-kpi-sub" style="font-weight:700; color:${nrwColor};">
+          ${nrwBadge} ${yoyTTDiff !== null ? `(${yoyTTDiff >= 0 ? '+' : ''}${n2(yoyTTDiff)}%)` : ''}
+        </div>
+      </div>
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Lượng nước thất thoát</div>
+        <div class="unit-kpi-val" style="color:var(--danger-text);">${n0(last.thatThoatM3)} <span style="font-size:13px; font-weight:600;">m³</span></div>
+        <div class="unit-kpi-sub" style="color:var(--muted);">
+          Chiếm ${n2(last.tyLeThatThoat)}% tổng lượng nước phát
+        </div>
+      </div>
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Số hộ & Mức dùng BQ</div>
+        <div class="unit-kpi-val">${n0(last.soho)} <span style="font-size:13px; font-weight:600;">hộ</span></div>
+        <div class="unit-kpi-sub" style="color:var(--teal); font-weight:700;">
+          ${last.tieuThuBQHo !== null ? `~${n2(last.tieuThuBQHo)} m³/hộ/tháng` : 'Chưa có dữ liệu'}
+        </div>
+      </div>
+      <div class="unit-kpi-card">
+        <div class="unit-kpi-title">Doanh thu trước thuế</div>
+        <div class="unit-kpi-val">${n0(last.tongTienHang)} <span style="font-size:13px; font-weight:600;">đ</span></div>
+        <div class="unit-kpi-sub" style="color:var(--navy); font-weight:700;">
+          Giá BQ: ${n0(last.giaBanBQ)} đ/m³ ${yoyDTPct !== null ? `(${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  // 3. Render Khối Nhận định & Khuyến nghị Kỹ thuật (Chuyên gia 30 năm)
+  const expertBox = document.getElementById('unitExpertBox');
+  if(expertBox && last){
+    const diagnosticItems = [];
+    
+    // Đánh giá tỷ lệ thất thoát nước sạch (NRW)
+    if(last.tyLeThatThoat > 20){
+      diagnosticItems.push(`🔴 <strong>Thất thoát nước rất nghiêm trọng (${n2(last.tyLeThatThoat)}% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> Đang vượt ngưỡng cho phép 15% của Công ty rất lớn. <em>Khuyến nghị hành động:</em> Đơn vị cần ngay lập tức triển khai công tác khoanh vùng tách mạng (DMA), đo lưu lượng đêm tối thiểu (MNF) để phát hiện bể vỡ ngầm; đồng thời rà soát kẹt đồng hồ khách hàng, kiểm định định kỳ đồng hồ đo nước theo quy định ĐLVN 17:2017.`);
+    } else if(last.tyLeThatThoat > 15){
+      diagnosticItems.push(`🟡 <strong>Thất thoát nước vượt ngưỡng định mức (${n2(last.tyLeThatThoat)}% > 15%):</strong> Lượng nước thất thoát ${n0(last.thatThoatM3)} m³. Cần kiểm tra van giảm áp trên các tuyến ống nhánh có áp lực cao và đẩy mạnh công tác kiểm tra chống gian lận, rò rỉ tại các mối nối van vòi.`);
+    } else if(last.tyLeThatThoat <= 10){
+      diagnosticItems.push(`🟢 <strong>Kiểm soát thất thoát nước xuất sắc (${n2(last.tyLeThatThoat)}%):</strong> Đây là tỷ lệ thất thoát rất lý tưởng đối với đặc thù địa hình miền núi dốc, áp lực cao như tỉnh Sơn La. Đơn vị đang quản lý vận hành mạng lưới đường ống rất chặt chẽ.`);
+    } else {
+      diagnosticItems.push(`🔵 <strong>Tỷ lệ thất thoát nước đạt yêu cầu kỹ thuật (${n2(last.tyLeThatThoat)}%):</strong> Nằm trong hạn mức cho phép chung (<15%), cần duy trì bảo dưỡng định kỳ các tuyến ống và van xả khí/cặn.`);
+    }
+
+    // Đánh giá tăng trưởng sản lượng thương phẩm & khách hàng
+    if(prev){
+      const diffTP = last.tieuthu - prev.tieuthu;
+      const pctTP = prev.tieuthu ? (diffTP / prev.tieuthu * 100) : 0;
+      const diffHo = last.soho - prev.soho;
+      if(pctTP >= 5){
+        diagnosticItems.push(`📈 <strong>Tăng trưởng sản lượng tốt:</strong> Sản lượng nước thương phẩm tăng <strong>+${n0(diffTP)} m³ (+${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Khách hàng phát triển mới: <strong>${diffHo >= 0 ? '+' : ''}${n0(diffHo)} hộ</strong>.`);
+      } else if(pctTP < 0){
+        diagnosticItems.push(`📉 <strong>Sản lượng thương phẩm suy giảm:</strong> Giảm <strong>${n0(diffTP)} m³ (${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Đơn vị cần kiểm tra nguyên nhân: do sụt giảm nhu cầu dùng nước của khách hàng lớn/khách sạn/cơ quan, hay do thời tiết mưa nhiều dân dùng nước tự nhiên, hoặc do sai số đồng hồ kẹt chạy chậm.`);
+      } else {
+        diagnosticItems.push(`⚖️ <strong>Sản lượng thương phẩm ổn định:</strong> Biến động nhẹ so với cùng kỳ ${prev.year} (${diffTP >= 0 ? '+' : ''}${n0(diffTP)} m³, ${n2(pctTP)}%). Khách hàng hiện có ${n0(last.soho)} hộ.`);
+      }
+    }
+
+    // Đánh giá suất điện năng
+    if(last.suatPhat > 0.45){
+      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng phát ra cao (${n3(last.suatPhat)} kWh/m³):</strong> Cần kiểm tra lại hiệu suất làm việc của tổ máy bơm tại trạm bơm cấp 1, cấp 2 (hiện tượng mòn cánh bơm, tụt áp) hoặc do đường ống đẩy bị tăng trở lực/đóng cặn cản trở dòng chảy.`);
+    } else if(last.suatPhat > 0){
+      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng kỹ thuật:</strong> Đạt <strong>${n3(last.suatPhat)} kWh/m³</strong> nước phát ra và <strong>${n3(last.suatTieuThu)} kWh/m³</strong> nước thương phẩm — nằm trong mức vận hành an toàn.`);
+    }
+
+    // Đánh giá Kế hoạch
+    if(last.khTyLeHT !== null){
+      diagnosticItems.push(`🎯 <strong>Thực hiện Kế hoạch năm:</strong> Sản lượng thương phẩm đạt <strong>${n2(last.khTyLeHT)}%</strong> chỉ tiêu kế hoạch được giao (${n0(last.tieuthu)} / ${n0(last.khTieuThu)} m³).`);
+    }
+
+    expertBox.innerHTML = `
+      <div class="unit-expert-head">
+        <div class="unit-expert-title">
+          <span>💡</span> Nhận định & Khuyến nghị Quản lý Vận hành (Chuyên gia Cấp nước 30+ năm)
+        </div>
+        <span class="unit-expert-badge">${unitName} · ${last.year}</span>
+      </div>
+      <div class="unit-expert-content">
+        <ul class="unit-expert-list">
+          ${diagnosticItems.map(it => `<li>${it}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  // 4. Render Bảng Đối chiếu Đa Chỉ tiêu theo các năm
+  const metricsTable = document.getElementById('unitMetricsTable');
+  if(metricsTable && last){
+    const defs = [
+      { cat: 'I. SẢN LƯỢNG & KHAI THÁC NƯỚC SẠCH (m³)' },
+      { label: 'Sản lượng nước thương phẩm (m³)', key: 'tieuthu', fmt: r => n0(r.tieuthu), isMain: true },
+      { label: 'Sản lượng nước phát ra gốc (m³)', key: 'phatraGoc', fmt: r => n0(r.phatraGoc) },
+      ...(unitCode === 'TP1' || unitCode === 'TP2' ? [
+        { label: '– Sản lượng nước mua ngoài SVBIC (m³)', key: 'svbicTotal', fmt: r => n0(r.svbicTotal) },
+        { label: '– Sản lượng phát nội bộ trừ SVBIC (m³)', key: 'phatra', fmt: r => n0(r.phatra) }
+      ] : []),
+      { label: 'Lượng nước thất thoát tuyệt đối (m³)', key: 'thatThoatM3', fmt: r => n0(r.thatThoatM3), isWarn: r => r.thatThoatM3 > 0 },
+      { label: 'Tỷ lệ thất thoát nước sạch (%)', key: 'tyLeThatThoat', fmt: r => n2(r.tyLeThatThoat) + '%', isWarn: r => r.tyLeThatThoat > 15, isRatio: true },
+      ...(HAS_KH_DATA ? [
+        { label: 'Kế hoạch sản lượng thương phẩm (m³)', key: 'khTieuThu', fmt: r => r.khTieuThu ? n0(r.khTieuThu) : '-' },
+        { label: 'Tỷ lệ hoàn thành kế hoạch (%)', key: 'khTyLeHT', fmt: r => r.khTyLeHT ? n2(r.khTyLeHT) + '%' : '-', isRatio: true },
+        { label: 'Chỉ tiêu tỷ lệ thất thoát giao (%)', key: 'khThatThoat', fmt: r => r.khThatThoat !== null ? n2(r.khThatThoat) + '%' : '-', isRatio: true }
+      ] : []),
+      
+      { cat: 'II. KHÁCH HÀNG & MỨC ĐỘ TIÊU DÙNG' },
+      { label: 'Số hộ / Khách hàng đấu nối (Hộ)', key: 'soho', fmt: r => n0(r.soho) },
+      { label: 'Mức tiêu thụ bình quân (m³/hộ/tháng)', key: 'tieuThuBQHo', fmt: r => r.tieuThuBQHo ? n2(r.tieuThuBQHo) : '-', isDec: true },
+      { label: 'Doanh thu tiền hàng BQ (đ/hộ/tháng)', key: 'doanhThuBQHo', fmt: r => r.doanhThuBQHo ? n0(r.doanhThuBQHo) : '-' },
+
+      { cat: 'III. NĂNG LƯỢNG & SUẤT TIÊU HAO KỸ THUẬT' },
+      { label: 'Điện năng tiêu thụ (kWh)', key: 'dien', fmt: r => n0(r.dien) },
+      { label: 'Suất hao điện nước phát (kWh/m³)', key: 'suatPhat', fmt: r => n3(r.suatPhat), isDec: true },
+      { label: 'Suất hao điện thương phẩm (kWh/m³)', key: 'suatTieuThu', fmt: r => n3(r.suatTieuThu), isDec: true },
+
+      { cat: 'IV. DOANH THU & TÀI CHÍNH (VNĐ)' },
+      { label: 'Tiền nước thương phẩm (đ)', key: 'tiennuoc', fmt: r => n0(r.tiennuoc) },
+      { label: 'Chi phí duy trì đấu nối (đ)', key: 'tiendaunoi', fmt: r => n0(r.tiendaunoi) },
+      { label: 'Tổng tiền hàng trước thuế (đ)', key: 'tongTienHang', fmt: r => n0(r.tongTienHang), isMain: true },
+      { label: 'Giá bán bình quân (đ/m³)', key: 'giaBanBQ', fmt: r => n0(r.giaBanBQ) },
+      { label: 'Thuế GTGT 5% (đ)', key: 'thueGTGT', fmt: r => n0(r.thueGTGT) },
+      { label: 'Dịch vụ thoát nước thu hộ (đ)', key: 'dichVuThoatNuoc', fmt: r => r.dichVuThoatNuoc ? n0(r.dichVuThoatNuoc) : '-' },
+      { label: 'Tổng cộng doanh thu thanh toán (đ)', key: 'tongCong', fmt: r => n0(r.tongCong), isMain: true }
+    ];
+
+    let thead = `<thead><tr class="g1">
+      <th style="text-align:left; min-width:260px;">Chỉ tiêu Phân tích & Vận hành</th>
+      ${multiYearData.map(d => `<th style="min-width:110px;">Năm ${d.year}</th>`).join('')}
+      ${prev ? `<th style="min-width:130px;">Δ So với ${prev.year}</th><th style="min-width:100px;">% Tăng/Giảm</th>` : ''}
+    </tr></thead>`;
+
+    let tbody = '<tbody>';
+    defs.forEach(rowDef => {
+      if(rowDef.cat){
+        const colSpan = multiYearData.length + 1 + (prev ? 2 : 0);
+        tbody += `<tr class="category-row"><td colspan="${colSpan}">${rowDef.cat}</td></tr>`;
+        return;
+      }
+
+      let rowHtml = `<tr><td class="name" style="${rowDef.isMain ? 'font-weight:700; color:var(--navy);' : ''}">${rowDef.label}</td>`;
+      
+      multiYearData.forEach(d => {
+        const valStr = rowDef.fmt(d);
+        const warnCls = (rowDef.isWarn && rowDef.isWarn(d)) ? ' class="warn"' : '';
+        rowHtml += `<td${warnCls} style="${rowDef.isMain ? 'font-weight:700;' : ''}">${valStr}</td>`;
+      });
+
+      if(prev){
+        const vLast = last[rowDef.key];
+        const vPrev = prev[rowDef.key];
+        if(vLast !== null && vLast !== undefined && vPrev !== null && vPrev !== undefined && isFinite(vLast) && isFinite(vPrev)){
+          const diff = vLast - vPrev;
+          const pct = vPrev !== 0 ? (diff / Math.abs(vPrev) * 100) : null;
+          const up = diff >= 0;
+          const flat = Math.abs(diff) < 1e-6;
+          const arrow = flat ? '►' : (up ? '▲' : '▼');
+          const sign = up ? '+' : '';
+          const diffCls = flat ? 'yoy-flat' : (up ? 'yoy-up' : 'yoy-down');
+
+          const diffText = rowDef.isRatio
+            ? `${sign}${n2(diff)} điểm %`
+            : (rowDef.isDec ? `${sign}${n3(diff)}` : `${sign}${n0(diff)}`);
+
+          const pctText = (pct !== null && !rowDef.isRatio) ? `${sign}${n2(pct)}%` : (rowDef.isRatio ? '–' : '–');
+
+          rowHtml += `<td class="${diffCls}">${arrow} ${diffText}</td>`;
+          rowHtml += `<td class="${diffCls}">${pctText}</td>`;
+        } else {
+          rowHtml += `<td class="yoy-flat">–</td><td class="yoy-flat">–</td>`;
+        }
+      }
+
+      rowHtml += '</tr>';
+      tbody += rowHtml;
+    });
+    tbody += '</tbody>';
+
+    metricsTable.innerHTML = thead + tbody;
+  }
+
+  // 5. Render Bảng Chi tiết 12 Tháng của Đơn vị
+  const monthlyTable = document.getElementById('unitMonthlyTable');
+  if(monthlyTable){
+    const mRows = [];
+    let totTP = 0, totPR = 0, totDien = 0, totTienNuoc = 0, totTongCong = 0;
+    let lastSoHo = 0;
+
+    for(let m = 1; m <= 12; m++){
+      const r = IDX[selectedYear] && IDX[selectedYear][m] && IDX[selectedYear][m][unitCode];
+      if(r){
+        const tp = r.tieuthu || 0;
+        const prGoc = r.phatra || 0;
+        const ttM3 = prGoc - tp;
+        const ttPct = prGoc > 0 ? (ttM3 / prGoc * 100) : 0;
+        const sh = r.soho || 0;
+        if(sh > 0) lastSoHo = sh;
+        const tbq = sh > 0 ? (tp / sh) : 0;
+        const dien = r.dien || 0;
+        const suatDien = tp > 0 ? (dien / tp) : 0;
+        const tn = r.tiennuoc || 0;
+        const tc = tn + (r.tiendaunoi || 0) + ((tn + (r.tiendaunoi || 0)) * 0.05) + (r.dichvuthoatnuoc || 0);
+
+        totTP += tp; totPR += prGoc; totDien += dien; totTienNuoc += tn; totTongCong += tc;
+
+        mRows.push({
+          month: m, hasData: true,
+          tp, prGoc, ttM3, ttPct, sh, tbq, dien, suatDien, tn, tc
+        });
+      } else {
+        mRows.push({
+          month: m, hasData: false,
+          tp: null, prGoc: null, ttM3: null, ttPct: null, sh: null, tbq: null, dien: null, suatDien: null, tn: null, tc: null
+        });
+      }
+    }
+
+    const totTTM3 = totPR - totTP;
+    const totTTPct = totPR > 0 ? (totTTM3 / totPR * 100) : 0;
+    const totSuatDien = totTP > 0 ? (totDien / totTP) : 0;
+    const totTBQ = lastSoHo > 0 ? (totTP / lastSoHo / 12) : 0;
+
+    const mMetricDefs = [
+      { label: 'Nước thương phẩm (m³)', key: 'tp', fmt: v => v !== null ? n0(v) : '-', tot: n0(totTP), isMain: true },
+      { label: 'Nước phát ra (m³)', key: 'prGoc', fmt: v => v !== null ? n0(v) : '-', tot: n0(totPR) },
+      { label: 'Lượng thất thoát (m³)', key: 'ttM3', fmt: v => v !== null ? n0(v) : '-', tot: n0(totTTM3) },
+      { label: 'Tỷ lệ thất thoát (%)', key: 'ttPct', fmt: v => v !== null ? n2(v) + '%' : '-', tot: n2(totTTPct) + '%', isWarn: v => v > 15 },
+      { label: 'Số hộ sử dụng (Hộ)', key: 'sh', fmt: v => v !== null ? n0(v) : '-', tot: n0(lastSoHo) },
+      { label: 'Tiêu thụ BQ (m³/hộ)', key: 'tbq', fmt: v => v !== null ? n2(v) : '-', tot: n2(totTBQ) },
+      { label: 'Điện năng tiêu thụ (kWh)', key: 'dien', fmt: v => v !== null ? n0(v) : '-', tot: n0(totDien) },
+      { label: 'Suất điện TP (kWh/m³)', key: 'suatDien', fmt: v => v !== null ? n3(v) : '-', tot: n3(totSuatDien) },
+      { label: 'Tiền nước thương phẩm (đ)', key: 'tn', fmt: v => v !== null ? n0(v) : '-', tot: n0(totTienNuoc) },
+      { label: 'Tổng cộng thanh toán (đ)', key: 'tc', fmt: v => v !== null ? n0(v) : '-', tot: n0(totTongCong), isMain: true }
+    ];
+
+    let thead = `<thead><tr class="g1">
+      <th style="text-align:left; min-width:200px;">Chỉ tiêu tháng (${selectedYear})</th>
+      ${Array.from({length: 12}, (_, i) => `<th>Th ${i + 1}</th>`).join('')}
+      <th style="min-width:120px; background:rgba(27,74,62,0.12);">Tổng / BQ</th>
+    </tr></thead>`;
+
+    let tbody = '<tbody>';
+    mMetricDefs.forEach(d => {
+      let rHtml = `<tr><td class="name" style="${d.isMain ? 'font-weight:700; color:var(--navy);' : ''}">${d.label}</td>`;
+      mRows.forEach(mr => {
+        const val = mr[d.key];
+        const valStr = d.fmt(val);
+        const warnCls = (d.isWarn && val !== null && d.isWarn(val)) ? ' class="warn"' : '';
+        rHtml += `<td${warnCls}>${valStr}</td>`;
+      });
+      rHtml += `<td style="font-weight:700; background:rgba(27,74,62,0.06);">${d.tot}</td></tr>`;
+      tbody += rHtml;
+    });
+    tbody += '</tbody>';
+
+    monthlyTable.innerHTML = thead + tbody;
+  }
+
+  // Lưu trạng thái hiện tại phục vụ sao chép
+  CURRENT_UNIT_DRILLDOWN_DATA = {
+    unitCode,
+    unitName,
+    periodLabel: periodInfo.label,
+    selectedYear,
+    multiYearData,
+    last,
+    prev
+  };
+}
+
+/* ---------- Chức năng Sao chép Bảng Chỉ tiêu Đa năm ra Excel (TSV) ---------- */
+function copyUnitTableToClipboard(){
+  const table = document.getElementById('unitMetricsTable');
+  if(!table){ showToast('Chưa có dữ liệu bảng để sao chép!', 'error'); return; }
+  
+  let tsv = [];
+  const theadRows = table.querySelectorAll('thead tr');
+  theadRows.forEach(tr => {
+    const cols = Array.from(tr.querySelectorAll('th, td')).map(td => td.innerText.replace(/\r?\n|\r/g, ' ').trim());
+    tsv.push(cols.join('\t'));
+  });
+
+  const tbodyRows = table.querySelectorAll('tbody tr');
+  tbodyRows.forEach(tr => {
+    const cols = Array.from(tr.querySelectorAll('th, td')).map(td => td.innerText.replace(/\r?\n|\r/g, ' ').trim());
+    tsv.push(cols.join('\t'));
+  });
+
+  const content = tsv.join('\n');
+  const unitName = CURRENT_UNIT_DRILLDOWN_DATA ? CURRENT_UNIT_DRILLDOWN_DATA.unitName : 'Đơn vị';
+  copyToClipboard(content, `✓ Đã sao chép bảng đối chiếu [${unitName}] ra Excel!`);
+}
+
+/* ---------- Chức năng Sao chép Bảng 12 Tháng ra Excel (TSV) ---------- */
+function copyUnitMonthlyToClipboard(){
+  const table = document.getElementById('unitMonthlyTable');
+  if(!table){ showToast('Chưa có dữ liệu bảng 12 tháng để sao chép!', 'error'); return; }
+
+  let tsv = [];
+  const theadRows = table.querySelectorAll('thead tr');
+  theadRows.forEach(tr => {
+    const cols = Array.from(tr.querySelectorAll('th, td')).map(td => td.innerText.replace(/\r?\n|\r/g, ' ').trim());
+    tsv.push(cols.join('\t'));
+  });
+
+  const tbodyRows = table.querySelectorAll('tbody tr');
+  tbodyRows.forEach(tr => {
+    const cols = Array.from(tr.querySelectorAll('th, td')).map(td => td.innerText.replace(/\r?\n|\r/g, ' ').trim());
+    tsv.push(cols.join('\t'));
+  });
+
+  const content = tsv.join('\n');
+  const unitName = CURRENT_UNIT_DRILLDOWN_DATA ? CURRENT_UNIT_DRILLDOWN_DATA.unitName : 'Đơn vị';
+  const yr = CURRENT_UNIT_DRILLDOWN_DATA ? CURRENT_UNIT_DRILLDOWN_DATA.selectedYear : '';
+  copyToClipboard(content, `✓ Đã sao chép bảng 12 tháng năm ${yr} [${unitName}] ra Excel!`);
+}
+
+/* ---------- Chức năng Sao chép Báo cáo Giao ban Nhanh (Zalo/Viber) ---------- */
+function copyUnitReportToClipboard(){
+  if(!CURRENT_UNIT_DRILLDOWN_DATA || !CURRENT_UNIT_DRILLDOWN_DATA.last){
+    showToast('Chưa có thông tin báo cáo để sao chép!', 'error');
+    return;
+  }
+  const { unitName, periodLabel, last, prev } = CURRENT_UNIT_DRILLDOWN_DATA;
+
+  const yoyTPDiff = prev ? last.tieuthu - prev.tieuthu : null;
+  const yoyTPPct = (prev && prev.tieuthu) ? (yoyTPDiff / prev.tieuthu * 100) : null;
+  const yoyPRDiff = prev ? last.phatraGoc - prev.phatraGoc : null;
+  const yoyPRPct = (prev && prev.phatraGoc) ? (yoyPRDiff / prev.phatraGoc * 100) : null;
+  const yoyTTDiff = prev ? last.tyLeThatThoat - prev.tyLeThatThoat : null;
+  const yoyDTDiff = prev ? last.tongTienHang - prev.tongTienHang : null;
+  const yoyDTPct = (prev && prev.tongTienHang) ? (yoyDTDiff / prev.tongTienHang * 100) : null;
+
+  // Đánh giá thất thoát
+  let danhGiaTT = 'Kiểm soát tốt trong định mức (<15%)';
+  if(last.tyLeThatThoat > 20) danhGiaTT = 'MỨC BÁO ĐỘNG ĐỎ (>20%) - Cần tổ chức dò tìm bể vỡ ngầm & rà soát DMA';
+  else if(last.tyLeThatThoat > 15) danhGiaTT = 'Vượt định mức 15% - Cần tăng cường rà soát chống thất thoát';
+  else if(last.tyLeThatThoat <= 10) danhGiaTT = 'Xuất sắc (≤10%) - Quản lý mạng lưới rất tốt';
+
+  const report = [
+    `📊 BÁO CÁO NHANH KẾT QUẢ SẢN XUẤT KINH DOANH`,
+    `🏢 Đơn vị: ${unitName}`,
+    `🗓 Kỳ báo cáo: ${periodLabel} — Năm ${last.year}${prev ? ` (So sánh cùng kỳ năm ${prev.year})` : ''}`,
+    `========================================`,
+    `1. SẢN LƯỢNG & KHAI THÁC NƯỚC:`,
+    `• Nước thương phẩm: ${n0(last.tieuthu)} m³${yoyTPDiff !== null ? ` (${yoyTPDiff >= 0 ? '+' : ''}${n0(yoyTPDiff)} m³, ${yoyTPPct >= 0 ? '+' : ''}${n2(yoyTPPct)}% so với ${prev.year})` : ''}`,
+    `• Nước phát ra: ${n0(last.phatraGoc)} m³${yoyPRDiff !== null ? ` (${yoyPRDiff >= 0 ? '+' : ''}${n0(yoyPRDiff)} m³, ${yoyPRPct >= 0 ? '+' : ''}${n2(yoyPRPct)}%)` : ''}`,
+    `• Lượng thất thoát: ${n0(last.thatThoatM3)} m³`,
+    `• Tỷ lệ thất thoát: ${n2(last.tyLeThatThoat)}%${yoyTTDiff !== null ? ` (${yoyTTDiff >= 0 ? '+' : ''}${n2(yoyTTDiff)} điểm % so với ${prev.year})` : ''}`,
+    `  ↳ Đánh giá: ${danhGiaTT}`,
+    ``,
+    `2. KHÁCH HÀNG & TIÊU THỤ:`,
+    `• Tổng số khách hàng: ${n0(last.soho)} hộ${prev ? ` (${last.soho - prev.soho >= 0 ? '+' : ''}${n0(last.soho - prev.soho)} hộ)` : ''}`,
+    `• Mức tiêu thụ bình quân: ${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng`,
+    ``,
+    `3. ĐIỆN NĂNG & KỸ THUẬT:`,
+    `• Điện năng tiêu thụ: ${n0(last.dien)} kWh`,
+    `• Suất điện phát: ${n3(last.suatPhat)} kWh/m³ | Suất điện TP: ${n3(last.suatTieuThu)} kWh/m³`,
+    ``,
+    `4. DOANH THU & TÀI CHÍNH:`,
+    `• Tiền nước thương phẩm: ${n0(last.tiennuoc)} đ`,
+    `• Chi phí đấu nối: ${n0(last.tiendaunoi)} đ`,
+    `• Tổng tiền hàng trước thuế: ${n0(last.tongTienHang)} đ${yoyDTDiff !== null ? ` (${yoyDTDiff >= 0 ? '+' : ''}${n0(yoyDTDiff)} đ, ${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}`,
+    `• Giá bán bình quân: ${n0(last.giaBanBQ)} đ/m³`,
+    `• Tổng cộng thanh toán: ${n0(last.tongCong)} đ`,
+    ...(last.khTyLeHT !== null ? [
+      ``,
+      `5. THỰC HIỆN KẾ HOẠCH:`,
+      `• Kế hoạch giao: ${n0(last.khTieuThu)} m³`,
+      `• Tỷ lệ hoàn thành: ${n2(last.khTyLeHT)}%`
+    ] : []),
+    `========================================`,
+    `⚡ Trích xuất từ Hệ thống Báo cáo SXKD — Công ty Cổ phần Cấp nước Sơn La`
+  ].join('\n');
+
+  copyToClipboard(report, `✓ Đã sao chép báo cáo nhanh [${unitName}] (sẵn sàng gửi Zalo/Viber)!`);
+}
 
 function render(){
   let years = getSelectedYears();
@@ -1249,6 +2058,7 @@ function render(){
   renderExecSummary(years, periodInfo);
   renderCompareTable(years, periodInfo);
   renderRankTable(years, periodInfo);
+  renderUnitDrilldown(years, periodInfo);
   renderYearBlocks(years, periodInfo);
   renderAllCharts();
 }
@@ -1368,5 +2178,6 @@ window.addEventListener('scroll', () => {
 </script>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
+<div class="toast-container" id="toastContainer"></div>
 </body>
 </html>
