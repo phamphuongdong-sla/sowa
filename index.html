@@ -181,6 +181,132 @@
   border-bottom: 1.5px solid var(--card-border) !important;
   padding: 10px 14px !important;
 }
+
+/* ---- Styles for Annual Plan Completion Forecast ---- */
+.unit-forecast-box {
+  background: var(--card-bg-solid);
+  border: 1px solid var(--card-border);
+  border-top: 4px solid var(--blue);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.unit-forecast-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.unit-forecast-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.unit-forecast-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+.status-success {
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.status-warning {
+  background: var(--gold-light);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.status-danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.status-neutral {
+  background: var(--bg-page);
+  color: var(--muted);
+  border: 1px solid var(--card-border);
+}
+
+.dual-progress-wrap {
+  background: var(--bg-page);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+.dual-progress-item {
+  margin-bottom: 12px;
+}
+.dual-progress-item:last-child {
+  margin-bottom: 0;
+}
+.dual-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dual-progress-track {
+  height: 9px;
+  background: var(--card-border);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.dual-progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.forecast-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.forecast-scenario-card {
+  background: var(--bg-page);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+.forecast-scenario-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.forecast-scenario-val {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.forecast-scenario-desc {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.5;
+}
 </style>
 </head>
 <body>
@@ -358,6 +484,9 @@
 
     <!-- 6 Executive KPI Highlight Cards for Unit -->
     <div class="unit-kpi-grid" id="unitKpiGrid"></div>
+
+    <!-- Annual Plan Completion Forecast Box -->
+    <div class="unit-forecast-box" id="unitForecastBox"></div>
 
     <!-- Diagnostic & Recommendation Box from 30-year industry expert -->
     <div class="unit-expert-box" id="unitExpertBox"></div>
@@ -1698,7 +1827,219 @@ function renderUnitDrilldown(years, periodInfo){
     `;
   }
 
-  // 3. Render Khối Nhận định & Khuyến nghị Kỹ thuật (Chuyên gia 30 năm)
+  // 3. Render Khối Dự báo Hoàn thành Kế hoạch Sản xuất Kinh doanh Năm
+  const forecastBox = document.getElementById('unitForecastBox');
+  let forecastDataToSave = null;
+  if(forecastBox){
+    let recordedMonths = [];
+    let totRecordedTP = 0;
+    let totRecordedPR = 0;
+    for(let m = 1; m <= 12; m++){
+      const row = IDX[selectedYear] && IDX[selectedYear][m] && IDX[selectedYear][m][unitCode];
+      if(row && (row.tieuthu !== null && row.tieuthu !== undefined)){
+        recordedMonths.push(m);
+        totRecordedTP += (row.tieuthu || 0);
+        totRecordedPR += (row.phatra || 0);
+      }
+    }
+
+    const nMonths = recordedMonths.length;
+    const khEntry = (HAS_KH_DATA && KH_IDX[selectedYear]) ? KH_IDX[selectedYear][unitCode] : null;
+    let khTarget = khEntry && khEntry.tieuthu ? khEntry.tieuthu : null;
+
+    if(!khTarget){
+      let prevYrTP = 0;
+      if(IDX[selectedYear - 1]){
+        for(let m = 1; m <= 12; m++){
+          const pr = IDX[selectedYear - 1][m] && IDX[selectedYear - 1][m][unitCode];
+          if(pr && pr.tieuthu) prevYrTP += pr.tieuthu;
+        }
+      }
+      khTarget = prevYrTP > 0 ? Math.round(prevYrTP * 1.05) : null;
+    }
+
+    if(!khTarget || nMonths === 0){
+      forecastBox.innerHTML = `
+        <div class="unit-forecast-head">
+          <div class="unit-forecast-title">
+            <span>🎯</span> Dự báo Khả năng Hoàn thành Kế hoạch Năm ${selectedYear} — ${unitName}
+          </div>
+          <span class="unit-forecast-status-badge status-neutral">Chưa có chỉ tiêu kế hoạch</span>
+        </div>
+        <div style="font-size:13px; color:var(--muted); line-height:1.6;">
+          Chưa tìm thấy chỉ tiêu Kế hoạch năm ${selectedYear} cho đơn vị trong file Excel. Vui lòng cập nhật sheet <code>Fact_KeHoach</code> để hệ thống tự động kích hoạt mô hình dự báo hoàn thành kế hoạch.
+        </div>
+      `;
+    } else {
+      const timeElapsedPct = (nMonths / 12) * 100;
+      const currentProgressPct = (totRecordedTP / khTarget) * 100;
+      const avgMonthlyTP = totRecordedTP / nMonths;
+      const remainingMonths = 12 - nMonths;
+      const neededRemainingTP = Math.max(0, khTarget - totRecordedTP);
+      const neededPerMonth = remainingMonths > 0 ? (neededRemainingTP / remainingMonths) : 0;
+      const runRateForecastTP = Math.round(avgMonthlyTP * 12);
+      const runRateForecastPct = (runRateForecastTP / khTarget) * 100;
+      const runRateDiff = runRateForecastTP - khTarget;
+
+      // Mô hình 2: Trọng số mùa vụ dựa trên năm trước
+      let prevRecordedTP = 0, prevTotalTP = 0;
+      if(IDX[selectedYear - 1]){
+        for(let m = 1; m <= 12; m++){
+          const pr = IDX[selectedYear - 1][m] && IDX[selectedYear - 1][m][unitCode];
+          if(pr && pr.tieuthu){
+            prevTotalTP += pr.tieuthu;
+            if(recordedMonths.includes(m)) prevRecordedTP += pr.tieuthu;
+          }
+        }
+      }
+      let seasonalForecastTP = runRateForecastTP;
+      let hasSeasonal = false;
+      if(prevTotalTP > 0 && prevRecordedTP > 0){
+        const histShare = prevRecordedTP / prevTotalTP;
+        if(histShare > 0 && histShare < 1){
+          seasonalForecastTP = Math.round(totRecordedTP / histShare);
+          hasSeasonal = true;
+        }
+      }
+      const seasonalForecastPct = (seasonalForecastTP / khTarget) * 100;
+      const seasonalDiff = seasonalForecastTP - khTarget;
+
+      const requiredPaceRatio = (avgMonthlyTP > 0 && remainingMonths > 0)
+        ? ((neededPerMonth - avgMonthlyTP) / avgMonthlyTP * 100) : 0;
+
+      let statusBadgeHtml = '';
+      let assessmentSummary = '';
+
+      if(nMonths === 12){
+        if(currentProgressPct >= 100){
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 ĐÃ HOÀN THÀNH XUẤT SẮC CẢ NĂM (${n2(currentProgressPct)}%)</span>`;
+          assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} với kết quả đạt <strong>${n0(totRecordedTP)} m³</strong>, vượt <strong>+${n0(totRecordedTP - khTarget)} m³ (+${n2(currentProgressPct - 100)}%)</strong> so với kế hoạch giao.`;
+        } else {
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 KẾT THÚC NĂM: KHÔNG ĐẠT KẾ HOẠCH (${n2(currentProgressPct)}%)</span>`;
+          assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} đạt <strong>${n0(totRecordedTP)} m³</strong>, thiếu hụt <strong>-${n0(khTarget - totRecordedTP)} m³</strong> (-${n2(100 - currentProgressPct)}%) so với kế hoạch.`;
+        }
+      } else {
+        if(runRateForecastPct >= 102){
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 DỰ BÁO: HOÀN THÀNH VƯỢT KẾ HOẠCH NĂM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ thực hiện sản lượng (<strong>${n1(currentProgressPct)}%</strong>) đang chạy nhanh hơn tiến độ thời gian (<strong>${n1(timeElapsedPct)}%</strong> năm). Với nhịp độ hiện tại, đơn vị dự kiến hoàn thành kế hoạch sớm và vượt khoảng <strong>+${n0(runRateDiff)} m³</strong>.`;
+        } else if(runRateForecastPct >= 98){
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🔵 DỰ BÁO: KHẢ THI CAO - CẬN ĐÍCH KẾ HOẠCH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tốc độ thực hiện hiện tại bám sát mục tiêu năm. Các tháng còn lại cần duy trì sản lượng tối thiểu <strong>${n0(neededPerMonth)} m³/tháng</strong> để đảm bảo về đích an toàn 100%.`;
+        } else if(runRateForecastPct >= 90){
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-warning">🟡 DỰ BÁO: CẦN TĂNG TỐC - NGUY CƠ HỤT NHẸ (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ sản lượng chậm hơn tiến độ thời gian (đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự báo nếu không tăng tốc sẽ thiếu hụt khoảng <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Mỗi tháng còn lại cần đạt <strong>${n0(neededPerMonth)} m³</strong> (phải tăng <strong>+${n1(requiredPaceRatio)}%</strong> so với mức bình quân hiện tại).`;
+        } else {
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 DỰ BÁO: NGUY CƠ CAO KHÓ HOÀN THÀNH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ đang bị tụt sâu so với mốc thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự kiến cả năm sẽ hụt <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Đơn vị cần có giải pháp cấp bách về phát triển khách hàng mới và chống thất thoát nước thương mại.`;
+        }
+      }
+
+      const progColor = currentProgressPct >= timeElapsedPct ? 'linear-gradient(90deg, #10B981, #059669)' : 'linear-gradient(90deg, #F59E0B, #EF4444)';
+      const forecastBarColor = runRateForecastPct >= 100 ? 'linear-gradient(90deg, #3B82F6, #10B981)' : 'linear-gradient(90deg, #F59E0B, #DC2626)';
+
+      forecastBox.innerHTML = `
+        <div class="unit-forecast-head">
+          <div class="unit-forecast-title">
+            <span>🎯</span> Dự báo Khả năng Hoàn thành Kế hoạch Năm ${selectedYear} — ${unitName}
+          </div>
+          ${statusBadgeHtml}
+        </div>
+
+        <div class="dual-progress-wrap">
+          <div class="dual-progress-item">
+            <div class="dual-progress-label">
+              <span>⏱️ Tiến độ thời gian trong năm (${nMonths}/12 tháng)</span>
+              <span style="font-family:var(--font-mono); color:var(--muted);">${n1(timeElapsedPct)}%</span>
+            </div>
+            <div class="dual-progress-track">
+              <div class="dual-progress-bar" style="width:${Math.min(100, timeElapsedPct)}%; background:#94A3B8;"></div>
+            </div>
+          </div>
+          
+          <div class="dual-progress-item">
+            <div class="dual-progress-label">
+              <span>💧 Sản lượng thực tế đã đạt: <strong>${n0(totRecordedTP)} / ${n0(khTarget)} m³</strong></span>
+              <span style="font-family:var(--font-mono); font-weight:800; color:${currentProgressPct >= timeElapsedPct ? 'var(--teal)' : 'var(--danger-text)'};">${n1(currentProgressPct)}%</span>
+            </div>
+            <div class="dual-progress-track">
+              <div class="dual-progress-bar" style="width:${Math.min(100, currentProgressPct)}%; background:${progColor};"></div>
+            </div>
+          </div>
+
+          ${nMonths < 12 ? `
+          <div class="dual-progress-item">
+            <div class="dual-progress-label">
+              <span>📈 Dự báo sản lượng cả năm (Run-rate): <strong>${n0(runRateForecastTP)} m³</strong></span>
+              <span style="font-family:var(--font-mono); font-weight:800; color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">${n1(runRateForecastPct)}% (${runRateDiff >= 0 ? '+' : ''}${n0(runRateDiff)} m³)</span>
+            </div>
+            <div class="dual-progress-track">
+              <div class="dual-progress-bar" style="width:${Math.min(100, runRateForecastPct)}%; background:${forecastBarColor};"></div>
+            </div>
+          </div>
+          ` : ''}
+        </div>
+
+        <div class="forecast-cards-grid">
+          <div class="forecast-scenario-card">
+            <div class="forecast-scenario-title">
+              <span>⚡</span> Kịch bản 1: Tốc độ hiện tại (Run-rate)
+            </div>
+            <div class="forecast-scenario-val" style="color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
+              ${n1(runRateForecastPct)}%
+            </div>
+            <div class="forecast-scenario-desc">
+              Dự kiến cả năm đạt <strong>${n0(runRateForecastTP)} m³</strong> (${runRateDiff >= 0 ? 'vượt +' : 'hụt '}${n0(Math.abs(runRateDiff))} m³). Giả định ${remainingMonths} tháng còn lại duy trì nhịp độ bình quân <strong>${n0(avgMonthlyTP)} m³/tháng</strong>.
+            </div>
+          </div>
+
+          <div class="forecast-scenario-card">
+            <div class="forecast-scenario-title">
+              <span>🌦️</span> Kịch bản 2: Có xét Mùa vụ (${selectedYear - 1})
+            </div>
+            <div class="forecast-scenario-val" style="color:${seasonalForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
+              ${n1(seasonalForecastPct)}%
+            </div>
+            <div class="forecast-scenario-desc">
+              Dự kiến cả năm đạt <strong>${n0(seasonalForecastTP)} m³</strong> (${seasonalDiff >= 0 ? 'vượt +' : 'hụt '}${n0(Math.abs(seasonalDiff))} m³). Điều chỉnh theo chu kỳ tiêu thụ của các tháng cuối năm tương ứng năm ${selectedYear - 1}.
+            </div>
+          </div>
+
+          <div class="forecast-scenario-card">
+            <div class="forecast-scenario-title">
+              <span>🎯</span> Kịch bản 3: Mục tiêu để cán đích 100%
+            </div>
+            <div class="forecast-scenario-val" style="color:${requiredPaceRatio <= 0 ? 'var(--teal)' : (requiredPaceRatio <= 15 ? 'var(--blue)' : 'var(--danger-text)')};">
+              ${n0(neededPerMonth)} <span style="font-size:12px; font-weight:600;">m³/tháng</span>
+            </div>
+            <div class="forecast-scenario-desc">
+              ${remainingMonths > 0 ? `Còn thiếu <strong>${n0(neededRemainingTP)} m³</strong> trong ${remainingMonths} tháng còn lại (${requiredPaceRatio > 0 ? `phải tăng <strong>+${n1(requiredPaceRatio)}%</strong> so với hiện tại` : 'áp lực nhẹ, giữ đều nhịp'}).` : 'Đã hoàn tất chu kỳ năm.'}
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; font-size:13px; line-height:1.6; color:var(--ink); padding:10px 14px; background:var(--bg-page); border-radius:10px; border-left:3px solid var(--blue);">
+          <strong>📌 Kết luận Dự báo Chuyên gia:</strong> ${assessmentSummary}
+        </div>
+      `;
+
+      forecastDataToSave = {
+        selectedYear,
+        khTarget,
+        totRecordedTP,
+        nMonths,
+        timeElapsedPct,
+        currentProgressPct,
+        runRateForecastTP,
+        runRateForecastPct,
+        runRateDiff,
+        neededPerMonth,
+        requiredPaceRatio,
+        assessmentSummary
+      };
+    }
+  }
+
+  // 4. Render Khối Nhận định & Khuyến nghị Kỹ thuật (Chuyên gia 30 năm)
   const expertBox = document.getElementById('unitExpertBox');
   if(expertBox && last){
     const diagnosticItems = [];
@@ -1934,7 +2275,8 @@ function renderUnitDrilldown(years, periodInfo){
     selectedYear,
     multiYearData,
     last,
-    prev
+    prev,
+    forecastData: forecastDataToSave
   };
 }
 
@@ -1991,7 +2333,7 @@ function copyUnitReportToClipboard(){
     showToast('Chưa có thông tin báo cáo để sao chép!', 'error');
     return;
   }
-  const { unitName, periodLabel, last, prev } = CURRENT_UNIT_DRILLDOWN_DATA;
+  const { unitName, periodLabel, last, prev, forecastData } = CURRENT_UNIT_DRILLDOWN_DATA;
 
   const yoyTPDiff = prev ? last.tieuthu - prev.tieuthu : null;
   const yoyTPPct = (prev && prev.tieuthu) ? (yoyTPDiff / prev.tieuthu * 100) : null;
@@ -2033,12 +2375,20 @@ function copyUnitReportToClipboard(){
     `• Tổng tiền hàng trước thuế: ${n0(last.tongTienHang)} đ${yoyDTDiff !== null ? ` (${yoyDTDiff >= 0 ? '+' : ''}${n0(yoyDTDiff)} đ, ${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}`,
     `• Giá bán bình quân: ${n0(last.giaBanBQ)} đ/m³`,
     `• Tổng cộng thanh toán: ${n0(last.tongCong)} đ`,
-    ...(last.khTyLeHT !== null ? [
+    ...(forecastData && forecastData.khTarget ? [
+      ``,
+      `5. DỰ BÁO HOÀN THÀNH KẾ HOẠCH NĂM ${forecastData.selectedYear}:`,
+      `• Kế hoạch giao cả năm: ${n0(forecastData.khTarget)} m³`,
+      `• Lũy kế đã đạt (${forecastData.nMonths}/12 tháng): ${n0(forecastData.totRecordedTP)} m³ (${n1(forecastData.currentProgressPct)}% KH — Thời gian: ${n1(forecastData.timeElapsedPct)}%)`,
+      `• Dự báo cả năm (Run-rate): ${n0(forecastData.runRateForecastTP)} m³ (${n1(forecastData.runRateForecastPct)}% KH — ${forecastData.runRateDiff >= 0 ? 'dự kiến vượt +' : 'dự kiến thiếu '}${n0(Math.abs(forecastData.runRateDiff))} m³)`,
+      `• Nhịp độ cần đạt các tháng còn lại: ${n0(forecastData.neededPerMonth)} m³/tháng`,
+      `• Nhận định: ${forecastData.assessmentSummary.replace(/<[^>]*>/g, '')}`
+    ] : (last.khTyLeHT !== null ? [
       ``,
       `5. THỰC HIỆN KẾ HOẠCH:`,
       `• Kế hoạch giao: ${n0(last.khTieuThu)} m³`,
       `• Tỷ lệ hoàn thành: ${n2(last.khTyLeHT)}%`
-    ] : []),
+    ] : [])),
     `========================================`,
     `⚡ Trích xuất từ Hệ thống Báo cáo SXKD — Công ty Cổ phần Cấp nước Sơn La`
   ].join('\n');
