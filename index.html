@@ -608,9 +608,11 @@ const PERIODS = {
 for(let m=1;m<=12;m++) PERIODS['m'+m] = {label:'Tháng '+m, months:[m]};
 
 const fmtInt = new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0});
+const fmtDec1 = new Intl.NumberFormat('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
 const fmtDec2 = new Intl.NumberFormat('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtDec3 = new Intl.NumberFormat('vi-VN',{minimumFractionDigits:3,maximumFractionDigits:3});
 function n0(v){ return isFinite(v) ? fmtInt.format(Math.round(v)) : '-'; }
+function n1(v){ return isFinite(v) ? fmtDec1.format(v) : '-'; }
 function n2(v){ return isFinite(v) ? fmtDec2.format(v) : '-'; }
 function n3(v){ return isFinite(v) ? fmtDec3.format(v) : '-'; }
 
