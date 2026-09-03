@@ -2717,25 +2717,87 @@ HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUY
 `;
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: promptText }]
-        }],
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 2048
+    // 1. Tự động truy vấn danh sách model hỗ trợ generateContent cho API Key
+    let selectedModel = '';
+    try {
+      const listResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      if(listResp.ok){
+        const listData = await listResp.json();
+        if(listData && Array.isArray(listData.models)){
+          const supported = listData.models.filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'));
+          const prefList = [
+            'models/gemini-2.5-flash',
+            'models/gemini-2.0-flash',
+            'models/gemini-1.5-flash-latest',
+            'models/gemini-1.5-flash',
+            'models/gemini-1.5-flash-8b',
+            'models/gemini-2.0-flash-exp',
+            'models/gemini-1.5-pro',
+            'models/gemini-1.5-pro-latest',
+            'models/gemini-pro'
+          ];
+          for(const pref of prefList){
+            const found = supported.find(m => m.name === pref);
+            if(found){ selectedModel = found.name; break; }
+          }
+          if(!selectedModel){
+            const anyGemini = supported.find(m => m.name.includes('gemini'));
+            if(anyGemini) selectedModel = anyGemini.name;
+            else if(supported.length > 0) selectedModel = supported[0].name;
+          }
         }
-      })
-    });
+      }
+    } catch(listErr){
+      console.warn('Không thể tự động duyệt danh sách model, chuyển sang danh sách dự phòng:', listErr);
+    }
 
-    if(!resp.ok){
-      const errJson = await resp.json().catch(()=>({}));
-      const errMsg = (errJson && errJson.error && errJson.error.message) ? errJson.error.message : ('HTTP error ' + resp.status);
-      throw new Error(errMsg);
+    // 2. Danh sách dự phòng nếu không list được
+    const candidateModels = selectedModel ? [selectedModel] : [
+      'models/gemini-2.0-flash',
+      'models/gemini-1.5-flash-latest',
+      'models/gemini-1.5-flash',
+      'models/gemini-pro',
+      'models/gemini-1.5-flash-8b'
+    ];
+
+    let resp = null;
+    let usedModel = '';
+    let lastError = null;
+
+    for(const modelCandidate of candidateModels){
+      const modelPath = modelCandidate.startsWith('models/') ? modelCandidate : ('models/' + modelCandidate);
+      const url = `https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`;
+      try {
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: promptText }]
+            }],
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 2048
+            }
+          })
+        });
+
+        if(r.ok){
+          resp = r;
+          usedModel = modelPath;
+          break;
+        } else {
+          const errJson = await r.json().catch(()=>({}));
+          lastError = (errJson && errJson.error && errJson.error.message) ? errJson.error.message : ('HTTP error ' + r.status);
+          console.warn(`Thử model ${modelPath} không thành công:`, lastError);
+        }
+      } catch(fetchErr){
+        lastError = fetchErr.message;
+      }
+    }
+
+    if(!resp){
+      throw new Error(lastError || 'Không tìm thấy mô hình Gemini nào khả dụng cho API Key này.');
     }
 
     const data = await resp.json();
@@ -2743,6 +2805,7 @@ HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUY
     CURRENT_GEMINI_ANALYSIS_TEXT = rawAiText;
 
     const formattedHtml = formatGeminiMarkdown(rawAiText);
+    const cleanModelName = usedModel.replace('models/', '');
 
     box.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; border-bottom:1px solid rgba(99,102,241,0.2); padding-bottom:12px;">
@@ -2763,11 +2826,11 @@ HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUY
         ${formattedHtml}
       </div>
       <div style="margin-top:14px; font-size:11.5px; color:var(--muted); font-family:var(--font-mono); text-align:right;">
-        Mô hình: Google Gemini 1.5 Flash · Phân tích tương quan đa biến nội bộ
+        Mô hình: ${cleanModelName} · Phân tích tương quan đa biến nội bộ & thời tiết
       </div>
     `;
 
-    showToast(`✓ Gemini AI đã hoàn thành dự báo cho [${unitName}]!`, 'success');
+    showToast(`✓ Gemini AI (${cleanModelName}) đã hoàn thành dự báo cho [${unitName}]!`, 'success');
   } catch(err){
     console.error('Gemini API Error:', err);
     box.innerHTML = `
