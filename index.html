@@ -313,58 +313,173 @@
 <nav class="site-nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-brand">
-      <div class="brand-badge">💧</div>
+      <div class="brand-badge" title="Công ty Cổ phần Cấp nước Sơn La">
+        <svg class="ui-icon lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          <path d="M8 14a4 4 0 0 0 8 0" stroke-width="1.8"/>
+        </svg>
+      </div>
       <span>Cấp Nước Sơn La</span>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="active"><span class="nav-icon">📊</span>Báo cáo SXKD</a>
-      <a href="dashboard.html"><span class="nav-icon">📈</span>Dashboard</a>
-      <a href="Nhiem_vu.html"><span class="nav-icon">📋</span>Nhiệm vụ</a>
-      <a href="Quy_trinh_kiem_dinh.html"><span class="nav-icon">🔧</span>Kiểm định</a>
-      <a href="Thu_tuc_xuat_kho.html"><span class="nav-icon">📦</span>Xuất kho</a>
-      <a href="lich_chot_chi_so.html"><span class="nav-icon">📅</span>Chốt chỉ số</a>
-      <a href="Quy_trinh_citywork.html"><span class="nav-icon">📲</span>CityWork</a>
-      <a href="Quy_trinh_su_co.html"><span class="nav-icon">💬</span>Sự cố</a>
+      <a href="index.html" class="active">
+        <svg class="ui-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Báo cáo SXKD
+      </a>
+      <a href="dashboard.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Dashboard
+      </a>
+      <a href="Nhiem_vu.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Nhiệm vụ
+      </a>
+      <a href="Quy_trinh_kiem_dinh.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Kiểm định
+      </a>
+      <a href="Thu_tuc_xuat_kho.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        Xuất kho
+      </a>
+      <a href="lich_chot_chi_so.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Chốt chỉ số
+      </a>
+      <a href="Quy_trinh_citywork.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        CityWork
+      </a>
+      <a href="Quy_trinh_su_co.html">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Sự cố
+      </a>
     </div>
     <div class="nav-actions">
       <div class="status-chip"><span class="pulse-dot"></span>Hệ thống 99.9%</div>
-      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">🌙</button>
-      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối" aria-label="Đổi giao diện Sáng/Tối">
+        <svg class="ui-icon" id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <svg class="ui-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
     </div>
   </div>
 </nav>
 
 <header class="masthead">
-  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty Cổ phần Cấp nước Sơn La</div>
-  <h1>BÁO CÁO ĐIỀU HÀNH <span class="highlight-text">THƯƠNG PHẨM & KHÁCH HÀNG</span></h1>
-  <p class="sub">Hệ thống theo dõi chuyên môn của Phòng Quản lý Khách hàng: Giám sát sản lượng nước thương phẩm, tỷ lệ thất thoát nước sạch, tiến độ phát triển khách hàng và doanh thu tiền nước theo từng Chi nhánh / Xí nghiệp trực thuộc.</p>
+  <div class="masthead-inner">
+    <div class="masthead-top-row">
+      <div class="masthead-crest-badge">
+        <svg class="ui-icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        Phòng Quản lý Khách hàng · SOWACO
+      </div>
+      <div class="masthead-telemetry-badge">
+        <svg class="ui-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Dữ liệu Giám sát 12 Đơn vị Toàn tỉnh
+      </div>
+    </div>
+    <h1>BÁO CÁO ĐIỀU HÀNH SẢN XUẤT KINH DOANH<br><span class="highlight-text">THƯƠNG PHẨM & KHÁCH HÀNG</span></h1>
+    <p class="sub">Hệ thống theo dõi chuyên môn của Phòng Quản lý Khách hàng — Công ty Cổ phần Cấp nước Sơn La: Giám sát sản lượng nước thương phẩm, tỷ lệ thất thoát nước sạch (NRW), tiến độ phát triển khách hàng và doanh thu tiền nước theo từng Chi nhánh / Xí nghiệp trực thuộc.</p>
+
+    <!-- Operational Strip Telemetry -->
+    <div class="masthead-stats-strip">
+      <div class="masthead-stat-card">
+        <div class="masthead-stat-icon">
+          <svg class="ui-icon lg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M3 7v14"/><path d="M21 7v14"/><path d="M9 3h6v4H9z"/><path d="M9 11h2v2H9z"/><path d="M13 11h2v2h-2z"/><path d="M9 15h2v2H9z"/><path d="M13 15h2v2h-2z"/></svg>
+        </div>
+        <div class="masthead-stat-info">
+          <span class="masthead-stat-label">Phạm vi Giám sát</span>
+          <span class="masthead-stat-val">12 Chi nhánh / XN</span>
+        </div>
+      </div>
+      <div class="masthead-stat-card">
+        <div class="masthead-stat-icon">
+          <svg class="ui-icon lg" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 12v6"/><path d="M9 15l3 3 3-3"/></svg>
+        </div>
+        <div class="masthead-stat-info">
+          <span class="masthead-stat-label">Chỉ số Trọng yếu</span>
+          <span class="masthead-stat-val">Thương phẩm & NRW</span>
+        </div>
+      </div>
+      <div class="masthead-stat-card">
+        <div class="masthead-stat-icon">
+          <svg class="ui-icon lg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="masthead-stat-info">
+          <span class="masthead-stat-label">Chu kỳ Đối chiếu</span>
+          <span class="masthead-stat-val">Đa năm · 12 Tháng</span>
+        </div>
+      </div>
+      <div class="masthead-stat-card">
+        <div class="masthead-stat-icon">
+          <svg class="ui-icon lg" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        </div>
+        <div class="masthead-stat-info">
+          <span class="masthead-stat-label">Hạ tầng Dữ liệu</span>
+          <span class="masthead-stat-val">Google Sheets API</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
-  <div class="panel" id="dataPanel">
-    <h2>Nguồn dữ liệu</h2>
-    <div class="hint" id="dataStatusText">Đang tải dữ liệu từ Google Sheets…</div>
-    <div id="retryWrap" style="display:none;margin-top:10px;">
-      <button class="btn-apply" id="retryBtn" style="margin-left:0;">Thử tải lại</button>
+  <!-- Floating Sync Status Bar -->
+  <div class="sync-status-bar" id="dataPanel">
+    <div class="sync-status-left">
+      <div class="sync-status-indicator">
+        <span class="pulse-dot"></span>
+        <span id="syncIndicatorText">Đang kết nối</span>
+      </div>
+      <div class="sync-status-msg" id="dataStatusText">Đang nạp dữ liệu từ Google Sheets…</div>
+    </div>
+    <div id="retryWrap" style="display:none;">
+      <button class="sync-btn-retry" id="retryBtn">
+        <svg class="ui-icon sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Thử tải lại dữ liệu
+      </button>
     </div>
   </div>
 
   <div id="reportBody" style="display:none;">
-  <div class="panel">
-    <h2>Tham số đối chiếu</h2>
-    <div class="hint">Chọn các năm cần so sánh và một khoảng thời gian áp dụng đồng nhất cho tất cả các năm đã chọn.</div>
-    <div class="filters">
-      <div class="filter-group">
-        <label class="grouplabel">Các năm đối chiếu</label>
-        <div class="years-grid" id="yearsGrid"></div>
+  <!-- Executive Control Cockpit -->
+  <div class="control-cockpit">
+    <div class="cockpit-header">
+      <h2 class="cockpit-title">
+        <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal);"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Bảng Điều khiển Tham số Đối chiếu & Phân tích
+      </h2>
+      <div id="periodSummaryWrap">
+        <span class="period-summary-badge" id="periodSummaryBadge">Đang chọn: 6 tháng đầu năm (Tháng 1–6)</span>
       </div>
-      <div class="filter-group" style="flex:1; min-width:280px;">
-        <label class="grouplabel">Khoảng thời gian trong năm</label>
+    </div>
+    <div class="cockpit-grid">
+      <!-- Zone 1: Năm đối chiếu -->
+      <div class="cockpit-zone">
+        <label class="cockpit-zone-label">
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Các năm cần đối chiếu
+        </label>
+        <div class="years-grid" id="yearsGrid"></div>
+        <div class="preset-actions-bar">
+          <button type="button" class="btn-preset-chip" onclick="setYearsPreset('3Y')">3 năm gần nhất</button>
+          <button type="button" class="btn-preset-chip" onclick="setYearsPreset('2Y')">2 năm gần nhất</button>
+          <button type="button" class="btn-preset-chip" onclick="setYearsPreset('ALL')">Tất cả các năm</button>
+        </div>
+      </div>
+
+      <!-- Zone 2: Khoảng thời gian -->
+      <div class="cockpit-zone">
+        <label class="cockpit-zone-label">
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Khoảng thời gian trong năm
+        </label>
         <select id="periodSelect">
           <option value="h1">6 tháng đầu năm (Tháng 1–6)</option>
           <option value="h2">6 tháng cuối năm (Tháng 7–12)</option>
-          <option value="range">📅 Theo khoảng (Từ tháng … đến tháng …)</option>
-          <option value="custom">🔘 Tùy chọn nhiều tháng (Chọn tự do)</option>
+          <option value="range">Theo khoảng tháng (Từ … đến …)</option>
+          <option value="custom">Tùy chọn tự do nhiều tháng</option>
           <option value="full">Cả năm (Tháng 1–12)</option>
           <option value="q1">Quý I (Tháng 1–3)</option>
           <option value="q2">Quý II (Tháng 4–6)</option>
@@ -372,21 +487,21 @@
           <option value="q4">Quý IV (Tháng 10–12)</option>
           <option value="month">1 tháng cụ thể…</option>
         </select>
-        
-        <div id="rangeWrap" style="display:none; margin-top:10px;">
+
+        <div id="rangeWrap" style="display:none; margin-top:8px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span style="font-size:13px; font-weight:600; color:var(--muted);">Từ:</span>
+            <span style="font-size:12.5px; font-weight:700; color:var(--muted);">Từ:</span>
             <select id="rangeFromSelect" style="width:auto; padding:6px 12px; font-size:13px;"></select>
-            <span style="font-size:13px; font-weight:600; color:var(--muted);">đến:</span>
+            <span style="font-size:12.5px; font-weight:700; color:var(--muted);">đến:</span>
             <select id="rangeToSelect" style="width:auto; padding:6px 12px; font-size:13px;"></select>
           </div>
         </div>
 
-        <div id="monthWrap" style="display:none; margin-top:10px;">
+        <div id="monthWrap" style="display:none; margin-top:8px;">
           <select id="monthSelect"></select>
         </div>
 
-        <div id="customWrap" style="display:none; margin-top:12px;">
+        <div id="customWrap" style="display:none; margin-top:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
             <span style="font-size:12px; font-weight:700; color:var(--navy);">Chọn các tháng:</span>
             <div style="display:flex; gap:5px; flex-wrap:wrap;">
@@ -398,31 +513,50 @@
           </div>
           <div class="custom-months-grid" id="customMonthsGrid"></div>
         </div>
+      </div>
 
-        <div id="periodSummaryWrap" style="margin-top:10px;">
-          <span class="period-summary-badge" id="periodSummaryBadge">🎯 Đang chọn: 6 tháng đầu năm (Tháng 1–6)</span>
+      <!-- Zone 3: Tác vụ Báo cáo & Xuất file -->
+      <div class="cockpit-actions-zone">
+        <button class="cockpit-btn-primary" id="applyBtn">
+          <svg class="ui-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Cập nhật báo cáo
+        </button>
+        <div class="cockpit-export-group no-print">
+          <button class="btn-export-excel" id="exportExcelBtn" title="Xuất toàn bộ bảng dữ liệu ra file Excel (.xlsx)">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Xuất Excel
+          </button>
+          <button class="btn-export-pdf" id="exportPdfBtn" title="Xuất định dạng in ấn / Lưu file PDF">
+            <svg class="ui-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Xuất PDF / In
+          </button>
         </div>
       </div>
-      <button class="btn-apply" id="applyBtn">Cập nhật báo cáo</button>
     </div>
   </div>
 
+  <!-- Executive Summary Panel -->
   <div class="panel" id="execSummaryPanel" style="display:none;">
-    <h2>Báo cáo Tóm tắt Điều hành — Phòng Quản lý Khách hàng</h2>
-    <div class="hint">Đánh giá nhanh tình hình thực hiện sản lượng thương phẩm, tỷ lệ thất thoát và các đơn vị trọng điểm.</div>
-    <ul id="execSummaryList" style="margin:0;padding-left:20px;line-height:1.7;color:var(--ink);"></ul>
-  </div>
-
-  <div class="filters no-print" style="margin-bottom:22px;">
-    <button class="btn-apply" id="exportExcelBtn" style="margin-left:0;background:var(--teal);">⬇ Xuất Excel</button>
-    <button class="btn-apply" id="exportPdfBtn" style="background:var(--navy);">🖨 Xuất PDF / In</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:6px;">
+      <h2 style="margin:0; font-size:17px; font-weight:800; color:var(--ink); display:flex; align-items:center; gap:8px;">
+        <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Báo cáo Tóm tắt Điều hành — Phòng Quản lý Khách hàng
+      </h2>
+      <span class="tag" style="font-size:11px;">Đánh giá Trọng điểm</span>
+    </div>
+    <div class="hint" style="margin-bottom:12px;">Đánh giá nhanh tình hình thực hiện sản lượng thương phẩm, tỷ lệ thất thoát nước sạch và các đơn vị trọng điểm cần chỉ đạo.</div>
+    <div class="bento-summary-grid" id="execSummaryBento"></div>
+    <ul id="execSummaryList" style="display:none;"></ul>
   </div>
 
   <div class="kpi-row" id="kpiRow"></div>
 
   <div class="compare-wrap">
     <div class="section-title" style="margin-top:0;">
-      <h3>Đối chiếu xu hướng Toàn Công ty theo năm</h3>
+      <h3>
+        <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal); margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Đối chiếu xu hướng Toàn Công ty theo năm
+      </h3>
       <span class="tag">Cùng kỳ so sánh</span>
     </div>
     <div class="table-scroll">
@@ -432,7 +566,10 @@
 
   <div class="compare-wrap">
     <div class="section-title" style="margin-top:0;">
-      <h3>Xếp hạng biến động sản lượng theo đơn vị</h3>
+      <h3>
+        <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal); margin-right:4px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Xếp hạng biến động sản lượng theo đơn vị
+      </h3>
       <span class="tag" id="rankTag">So kỳ gần nhất</span>
     </div>
     <div class="hint" style="margin-bottom:14px;"> Dữ liệu báo cáo tỷ lệ Hoàn thành kế hoạch & tỷ lệ Thất thoát thực tế được hiển thị theo số năm tham chiếu từ bộ lọc năm và lấy năm gần nhất.</div>
@@ -447,38 +584,54 @@
   <div class="compare-wrap" id="unitDrilldownWrap">
     <div class="section-title" style="margin-top:0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <h3>🏛️ Báo cáo Chi tiết Thương phẩm, Khách hàng & Doanh thu Đơn vị</h3>
+        <h3>
+          <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal); margin-right:4px;"><path d="M3 21h18"/><path d="M3 7v14"/><path d="M21 7v14"/><path d="M9 3h6v4H9z"/><path d="M9 11h2v2H9z"/><path d="M13 11h2v2h-2z"/><path d="M9 15h2v2H9z"/><path d="M13 15h2v2h-2z"/></svg>
+          Hồ sơ Theo dõi Thương phẩm, Khách hàng & Doanh thu Đơn vị
+        </h3>
         <span class="tag">Nghiệp vụ Quản lý Khách hàng · Giám sát Chi nhánh / Xí nghiệp</span>
       </div>
       <!-- Copy Actions Toolbar -->
       <div class="unit-copy-toolbar no-print">
         <button type="button" class="btn-copy-action btn-copy-excel" id="copyUnitTableBtn" title="Sao chép bảng tổng hợp đa chỉ tiêu để dán vào Excel/Google Sheets">
-          <span>📋</span> Sao chép bảng (Excel)
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Sao chép bảng (Excel)
         </button>
         <button type="button" class="btn-copy-action btn-copy-text" id="copyUnitReportBtn" title="Sao chép báo cáo điều hành của Trưởng phòng QLKH gửi Ban Giám đốc hoặc giao ban Chi nhánh qua Zalo/Viber">
-          <span>📝</span> Sao chép báo cáo (Zalo/Viber)
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Sao chép báo cáo (Zalo/Viber)
         </button>
         <button type="button" class="btn-copy-action btn-copy-monthly" id="copyUnitMonthlyBtn" title="Sao chép bảng chi tiết 12 tháng của đơn vị ra Excel">
-          <span>📊</span> Sao chép 12 tháng (Excel)
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Sao chép 12 tháng (Excel)
         </button>
       </div>
     </div>
 
-    <!-- Filter Control for Unit -->
-    <div class="filters" style="margin-bottom:18px; background:var(--card-bg-solid); padding:16px; border-radius:14px; border:1px solid var(--card-border); gap:16px;">
-      <div class="filter-group" style="min-width:280px; flex:1;">
-        <label class="grouplabel" for="drilldownUnitSelect">🏢 Chọn Đơn vị trực thuộc cần theo dõi</label>
-        <select id="drilldownUnitSelect" style="font-weight:700; font-size:14px; color:var(--teal); padding:10px 14px;"></select>
-      </div>
-      <div class="filter-group" style="min-width:220px;">
-        <label class="grouplabel">Kỳ đối chiếu hiện tại</label>
-        <div id="unitPeriodBadge" style="font-size:13px; font-weight:700; color:var(--navy); padding:10px 14px; background:var(--bg-page); border:1px solid var(--card-border); border-radius:10px;">
-          🎯 6 tháng đầu năm (Tháng 1–6)
+    <!-- Filter Control for Unit + Quick Unit Chips -->
+    <div class="filters" style="margin-bottom:18px; background:var(--card-bg-solid); padding:18px 20px; border-radius:14px; border:1px solid var(--card-border); gap:16px; flex-direction:column; align-items:stretch;">
+      <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end;">
+        <div class="filter-group" style="min-width:280px; flex:1.5;">
+          <label class="grouplabel" for="drilldownUnitSelect">Chọn Đơn vị trực thuộc cần theo dõi</label>
+          <select id="drilldownUnitSelect" style="font-weight:700; font-size:14px; color:var(--teal); padding:10px 14px;"></select>
+        </div>
+        <div class="filter-group" style="min-width:220px; flex:1;">
+          <label class="grouplabel">Kỳ đối chiếu hiện tại</label>
+          <div id="unitPeriodBadge" style="font-size:13px; font-weight:700; color:var(--navy); padding:10px 14px; background:var(--bg-page); border:1px solid var(--card-border); border-radius:10px;">
+            6 tháng đầu năm (Tháng 1–6)
+          </div>
+        </div>
+        <div class="filter-group" style="min-width:180px;">
+          <label class="grouplabel">Năm phân tích 12 Tháng</label>
+          <select id="drilldownYearSelect" style="font-weight:600; padding:10px 14px;"></select>
         </div>
       </div>
-      <div class="filter-group" style="min-width:180px;">
-        <label class="grouplabel">Năm phân tích chi tiết 12T</label>
-        <select id="drilldownYearSelect" style="font-weight:600; padding:10px 14px;"></select>
+      <!-- Quick Unit Pills -->
+      <div style="padding-top:12px; border-top:1px solid var(--line);">
+        <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; font-family:var(--font-mono); display:flex; align-items:center; gap:6px;">
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M3 7v14"/><path d="M21 7v14"/><path d="M9 3h6v4H9z"/></svg>
+          Chuyển nhanh đơn vị theo dõi:
+        </div>
+        <div class="unit-quick-chips" id="unitQuickChips"></div>
       </div>
     </div>
 
@@ -686,6 +839,7 @@ function aggUnit(code, year, months){
 
 function deriveMetrics(s){
   const phatraGoc = (s.phatraGoc!==undefined && s.phatraGoc!==null) ? s.phatraGoc : s.phatra;
+  const thatThoatM3 = Math.max(0, phatraGoc - s.tieuthu);
   const tyLeThatThoat = phatraGoc>0 ? (phatraGoc - s.tieuthu)/phatraGoc*100 : 0;
   const suatPhat = s.phatra>0 ? s.dien/s.phatra : 0;
   const suatTieuThu = s.tieuthu>0 ? s.dien/s.tieuthu : 0;
@@ -694,7 +848,7 @@ function deriveMetrics(s){
   const thueGTGT = tongTienHang*0.05;
   const dichVuThoatNuoc = s.dichvuthoatnuoc||0;
   const tongCong = tongTienHang + thueGTGT + dichVuThoatNuoc;
-  return {...s, phatraGoc, tyLeThatThoat, suatPhat, suatTieuThu, giaBanBQ, thueGTGT, dichVuThoatNuoc, tongCong, tongTienHang};
+  return {...s, phatraGoc, thatThoatM3, tyLeThatThoat, suatPhat, suatTieuThu, giaBanBQ, thueGTGT, dichVuThoatNuoc, tongCong, tongTienHang};
 }
 
 function buildYearTable(year, months){
@@ -783,7 +937,22 @@ function updatePeriodUI(){
 
   const info = getPeriodInfo();
   const badge = document.getElementById('periodSummaryBadge');
-  if (badge) badge.textContent = '🎯 Đang chọn: ' + info.label;
+  if (badge) badge.textContent = 'Đang đối chiếu: ' + info.label;
+}
+
+function setYearsPreset(preset){
+  const chips = Array.from(document.querySelectorAll('.year-chip'));
+  chips.forEach(c=> c.classList.remove('active'));
+  if(preset === 'ALL'){
+    chips.forEach(c=> c.classList.add('active'));
+  } else if(preset === '3Y'){
+    const last3 = YEARS_SORTED.slice(-3);
+    chips.filter(c=> last3.includes(Number(c.dataset.year))).forEach(c=> c.classList.add('active'));
+  } else if(preset === '2Y'){
+    const last2 = YEARS_SORTED.slice(-2);
+    chips.filter(c=> last2.includes(Number(c.dataset.year))).forEach(c=> c.classList.add('active'));
+  }
+  updatePeriodUI();
 }
 
 function setCustomPreset(preset){
@@ -804,12 +973,16 @@ function setCustomPreset(preset){
 
 function initFilters(){
   const grid = document.getElementById('yearsGrid');
+  grid.innerHTML = '';
   YEARS_SORTED.forEach(y=>{
     const chip = document.createElement('div');
     chip.className='year-chip';
     chip.textContent = y;
     chip.dataset.year = y;
-    chip.addEventListener('click',()=>{ chip.classList.toggle('active'); });
+    chip.addEventListener('click',()=>{ 
+      chip.classList.toggle('active');
+      updatePeriodUI();
+    });
     grid.appendChild(chip);
   });
   const defaults = [2024,2025,2026].filter(y=>YEARS_AVAILABLE.has(y));
@@ -819,6 +992,7 @@ function initFilters(){
   });
 
   const monthSelect = document.getElementById('monthSelect');
+  monthSelect.innerHTML = '';
   for(let m=1;m<=12;m++){
     const opt = document.createElement('option');
     opt.value = 'm'+m; opt.textContent = 'Tháng '+m;
@@ -827,6 +1001,8 @@ function initFilters(){
 
   const rangeFromSelect = document.getElementById('rangeFromSelect');
   const rangeToSelect = document.getElementById('rangeToSelect');
+  rangeFromSelect.innerHTML = '';
+  rangeToSelect.innerHTML = '';
   for(let m=1;m<=12;m++){
     const optF = document.createElement('option');
     optF.value = m; optF.textContent = 'Tháng '+m;
@@ -864,6 +1040,7 @@ function initFilters(){
   document.getElementById('applyBtn').addEventListener('click', render);
 
   const momYearSelect = document.getElementById('momYearSelect');
+  momYearSelect.innerHTML = '';
   YEARS_SORTED.forEach(y=>{
     const opt = document.createElement('option');
     opt.value = y; opt.textContent = y;
@@ -874,6 +1051,7 @@ function initFilters(){
   document.getElementById('momMetricSelect').addEventListener('change', renderMoM);
 
   const overlaySelect = document.getElementById('overlayUnitSelect');
+  overlaySelect.innerHTML = '';
   const optAll = document.createElement('option');
   optAll.value = 'ALL'; optAll.textContent = 'Toàn Công ty (Tổng)';
   overlaySelect.appendChild(optAll);
@@ -897,7 +1075,34 @@ function initFilters(){
       drilldownUnitSelect.appendChild(opt);
     });
     drilldownUnitSelect.addEventListener('change', () => {
+      const code = drilldownUnitSelect.value;
+      document.querySelectorAll('.unit-quick-chip').forEach(b=>{
+        b.classList.toggle('active', b.dataset.code === code);
+      });
       renderUnitDrilldown(getSelectedYears(), getPeriodInfo());
+    });
+  }
+
+  // Khởi tạo thanh chuyển nhanh 12 Chi nhánh / XN
+  const unitQuickChips = document.getElementById('unitQuickChips');
+  if(unitQuickChips){
+    unitQuickChips.innerHTML = '';
+    UNITS.forEach(([code, name], idx)=>{
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'unit-quick-chip' + (idx === 0 ? ' active' : '');
+      btn.textContent = name.replace('CNCN ','').replace('XNCN ','');
+      btn.title = `${code} — ${name}`;
+      btn.dataset.code = code;
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.unit-quick-chip').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        if(drilldownUnitSelect){
+          drilldownUnitSelect.value = code;
+          renderUnitDrilldown(getSelectedYears(), getPeriodInfo());
+        }
+      });
+      unitQuickChips.appendChild(btn);
     });
   }
 
@@ -944,34 +1149,48 @@ function renderKPI(years, periodInfo){
 
   function deltaHTML(curr, prevVal, invert, unit, isRatio){
     if(prev===null || prevVal===null || !isFinite(prevVal)){
-      return '<div class="delta flat">Không có kỳ trước để so sánh</div>';
+      return '<div class="delta flat"><span style="opacity:0.6;">—</span> Không có kỳ trước để so sánh</div>';
     }
     const diff = curr - prevVal;
     const pct = prevVal!==0 ? (diff/Math.abs(prevVal)*100) : null;
     const up = diff>=0;
     const good = invert ? !up : up;
     const cls = Math.abs(diff)<1e-9 ? 'flat' : (good ? 'down' : 'up');
-    const arrow = Math.abs(diff)<1e-9 ? '►' : (up ? '▲' : '▼');
+    const arrowIcon = Math.abs(diff)<1e-9 ? '' : (up 
+      ? '<svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'
+      : '<svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>');
     const sign = up ? '+' : '';
     const diffStr = isRatio
       ? sign + n2(diff) + ' điểm %'
       : sign + n0(diff) + (unit ? ' '+unit : '');
     const pctStr = pct===null ? '' : ` (${sign}${n2(Math.abs(pct))}%)`;
-    return `<div class="delta ${cls}">${arrow} ${diffStr}${pctStr} so với ${years[years.length-2]}</div>`;
+    return `<div class="delta ${cls}">${arrowIcon} ${diffStr}${pctStr} so với ${years[years.length-2]}</div>`;
   }
 
   const cards = [
-    ['Sản lượng thương phẩm (m³)', n0(last.tieuthu), last.tieuthu, prev?prev.tieuthu:null, false, 'm³', false],
-    ['Sản lượng nước phát ra (m³)', n0(last.phatraGoc), last.phatraGoc, prev?prev.phatraGoc:null, false, 'm³', false],
-    ['Tỷ lệ thất thoát (%)', n2(last.tyLeThatThoat)+'%', last.tyLeThatThoat, prev?prev.tyLeThatThoat:null, true, '', true],
-    ['Điện năng tiêu thụ (kWh)', n0(last.dien), last.dien, prev?prev.dien:null, true, 'kWh', false],
-    ['Giá bán bình quân (đ/m³)', n0(last.giaBanBQ), last.giaBanBQ, prev?prev.giaBanBQ:null, false, 'đ/m³', false],
-    ['Tổng cộng thanh toán (đ)', n0(last.tongCong), last.tongCong, prev?prev.tongCong:null, false, 'đ', false],
+    ['TP-01', 'Sản lượng thương phẩm', n0(last.tieuthu) + ' <span style="font-size:12px;font-weight:600;color:var(--muted);">m³</span>', last.tieuthu, prev?prev.tieuthu:null, false, 'm³', false, '<svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>'],
+    ['PR-02', 'Sản lượng nước phát ra', n0(last.phatraGoc) + ' <span style="font-size:12px;font-weight:600;color:var(--muted);">m³</span>', last.phatraGoc, prev?prev.phatraGoc:null, false, 'm³', false, '<svg class="ui-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'],
+    ['NRW-03', 'Tỷ lệ thất thoát nước', n2(last.tyLeThatThoat)+'%', last.tyLeThatThoat, prev?prev.tyLeThatThoat:null, true, '', true, '<svg class="ui-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>'],
+    ['PWR-04', 'Điện năng tiêu thụ', n0(last.dien) + ' <span style="font-size:12px;font-weight:600;color:var(--muted);">kWh</span>', last.dien, prev?prev.dien:null, true, 'kWh', false, '<svg class="ui-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'],
+    ['PRC-05', 'Giá bán bình quân', n0(last.giaBanBQ) + ' <span style="font-size:12px;font-weight:600;color:var(--muted);">đ/m³</span>', last.giaBanBQ, prev?prev.giaBanBQ:null, false, 'đ/m³', false, '<svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>'],
+    ['REV-06', 'Tổng cộng thanh toán', n0(last.tongCong) + ' <span style="font-size:12px;font-weight:600;color:var(--muted);">đ</span>', last.tongCong, prev?prev.tongCong:null, false, 'đ', false, '<svg class="ui-icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>'],
   ];
-  cards.forEach(([label,val,curr,prevVal,invert,unit,isRatio])=>{
+  cards.forEach(([code,label,val,curr,prevVal,invert,unit,isRatio,iconSvg])=>{
     const div = document.createElement('div');
     div.className='kpi';
-    div.innerHTML = `<div class="label">${label} — Năm ${years[years.length-1]}</div><div class="value">${val}</div>${deltaHTML(curr,prevVal,invert,unit,isRatio)}`;
+    div.innerHTML = `
+      <div>
+        <div class="kpi-head-meta">
+          <span class="kpi-code">${code}</span>
+          <span style="color:var(--teal);">${iconSvg}</span>
+        </div>
+        <div class="label">${label} — Năm ${years[years.length-1]}</div>
+        <div class="value">${val}</div>
+      </div>
+      <div>
+        ${deltaHTML(curr,prevVal,invert,unit,isRatio)}
+      </div>
+    `;
     holder.appendChild(div);
   });
 }
@@ -1204,6 +1423,8 @@ function renderRankTable(years, periodInfo){
   list.forEach((r,i)=>{
     const upTP = r.diffTP>=0, clsTP = upTP?'yoy-up':'yoy-down';
     const upPR = r.diffPR>=0, clsPR = upPR?'yoy-up':'yoy-down';
+    const rankBadgeCls = (i === 0) ? 'rank-badge rank-1' : ((i === 1) ? 'rank-badge rank-2' : ((i === 2) ? 'rank-badge rank-3' : 'rank-badge rank-default'));
+    const rankHtml = `<span class="${rankBadgeCls}">${i+1}</span>`;
     let khCells = '';
     if(HAS_KH_DATA){
       const khPctCell = r.khPct===null ? '-' :
@@ -1213,7 +1434,7 @@ function renderRankTable(years, periodInfo){
       khCells = `<td>${khPctCell}</td><td>${khTTCell}</td>`;
     }
     html += `<tr>
-      <td class="tt">${i+1}</td>
+      <td class="tt" style="text-align:center;">${rankHtml}</td>
       <td class="name">${r.name}</td>
       <td>${n0(r.aTP)}</td><td>${n0(r.bTP)}</td>
       <td class="${clsTP}">${upTP?'+':''}${n0(r.diffTP)}</td>
@@ -1542,7 +1763,9 @@ function renderMoM(){
 /* ---------- Báo cáo Tóm tắt Điều hành (Phòng Quản lý Khách hàng) ---------- */
 function renderExecSummary(years, periodInfo){
   const panel = document.getElementById('execSummaryPanel');
+  const bento = document.getElementById('execSummaryBento');
   const list = document.getElementById('execSummaryList');
+  if(!panel) return;
   if(years.length===0){ panel.style.display='none'; return; }
   const months = periodInfo.months;
   const totals = years.map(y=>buildYearTable(y, months).total);
@@ -1550,21 +1773,83 @@ function renderExecSummary(years, periodInfo){
   const prev = totals.length>1 ? totals[totals.length-2] : null;
   const lastYear = years[years.length-1];
   const prevYear = years.length>1 ? years[years.length-2] : null;
-  const items = [];
 
-  items.push(`🏢 <strong>Tổng quan kỳ báo cáo (${periodInfo.label} — Năm ${lastYear}):</strong> Toàn Công ty đạt <strong>${n0(last.tieuthu)} m³</strong> sản lượng nước thương phẩm, tổng nước phát mạng lưới <strong>${n0(last.phatraGoc)} m³</strong>; tỷ lệ thất thoát nước sạch bình quân là <strong>${n2(last.tyLeThatThoat)}%</strong> (tương ứng <strong>${n0(last.thatThoatM3)} m³</strong> nước chưa thu tiền).`);
+  // Card 1: Tổng quan Kỳ báo cáo
+  let card1HTML = `
+    <div class="bento-card" style="border-top:3px solid #0284C7;">
+      <div class="bento-card-header">
+        <span class="bento-card-badge info">
+          <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          Tổng quan Kỳ báo cáo
+        </span>
+        <span style="font-size:11.5px;font-family:var(--font-mono);color:var(--muted);">${periodInfo.label} · ${lastYear}</span>
+      </div>
+      <div class="bento-card-title">Quy mô Cấp nước & Thương phẩm Toàn Công ty</div>
+      <div class="bento-card-body">
+        Toàn Công ty đạt <strong style="color:var(--teal);font-size:14.5px;">${n0(last.tieuthu)} m³</strong> sản lượng nước thương phẩm trên tổng lượng nước phát mạng lưới <strong style="color:var(--navy);">${n0(last.phatraGoc)} m³</strong>. Tỷ lệ thất thoát nước sạch bình quân toàn tỉnh là <strong style="color:${last.tyLeThatThoat>15?'var(--danger-text)':'var(--teal)'};">${n2(last.tyLeThatThoat)}%</strong> (tương ứng <strong>${n0(last.thatThoatM3)} m³</strong> nước chưa thu được tiền).
+      </div>
+    </div>
+  `;
 
+  // Card 2: Biến động Thương phẩm (YoY)
+  let card2HTML = '';
   if(prev){
     const diffTP = last.tieuthu - prev.tieuthu;
     const pctTP = prev.tieuthu ? diffTP/Math.abs(prev.tieuthu)*100 : null;
-    const dir = diffTP>=0 ? 'tăng trưởng' : 'sụt giảm';
-    items.push(`📊 <strong>Biến động sản lượng thương phẩm:</strong> So với cùng kỳ năm ${prevYear}, thương phẩm ${dir} <strong>${diffTP>=0?'+':''}${n0(diffTP)} m³</strong>${pctTP!==null?` (${diffTP>=0?'+':''}${n2(pctTP)}%)`:''}.`);
-    const diffTT = last.tyLeThatThoat - prev.tyLeThatThoat;
-    const dirTT = diffTT>=0 ? 'tăng' : 'giảm';
-    items.push(`💧 <strong>Kiểm soát thất thoát nước (NRW):</strong> Tỷ lệ thất thoát ${dirTT} <strong>${n2(Math.abs(diffTT))} điểm %</strong> so với cùng kỳ ${prevYear}${last.tyLeThatThoat>15?' — hiện đang <strong>vượt ngưỡng định mức 15%</strong> của Công ty. Đề nghị các Chi nhánh tập trung khoanh vùng DMA, kiểm tra rò rỉ và rà soát đồng hồ đo nước.':'.'}`);
+    const isGrowth = diffTP >= 0;
+    card2HTML = `
+      <div class="bento-card" style="border-top:3px solid ${isGrowth ? '#10B981' : '#EF4444'};">
+        <div class="bento-card-header">
+          <span class="bento-card-badge ${isGrowth ? 'growth' : 'alert'}">
+            <svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Biến động Thương phẩm (YoY)
+          </span>
+          <span style="font-size:11.5px;font-family:var(--font-mono);color:var(--muted);">${prevYear} → ${lastYear}</span>
+        </div>
+        <div class="bento-card-title">${isGrowth ? 'Tăng trưởng Nước Thương phẩm' : 'Sụt giảm Nước Thương phẩm'}</div>
+        <div class="bento-card-body">
+          So với cùng kỳ năm ${prevYear}, thương phẩm toàn Công ty ${isGrowth ? 'tăng trưởng' : 'sụt giảm'} <strong style="color:${isGrowth ? '#059669' : '#DC2626'};">${diffTP>=0?'+':''}${n0(diffTP)} m³</strong>${pctTP!==null?` (${diffTP>=0?'+':''}${n2(pctTP)}%)`:''}. Doanh thu tiền nước toàn hệ thống đạt <strong>${n0(last.tongCong)} đ</strong>, giá bán bình quân đạt <strong>${n0(last.giaBanBQ)} đ/m³</strong>.
+        </div>
+      </div>
+    `;
+  } else {
+    card2HTML = `
+      <div class="bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-badge info">Đối chiếu cùng kỳ</span>
+        </div>
+        <div class="bento-card-title">Chưa có kỳ trước để so sánh</div>
+        <div class="bento-card-body">Vui lòng chọn từ 2 năm trở lên trong bảng tham số để hệ thống tự động tính toán tốc độ tăng trưởng thương phẩm cùng kỳ.</div>
+      </div>
+    `;
   }
 
-  // Đơn vị biến động mạnh nhất (nếu đủ 2 năm)
+  // Card 3: Kiểm soát Thất thoát (NRW)
+  let card3HTML = '';
+  if(prev){
+    const diffTT = last.tyLeThatThoat - prev.tyLeThatThoat;
+    const isExceed = last.tyLeThatThoat > 15;
+    card3HTML = `
+      <div class="bento-card" style="border-top:3px solid ${isExceed ? '#DC2626' : '#10B981'};">
+        <div class="bento-card-header">
+          <span class="bento-card-badge ${isExceed ? 'alert' : 'growth'}">
+            <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Kiểm soát Thất thoát (NRW)
+          </span>
+          <span style="font-size:11.5px;font-family:var(--font-mono);font-weight:700;color:${isExceed ? '#DC2626' : '#059669'};">
+            ${isExceed ? 'Vượt định mức 15%' : 'Đạt định mức an toàn'}
+          </span>
+        </div>
+        <div class="bento-card-title">Tỷ lệ thất thoát thực tế: ${n2(last.tyLeThatThoat)}%</div>
+        <div class="bento-card-body">
+          Tỷ lệ thất thoát ${diffTT>=0?'tăng':'giảm'} <strong>${n2(Math.abs(diffTT))} điểm %</strong> so với cùng kỳ năm ${prevYear}. ${isExceed ? '<span style="color:#DC2626;font-weight:700;">Hiện đang vượt định mức khoán 15% của Công ty.</span> <em>Chỉ đạo chuyên môn:</em> Đề nghị các Chi nhánh tập trung khoanh vùng DMA, đo lưu lượng ban đêm (MNF) và rà soát đồng hồ đo nước kẹt chạy chậm.' : '<span style="color:#059669;font-weight:700;">Công tác chống thất thoát nước sạch được duy trì tốt trong định mức cho phép.</span>'}
+        </div>
+      </div>
+    `;
+  }
+
+  // Card 4: Điểm sáng & Trọng điểm Điều hành Đơn vị
+  let card4HTML = '';
   if(years.length>=2){
     const yA = years[years.length-2], yB = years[years.length-1];
     const A = buildYearTable(yA, months).rows, B = buildYearTable(yB, months).rows;
@@ -1577,11 +1862,28 @@ function renderExecSummary(years, periodInfo){
       if(!best || pct>best.pct) best={name:r.name, pct, m3: r.tieuthu - a.tieuthu};
       if(!worst || pct<worst.pct) worst={name:r.name, pct, m3: r.tieuthu - a.tieuthu};
     });
-    if(best) items.push(`🏆 <strong>Chi nhánh tăng trưởng thương phẩm tốt nhất:</strong> <strong>${best.name}</strong> (${best.pct>=0?'+':''}${n2(best.pct)}%, tương ứng ${best.m3>=0?'+':''}${n0(best.m3)} m³).`);
-    if(worst && worst.pct < 0) items.push(`⚠️ <strong>Chi nhánh sụt giảm thương phẩm cần lưu ý:</strong> <strong>${worst.name}</strong> (${n2(worst.pct)}%, giảm ${n0(Math.abs(worst.m3))} m³ so với cùng kỳ).`);
+
+    card4HTML = `
+      <div class="bento-card" style="border-top:3px solid #D97706;">
+        <div class="bento-card-header">
+          <span class="bento-card-badge spotlight">
+            <svg class="ui-icon sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Điểm sáng & Trọng điểm Điều hành
+          </span>
+          <span style="font-size:11.5px;font-family:var(--font-mono);color:var(--muted);">12 Chi nhánh / XN</span>
+        </div>
+        <div class="bento-card-title">Xếp hạng Biến động Chi nhánh</div>
+        <div class="bento-card-body">
+          ${best ? `<div><strong>Đơn vị tăng trưởng tốt nhất:</strong> <span style="color:#059669;font-weight:700;">${best.name}</span> (${best.pct>=0?'+':''}${n2(best.pct)}%, tương ứng ${best.m3>=0?'+':''}${n0(best.m3)} m³).</div>` : ''}
+          ${worst && worst.pct < 0 ? `<div style="margin-top:6px;"><strong>Đơn vị sụt giảm cần lưu ý:</strong> <span style="color:#DC2626;font-weight:700;">${worst.name}</span> (${n2(worst.pct)}%, giảm ${n0(Math.abs(worst.m3))} m³). Yêu cầu Chi nhánh kiểm tra phụ tải và rà soát đồng hồ đo nước.</div>` : ''}
+        </div>
+      </div>
+    `;
   }
 
-  list.innerHTML = items.map(t=>`<li>${t}</li>`).join('');
+  if(bento){
+    bento.innerHTML = card1HTML + card2HTML + card3HTML + card4HTML;
+  }
   panel.style.display = '';
 }
 
@@ -1699,7 +2001,7 @@ function renderUnitDrilldown(years, periodInfo){
 
   // Cập nhật thẻ kỳ báo cáo
   const periodBadge = document.getElementById('unitPeriodBadge');
-  if(periodBadge) periodBadge.textContent = '🎯 ' + periodInfo.label;
+  if(periodBadge) periodBadge.textContent = periodInfo.label;
 
   // Cập nhật tiêu đề bảng
   const tableTitle = document.getElementById('unitTableTitle');
@@ -1763,14 +2065,14 @@ function renderUnitDrilldown(years, periodInfo){
     let nrwBadge = '';
     let nrwColor = 'var(--teal)';
     if(last.tyLeThatThoat <= 10){
-      nrwBadge = '🌟 Xuất sắc (≤10%)';
-      nrwColor = 'var(--teal)';
+      nrwBadge = '✓ Xuất sắc (≤10%)';
+      nrwColor = '#059669';
     } else if(last.tyLeThatThoat <= 15){
       nrwBadge = '✓ Đạt chuẩn định mức';
-      nrwColor = 'var(--blue)';
+      nrwColor = '#2563EB';
     } else if(last.tyLeThatThoat <= 20){
-      nrwBadge = '⚠️ Cảnh báo cao (>15%)';
-      nrwColor = 'var(--gold)';
+      nrwBadge = '⚠ Cảnh báo cao (>15%)';
+      nrwColor = '#D97706';
     } else {
       nrwBadge = '🚨 Báo động đỏ (>20%)';
       nrwColor = 'var(--danger-text)';
@@ -1784,19 +2086,22 @@ function renderUnitDrilldown(years, periodInfo){
     const yoyDTDiff = prev ? last.tongTienHang - prev.tongTienHang : null;
     const yoyDTPct = (prev && prev.tongTienHang) ? (yoyDTDiff / prev.tongTienHang * 100) : null;
 
+    const arrowUp = '<svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+    const arrowDown = '<svg class="ui-icon sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+
     kpiGrid.innerHTML = `
       <div class="unit-kpi-card">
         <div class="unit-kpi-title">Sản lượng Thương phẩm (m³)</div>
         <div class="unit-kpi-val">${n0(last.tieuthu)}</div>
         <div class="unit-kpi-sub ${yoyTPDiff !== null ? (yoyTPDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
-          ${yoyTPDiff !== null ? `${yoyTPDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyTPDiff)} m³ (${n2(Math.abs(yoyTPPct))}%)` : 'Năm ' + last.year}
+          ${yoyTPDiff !== null ? `${yoyTPDiff >= 0 ? arrowUp + ' +' : arrowDown + ' '}${n0(yoyTPDiff)} m³ (${n2(Math.abs(yoyTPPct))}%)` : 'Năm ' + last.year}
         </div>
       </div>
       <div class="unit-kpi-card">
         <div class="unit-kpi-title">Tổng Nước Phát mạng (m³)</div>
         <div class="unit-kpi-val">${n0(last.phatraGoc)}</div>
         <div class="unit-kpi-sub ${yoyPRDiff !== null ? (yoyPRDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
-          ${yoyPRDiff !== null ? `${yoyPRDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyPRDiff)} m³ (${n2(Math.abs(yoyPRPct))}%)` : 'Tổng bơm cấp'}
+          ${yoyPRDiff !== null ? `${yoyPRDiff >= 0 ? arrowUp + ' +' : arrowDown + ' '}${n0(yoyPRDiff)} m³ (${n2(Math.abs(yoyPRPct))}%)` : 'Tổng bơm cấp'}
         </div>
       </div>
       <div class="unit-kpi-card">
@@ -1808,21 +2113,21 @@ function renderUnitDrilldown(years, periodInfo){
       </div>
       <div class="unit-kpi-card">
         <div class="unit-kpi-title">Lượng Nước Thất thoát (m³)</div>
-        <div class="unit-kpi-val" style="color:var(--danger-text);">${n0(last.thatThoatM3)} <span style="font-size:13px; font-weight:600;">m³</span></div>
+        <div class="unit-kpi-val" style="color:var(--danger-text);">${n0(last.thatThoatM3)} <span style="font-size:12px; font-weight:600;">m³</span></div>
         <div class="unit-kpi-sub" style="color:var(--muted);">
           Chiếm ${n2(last.tyLeThatThoat)}% tổng lượng nước phát
         </div>
       </div>
       <div class="unit-kpi-card">
         <div class="unit-kpi-title">Khách hàng & Mức dùng BQ</div>
-        <div class="unit-kpi-val">${n0(last.soho)} <span style="font-size:13px; font-weight:600;">hộ</span></div>
+        <div class="unit-kpi-val">${n0(last.soho)} <span style="font-size:12px; font-weight:600;">hộ</span></div>
         <div class="unit-kpi-sub" style="color:var(--teal); font-weight:700;">
           ${last.tieuThuBQHo !== null ? `~${n2(last.tieuThuBQHo)} m³/hộ/tháng` : 'Chưa có dữ liệu'}
         </div>
       </div>
       <div class="unit-kpi-card">
         <div class="unit-kpi-title">Doanh thu Tiền nước (chưa VAT)</div>
-        <div class="unit-kpi-val">${n0(last.tongTienHang)} <span style="font-size:13px; font-weight:600;">đ</span></div>
+        <div class="unit-kpi-val">${n0(last.tongTienHang)} <span style="font-size:12px; font-weight:600;">đ</span></div>
         <div class="unit-kpi-sub" style="color:var(--navy); font-weight:700;">
           Giá BQ: ${n0(last.giaBanBQ)} đ/m³ ${yoyDTPct !== null ? `(${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}
         </div>
@@ -1865,7 +2170,8 @@ function renderUnitDrilldown(years, periodInfo){
       forecastBox.innerHTML = `
         <div class="unit-forecast-head">
           <div class="unit-forecast-title">
-            <span>🎯</span> Dự báo Khả năng Hoàn thành Kế hoạch Năm ${selectedYear} — ${unitName}
+            <svg class="ui-icon sm" viewBox="0 0 24 24" style="color:var(--teal);"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            Dự báo Khả năng Hoàn thành Kế hoạch Năm ${selectedYear} — ${unitName}
           </div>
           <span class="unit-forecast-status-badge status-neutral">Chưa có chỉ tiêu kế hoạch</span>
         </div>
@@ -1915,24 +2221,24 @@ function renderUnitDrilldown(years, periodInfo){
 
       if(nMonths === 12){
         if(currentProgressPct >= 100){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 TIẾN ĐỘ THƯƠNG PHẨM: ĐÃ HOÀN THÀNH VƯỢT KẾ HOẠCH (${n2(currentProgressPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">TIẾN ĐỘ THƯƠNG PHẨM: ĐÃ HOÀN THÀNH VƯỢT KẾ HOẠCH (${n2(currentProgressPct)}%)</span>`;
           assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} với kết quả đạt <strong>${n0(totRecordedTP)} m³</strong>, vượt <strong>+${n0(totRecordedTP - khTarget)} m³ (+${n2(currentProgressPct - 100)}%)</strong> so với kế hoạch Công ty giao.`;
         } else {
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 KẾT THÚC NĂM: CHƯA ĐẠT CHỈ TIÊU THƯƠNG PHẨM (${n2(currentProgressPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">KẾT THÚC NĂM: CHƯA ĐẠT CHỈ TIÊU THƯƠNG PHẨM (${n2(currentProgressPct)}%)</span>`;
           assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} đạt <strong>${n0(totRecordedTP)} m³</strong>, thiếu hụt <strong>-${n0(khTarget - totRecordedTP)} m³</strong> (-${n2(100 - currentProgressPct)}%) so với kế hoạch.`;
         }
       } else {
         if(runRateForecastPct >= 102){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 ĐÁNH GIÁ PHÒNG QLKH: DỰ BÁO VƯỢT KẾ HOẠCH NĂM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">ĐÁNH GIÁ PHÒNG QLKH: DỰ BÁO VƯỢT KẾ HOẠCH NĂM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
           assessmentSummary = `Tiến độ thực hiện thương phẩm (<strong>${n1(currentProgressPct)}%</strong>) đang vượt tiến độ thời gian (<strong>${n1(timeElapsedPct)}%</strong> năm). Với nhịp độ hiện tại, đơn vị dự kiến hoàn thành kế hoạch sớm và vượt khoảng <strong>+${n0(runRateDiff)} m³</strong>.`;
         } else if(runRateForecastPct >= 98){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🔵 ĐÁNH GIÁ PHÒNG QLKH: TIẾN ĐỘ KHẢ THI - CẬN ĐÍCH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">ĐÁNH GIÁ PHÒNG QLKH: TIẾN ĐỘ KHẢ THI - CẬN ĐÍCH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
           assessmentSummary = `Tốc độ tiêu thụ bám sát mục tiêu kế hoạch năm. Chi nhánh cần duy trì sản lượng tối thiểu <strong>${n0(neededPerMonth)} m³/tháng</strong> trong các tháng còn lại để đảm bảo về đích an toàn 100%.`;
         } else if(runRateForecastPct >= 90){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-warning">🟡 ĐÁNH GIÁ PHÒNG QLKH: CẦN ĐÔN ĐỐC TĂNG TỐC - NGUY CƠ HỤT CHỈ TIÊU (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-warning">ĐÁNH GIÁ PHÒNG QLKH: CẦN ĐÔN ĐỐC TĂNG TỐC - NGUY CƠ HỤT CHỈ TIÊU (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
           assessmentSummary = `Tiến độ thương phẩm chậm hơn tiến độ thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự báo nếu không tăng tốc sẽ thiếu hụt khoảng <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Mỗi tháng còn lại cần đạt <strong>${n0(neededPerMonth)} m³</strong> (phải tăng <strong>+${n1(requiredPaceRatio)}%</strong> so với mức bình quân hiện tại).`;
         } else {
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 ĐÁNH GIÁ PHÒNG QLKH: BÁO ĐỘNG TỤT CHỈ TIÊU THƯƠNG PHẨM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">ĐÁNH GIÁ PHÒNG QLKH: BÁO ĐỘNG TỤT CHỈ TIÊU THƯƠNG PHẨM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
           assessmentSummary = `Tiến độ thương phẩm đang bị tụt sâu so với mốc thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự kiến cả năm sẽ hụt <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Chi nhánh cần triển khai ngay các giải pháp mở rộng khách hàng mới và siết chặt chống thất thoát nước thương mại.`;
         }
       }
@@ -1943,7 +2249,8 @@ function renderUnitDrilldown(years, periodInfo){
       forecastBox.innerHTML = `
         <div class="unit-forecast-head">
           <div class="unit-forecast-title">
-            <span>🎯</span> Đánh giá & Dự báo Tiến độ Kế hoạch Thương phẩm Năm ${selectedYear} — ${unitName}
+            <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal);"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            Đánh giá & Dự báo Tiến độ Kế hoạch Thương phẩm Năm ${selectedYear} — ${unitName}
           </div>
           ${statusBadgeHtml}
         </div>
@@ -1951,7 +2258,10 @@ function renderUnitDrilldown(years, periodInfo){
         <div class="dual-progress-wrap">
           <div class="dual-progress-item">
             <div class="dual-progress-label">
-              <span>⏱️ Tiến độ thời gian trong năm (${nMonths}/12 tháng)</span>
+              <span style="display:flex;align-items:center;gap:6px;">
+                <svg class="ui-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Tiến độ thời gian trong năm (${nMonths}/12 tháng)
+              </span>
               <span style="font-family:var(--font-mono); color:var(--muted);">${n1(timeElapsedPct)}%</span>
             </div>
             <div class="dual-progress-track">
@@ -1961,7 +2271,10 @@ function renderUnitDrilldown(years, periodInfo){
           
           <div class="dual-progress-item">
             <div class="dual-progress-label">
-              <span>💧 Thương phẩm thực tế đã chốt: <strong>${n0(totRecordedTP)} / ${n0(khTarget)} m³</strong></span>
+              <span style="display:flex;align-items:center;gap:6px;">
+                <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                Thương phẩm thực tế đã chốt: <strong>${n0(totRecordedTP)} / ${n0(khTarget)} m³</strong>
+              </span>
               <span style="font-family:var(--font-mono); font-weight:800; color:${currentProgressPct >= timeElapsedPct ? 'var(--teal)' : 'var(--danger-text)'};">${n1(currentProgressPct)}%</span>
             </div>
             <div class="dual-progress-track">
@@ -1972,7 +2285,10 @@ function renderUnitDrilldown(years, periodInfo){
           ${nMonths < 12 ? `
           <div class="dual-progress-item">
             <div class="dual-progress-label">
-              <span>📈 Dự kiến thương phẩm cả năm (Run-rate): <strong>${n0(runRateForecastTP)} m³</strong></span>
+              <span style="display:flex;align-items:center;gap:6px;">
+                <svg class="ui-icon sm" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Dự kiến thương phẩm cả năm (Run-rate): <strong>${n0(runRateForecastTP)} m³</strong>
+              </span>
               <span style="font-family:var(--font-mono); font-weight:800; color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">${n1(runRateForecastPct)}% (${runRateDiff >= 0 ? '+' : ''}${n0(runRateDiff)} m³)</span>
             </div>
             <div class="dual-progress-track">
@@ -1985,7 +2301,8 @@ function renderUnitDrilldown(years, periodInfo){
         <div class="forecast-cards-grid">
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>⚡</span> Kịch bản 1: Theo nhịp độ tiêu thụ hiện tại (Run-rate)
+              <svg class="ui-icon sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Kịch bản 1: Theo nhịp độ tiêu thụ hiện tại (Run-rate)
             </div>
             <div class="forecast-scenario-val" style="color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
               ${n1(runRateForecastPct)}%
@@ -1997,7 +2314,8 @@ function renderUnitDrilldown(years, periodInfo){
 
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>🌦️</span> Kịch bản 2: Có xét yếu tố Mùa vụ (${selectedYear - 1})
+              <svg class="ui-icon sm" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              Kịch bản 2: Có xét yếu tố Mùa vụ (${selectedYear - 1})
             </div>
             <div class="forecast-scenario-val" style="color:${seasonalForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
               ${n1(seasonalForecastPct)}%
@@ -2009,7 +2327,8 @@ function renderUnitDrilldown(years, periodInfo){
 
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>🎯</span> Kịch bản 3: Nhịp độ đôn đốc để về đích 100% KH
+              <svg class="ui-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              Kịch bản 3: Nhịp độ đôn đốc để về đích 100% KH
             </div>
             <div class="forecast-scenario-val" style="color:${requiredPaceRatio <= 0 ? 'var(--teal)' : (requiredPaceRatio <= 15 ? 'var(--blue)' : 'var(--danger-text)')};">
               ${n0(neededPerMonth)} <span style="font-size:12px; font-weight:600;">m³/tháng</span>
@@ -2020,8 +2339,9 @@ function renderUnitDrilldown(years, periodInfo){
           </div>
         </div>
 
-        <div style="margin-top:14px; font-size:13px; line-height:1.6; color:var(--ink); padding:10px 14px; background:var(--bg-page); border-radius:10px; border-left:3px solid var(--blue);">
-          <strong>📌 Ý kiến Đánh giá của Trưởng phòng Quản lý Khách hàng:</strong> ${assessmentSummary}
+        <div style="margin-top:14px; font-size:13px; line-height:1.6; color:var(--ink); padding:12px 16px; background:var(--bg-page); border-radius:10px; border-left:3px solid var(--blue); display:flex; align-items:flex-start; gap:8px;">
+          <svg class="ui-icon sm" viewBox="0 0 24 24" style="color:var(--blue); margin-top:3px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <div><strong>Ý kiến Đánh giá của Trưởng phòng Quản lý Khách hàng:</strong> ${assessmentSummary}</div>
         </div>
       `;
 
@@ -2049,13 +2369,13 @@ function renderUnitDrilldown(years, periodInfo){
     
     // Đánh giá tỷ lệ thất thoát nước sạch (NRW)
     if(last.tyLeThatThoat > 20){
-      diagnosticItems.push(`🔴 <strong>Thất thoát nước sạch ở mức báo động đỏ (${n2(last.tyLeThatThoat)}% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> Vượt rất xa định mức khoán của Công ty (15%). <em>Chỉ đạo nghiệp vụ:</em> Yêu cầu Giám đốc Chi nhánh/Xí nghiệp khẩn trương phối hợp Đội Quản lý Mạng lưới triển khai phân vùng tách mạng (DMA), đo lưu lượng ban đêm (MNF) để xử lý dứt điểm các điểm bể vỡ ngầm; đồng thời Tổ Quản lý Khách hàng phải kiểm tra 100% đồng hồ đo nước quá hạn kiểm định theo quy định ĐLVN 17:2017, rà soát các điểm đấu nối nghi vấn gian lận nước.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-danger">BÁO ĐỘNG ĐỎ</span> <strong>Thất thoát nước sạch ở mức nghiêm trọng (${n2(last.tyLeThatThoat)}% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> Vượt rất xa định mức khoán của Công ty (15%). <em>Chỉ đạo nghiệp vụ:</em> Yêu cầu Giám đốc Chi nhánh/Xí nghiệp khẩn trương phối hợp Đội Quản lý Mạng lưới triển khai phân vùng tách mạng (DMA), đo lưu lượng ban đêm (MNF) để xử lý dứt điểm các điểm bể vỡ ngầm; đồng thời Tổ Quản lý Khách hàng phải kiểm tra 100% đồng hồ đo nước quá hạn kiểm định theo quy định ĐLVN 17:2017, rà soát các điểm đấu nối nghi vấn gian lận nước.`);
     } else if(last.tyLeThatThoat > 15){
-      diagnosticItems.push(`🟡 <strong>Tỷ lệ thất thoát nước vượt định mức (${n2(last.tyLeThatThoat)}% > 15% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> <em>Đề xuất xử lý:</em> Yêu cầu Chi nhánh rà soát lại áp lực mạng lưới, kiểm tra hiện tượng rò rỉ tại các tuyến ống phân phối và tăng cường kiểm tra định kỳ các khách hàng có mức tiêu thụ lớn.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-warning">CẢNH BÁO</span> <strong>Tỷ lệ thất thoát nước vượt định mức (${n2(last.tyLeThatThoat)}% > 15% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> <em>Đề xuất xử lý:</em> Yêu cầu Chi nhánh rà soát lại áp lực mạng lưới, kiểm tra hiện tượng rò rỉ tại các tuyến ống phân phối và tăng cường kiểm tra định kỳ các khách hàng có mức tiêu thụ lớn.`);
     } else if(last.tyLeThatThoat <= 10){
-      diagnosticItems.push(`🟢 <strong>Kiểm soát thất thoát nước rất tốt (${n2(last.tyLeThatThoat)}%):</strong> Đây là kết quả đáng ghi nhận của Chi nhánh trong công tác quản lý chống thất thoát, bảo đảm bảo toàn doanh thu thương phẩm.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-success">ĐẠT CHUẨN</span> <strong>Kiểm soát thất thoát nước rất tốt (${n2(last.tyLeThatThoat)}%):</strong> Đây là kết quả đáng ghi nhận của Chi nhánh trong công tác quản lý chống thất thoát, bảo đảm bảo toàn doanh thu thương phẩm.`);
     } else {
-      diagnosticItems.push(`🔵 <strong>Tỷ lệ thất thoát trong hạn mức cho phép (${n2(last.tyLeThatThoat)}%):</strong> Đạt định mức Công ty giao, Chi nhánh cần duy trì công tác kiểm tra chống thất thoát thương mại và rà soát đồng hồ kẹt chạy chậm.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-neutral">AN TOÀN</span> <strong>Tỷ lệ thất thoát trong hạn mức cho phép (${n2(last.tyLeThatThoat)}%):</strong> Đạt định mức Công ty giao, Chi nhánh cần duy trì công tác kiểm tra chống thất thoát thương mại và rà soát đồng hồ kẹt chạy chậm.`);
     }
 
     // Đánh giá tăng trưởng sản lượng thương phẩm & khách hàng
@@ -2064,36 +2384,37 @@ function renderUnitDrilldown(years, periodInfo){
       const pctTP = prev.tieuthu ? (diffTP / prev.tieuthu * 100) : 0;
       const diffHo = last.soho - prev.soho;
       if(pctTP >= 5){
-        diagnosticItems.push(`📈 <strong>Tăng trưởng thương phẩm & phát triển khách hàng tích cực:</strong> Sản lượng nước thương phẩm tăng <strong>+${n0(diffTP)} m³ (+${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Phát triển mới <strong>${diffHo >= 0 ? '+' : ''}${n0(diffHo)} khách hàng đấu nối</strong>. Cần tiếp tục đẩy mạnh khảo sát mở rộng vùng phục vụ cấp nước.`);
+        diagnosticItems.push(`<span class="unit-expert-tag tag-growth">TĂNG TRƯỞNG</span> <strong>Tăng trưởng thương phẩm & phát triển khách hàng tích cực:</strong> Sản lượng nước thương phẩm tăng <strong>+${n0(diffTP)} m³ (+${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Phát triển mới <strong>${diffHo >= 0 ? '+' : ''}${n0(diffHo)} khách hàng đấu nối</strong>. Cần tiếp tục đẩy mạnh khảo sát mở rộng vùng phục vụ cấp nước.`);
       } else if(pctTP < 0){
-        diagnosticItems.push(`📉 <strong>Sản lượng nước thương phẩm sụt giảm:</strong> Giảm <strong>${n0(diffTP)} m³ (${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. <em>Yêu cầu Chi nhánh:</em> Báo cáo rõ nguyên nhân sụt giảm (do khách hàng lớn tạm ngừng sản xuất, thời tiết mưa nhiều người dân dùng nước mưa, hay do đồng hồ khách hàng chạy chậm/kẹt số chưa được thay thế).`);
+        diagnosticItems.push(`<span class="unit-expert-tag tag-declining">SỤT GIẢM</span> <strong>Sản lượng nước thương phẩm sụt giảm:</strong> Giảm <strong>${n0(diffTP)} m³ (${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. <em>Yêu cầu Chi nhánh:</em> Báo cáo rõ nguyên nhân sụt giảm (do khách hàng lớn tạm ngừng sản xuất, thời tiết mưa nhiều người dân dùng nước mưa, hay do đồng hồ khách hàng chạy chậm/kẹt số chưa được thay thế).`);
       } else {
-        diagnosticItems.push(`⚖️ <strong>Sản lượng tiêu thụ và khách hàng ổn định:</strong> Tổng số khách hàng đang quản lý là <strong>${n0(last.soho)} hộ</strong>. Mức tiêu dùng bình quân đạt <strong>${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng</strong>.`);
+        diagnosticItems.push(`<span class="unit-expert-tag tag-neutral">ỔN ĐỊNH</span> <strong>Sản lượng tiêu thụ và khách hàng duy trì ổn định:</strong> Tổng số khách hàng đang quản lý là <strong>${n0(last.soho)} hộ</strong>. Mức tiêu dùng bình quân đạt <strong>${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng</strong>.`);
       }
     }
 
     // Đánh giá suất điện năng
     if(last.suatPhat > 0.45){
-      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng trạm bơm cao (${n3(last.suatPhat)} kWh/m³):</strong> Chi phí điện năng trên 1 m³ nước đang ở mức cao. Chi nhánh cần kiểm tra lại hiệu suất cụm máy bơm, tối ưu hóa giờ bơm vào khung giờ thấp điểm/bình thường để hạ giá thành sản xuất.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-power">ĐIỆN NĂNG CAO</span> <strong>Suất tiêu hao điện năng trạm bơm cao (${n3(last.suatPhat)} kWh/m³):</strong> Chi phí điện năng trên 1 m³ nước đang ở mức cao. Chi nhánh cần kiểm tra lại hiệu suất cụm máy bơm, tối ưu hóa giờ bơm vào khung giờ thấp điểm/bình thường để hạ giá thành sản xuất.`);
     } else if(last.suatPhat > 0){
-      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng trạm bơm:</strong> Đạt <strong>${n3(last.suatPhat)} kWh/m³</strong> nước phát và <strong>${n3(last.suatTieuThu)} kWh/m³</strong> nước thương phẩm — nằm trong khung tiêu hao điện năng kỹ thuật an toàn.`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-power">ĐIỆN NĂNG</span> <strong>Suất tiêu hao điện năng trạm bơm:</strong> Đạt <strong>${n3(last.suatPhat)} kWh/m³</strong> nước phát và <strong>${n3(last.suatTieuThu)} kWh/m³</strong> nước thương phẩm — nằm trong khung tiêu hao điện năng kỹ thuật an toàn.`);
     }
 
     // Đánh giá Kế hoạch
     if(last.khTyLeHT !== null){
-      diagnosticItems.push(`🎯 <strong>Tiến độ hoàn thành Kế hoạch Công ty giao:</strong> Sản lượng thương phẩm đạt <strong>${n2(last.khTyLeHT)}%</strong> chỉ tiêu kế hoạch năm (${n0(last.tieuthu)} / ${n0(last.khTieuThu)} m³).`);
+      diagnosticItems.push(`<span class="unit-expert-tag tag-target">KẾ HOẠCH</span> <strong>Tiến độ hoàn thành Kế hoạch Công ty giao:</strong> Sản lượng thương phẩm đạt <strong>${n2(last.khTyLeHT)}%</strong> chỉ tiêu kế hoạch năm (${n0(last.tieuthu)} / ${n0(last.khTieuThu)} m³).`);
     }
 
     expertBox.innerHTML = `
       <div class="unit-expert-head">
         <div class="unit-expert-title">
-          <span>💡</span> Ý kiến Đánh giá & Đề xuất Chỉ đạo Nghiệp vụ (Trưởng phòng Quản lý Khách hàng)
+          <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Ý kiến Đánh giá & Đề xuất Chỉ đạo Nghiệp vụ (Trưởng phòng Quản lý Khách hàng)
         </div>
         <span class="unit-expert-badge">${unitName} · Năm ${last.year}</span>
       </div>
       <div class="unit-expert-content">
-        <ul class="unit-expert-list">
-          ${diagnosticItems.map(it => `<li>${it}</li>`).join('')}
+        <ul class="unit-expert-list" style="list-style:none; padding-left:0;">
+          ${diagnosticItems.map(it => `<li style="margin-bottom:8px; display:flex; align-items:baseline;">${it}</li>`).join('')}
         </ul>
       </div>
     `;
@@ -2474,7 +2795,9 @@ document.getElementById('retryBtn').addEventListener('click', bootLoadData);
 
 async function bootLoadData(){
   document.getElementById('retryWrap').style.display='none';
-  setStatus('Đang tải dữ liệu trực tiếp từ <strong>Google Sheets</strong>…');
+  const syncInd = document.getElementById('syncIndicatorText');
+  if(syncInd) syncInd.textContent = 'Đang tải…';
+  setStatus('Đang nạp dữ liệu trực tiếp từ <strong>Google Sheets API</strong>…');
   let loadedSource = '';
   
   try {
@@ -2485,7 +2808,7 @@ async function bootLoadData(){
     loadedSource = 'Google Sheets (trực tiếp)';
   } catch(gsErr) {
     console.warn('Không tự nạp được từ Google Sheets, chuyển sang file cục bộ:', gsErr);
-    setStatus('Không tải được từ Google Sheets, đang nạp từ file cục bộ <code>'+XLSX_FILENAME+'</code>…');
+    setStatus('Không tải được từ Google Sheets, đang nạp từ file dự phòng cục bộ <code>'+XLSX_FILENAME+'</code>…');
     try {
       const resp = await fetch('./'+XLSX_FILENAME, {cache:'no-store'});
       if(!resp.ok) throw new Error('Local file HTTP '+resp.status);
@@ -2494,30 +2817,39 @@ async function bootLoadData(){
       loadedSource = 'file cục bộ ('+XLSX_FILENAME+')';
     } catch(err) {
       console.warn('Không tự nạp được file dữ liệu cục bộ:', err);
+      if(syncInd) syncInd.textContent = 'Mất kết nối';
       showLoadError(gsErr.message || err.message);
       return;
     }
   }
 
-  setStatus('Tải dữ liệu thành công từ <strong>'+loadedSource+'</strong> — dữ liệu các năm: '+YEARS_SORTED[0]+'–'+YEARS_SORTED[YEARS_SORTED.length-1]+'.');
+  if(syncInd) syncInd.textContent = loadedSource.includes('Google Sheets') ? 'Trực tuyến' : 'Cục bộ';
+  setStatus('Dữ liệu sẵn sàng từ <strong>'+loadedSource+'</strong> — Các năm: '+(YEARS_SORTED.length?`${YEARS_SORTED[0]}–${YEARS_SORTED[YEARS_SORTED.length-1]}`:'N/A')+'.');
   showReport();
 }
 
 bootLoadData();
 
 // Theme Toggle Script
+function updateThemeIcon(theme){
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.innerHTML = theme === 'dark' 
+      ? '<svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+}
+
 function initTheme() {
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
-  const btn = document.getElementById('themeToggle');
-  if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+  updateThemeIcon(savedTheme);
 }
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', current);
   localStorage.setItem('theme', current);
-  const btn = document.getElementById('themeToggle');
-  if (btn) btn.innerHTML = current === 'dark' ? '☀️' : '🌙';
+  updateThemeIcon(current);
 }
 document.addEventListener('DOMContentLoaded', initTheme);
 
