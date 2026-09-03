@@ -78,6 +78,158 @@
   background: #D97706;
   color: #fff;
 }
+.btn-gemini-action {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
+  color: #6366F1;
+  border-color: rgba(99, 102, 241, 0.4);
+  font-weight: 700;
+}
+.btn-gemini-action:hover {
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: #fff;
+  border-color: #6366F1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+.btn-gemini-settings {
+  background: var(--bg-page);
+  color: var(--muted);
+  border-color: var(--card-border);
+}
+.btn-gemini-settings:hover {
+  color: var(--navy);
+  border-color: var(--teal);
+}
+
+/* Styles for Gemini AI Box & Modal */
+.unit-gemini-ai-box {
+  background: var(--card-bg-solid);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-top: 4px solid #6366F1;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+.unit-gemini-ai-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.08), transparent 70%);
+  pointer-events: none;
+}
+.gemini-loading-anim {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: rgba(99, 102, 241, 0.06);
+  border-radius: 12px;
+  border: 1px dashed rgba(99, 102, 241, 0.4);
+  color: #4F46E5;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.gemini-sparkle-spin {
+  font-size: 24px;
+  display: inline-block;
+  animation: sparkleSpin 1.5s infinite linear;
+}
+@keyframes sparkleSpin {
+  0% { transform: rotate(0deg) scale(0.9); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(0.9); }
+}
+.gemini-result-content {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.gemini-result-content h4 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #4338CA;
+  margin: 16px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gemini-result-content ul {
+  margin: 6px 0 12px;
+  padding-left: 20px;
+}
+.gemini-result-content li {
+  margin-bottom: 6px;
+}
+
+/* Gemini API Key Modal */
+.gemini-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.gemini-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+.gemini-modal-card {
+  background: var(--card-bg-solid);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gemini-modal-overlay.open .gemini-modal-card {
+  transform: scale(1);
+}
+.gemini-modal-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
+}
+.gemini-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gemini-modal-body {
+  padding: 22px;
+}
+.gemini-modal-foot {
+  padding: 14px 22px;
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: var(--bg-page);
+}
 
 .unit-kpi-grid {
   display: grid;
@@ -461,6 +613,12 @@
         <button type="button" class="btn-copy-action btn-copy-monthly" id="copyUnitMonthlyBtn" title="Sao chép bảng chi tiết 12 tháng của đơn vị ra Excel">
           <span>📊</span> Sao chép 12 tháng (Excel)
         </button>
+        <button type="button" class="btn-copy-action btn-gemini-action" id="triggerGeminiAIBtn" title="Chạy mô hình Google Gemini AI phân tích dữ liệu, thời tiết & dự báo">
+          <span>✨</span> Dự báo Gemini AI
+        </button>
+        <button type="button" class="btn-copy-action btn-gemini-settings" id="openGeminiModalBtn" title="Cài đặt Gemini API Key">
+          <span>🔑</span> API Key <span id="geminiKeyStatusDot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#94A3B8; margin-left:4px;"></span>
+        </button>
       </div>
     </div>
 
@@ -487,6 +645,9 @@
 
     <!-- Annual Plan Completion Forecast Box -->
     <div class="unit-forecast-box" id="unitForecastBox"></div>
+
+    <!-- Google Gemini AI Deep Analysis Box -->
+    <div class="unit-gemini-ai-box" id="unitGeminiAIBox" style="display:none;"></div>
 
     <!-- Diagnostic & Recommendation Box from 30-year industry expert -->
     <div class="unit-expert-box" id="unitExpertBox"></div>
@@ -925,6 +1086,15 @@ function initFilters(){
 
   const copyUnitMonthlyBtn = document.getElementById('copyUnitMonthlyBtn');
   if(copyUnitMonthlyBtn) copyUnitMonthlyBtn.addEventListener('click', copyUnitMonthlyToClipboard);
+
+  // Gắn sự kiện tính năng Google Gemini AI
+  const triggerGeminiAIBtn = document.getElementById('triggerGeminiAIBtn');
+  if(triggerGeminiAIBtn) triggerGeminiAIBtn.addEventListener('click', triggerGeminiAI);
+
+  const openGeminiModalBtn = document.getElementById('openGeminiModalBtn');
+  if(openGeminiModalBtn) openGeminiModalBtn.addEventListener('click', openGeminiModal);
+
+  updateGeminiKeyStatusUI();
 
   updatePeriodUI();
 }
@@ -2398,6 +2568,251 @@ function copyUnitReportToClipboard(){
   copyToClipboard(report, `✓ Đã sao chép báo cáo nhanh [${unitName}] (sẵn sàng gửi Zalo/Viber)!`);
 }
 
+/* ================================================================
+   TÍCH HỢP GOOGLE GEMINI AI: DỰ BÁO CHUYÊN SÂU SXKD & THỜI TIẾT
+   ================================================================ */
+
+const GEMINI_STORAGE_KEY = 'sowa_gemini_api_key';
+let CURRENT_GEMINI_ANALYSIS_TEXT = '';
+
+function getGeminiApiKey(){
+  return (localStorage.getItem(GEMINI_STORAGE_KEY) || '').trim();
+}
+
+function updateGeminiKeyStatusUI(){
+  const dot = document.getElementById('geminiKeyStatusDot');
+  const key = getGeminiApiKey();
+  if(dot){
+    if(key){
+      dot.style.background = '#10B981'; // Xanh lá: Đã có Key
+      dot.title = 'Gemini API Key: Đã kết nối';
+    } else {
+      dot.style.background = '#94A3B8'; // Xám: Chưa có Key
+      dot.title = 'Gemini API Key: Chưa cấu hình';
+    }
+  }
+}
+
+function openGeminiModal(){
+  const modal = document.getElementById('geminiModal');
+  const inp = document.getElementById('inpGeminiApiKey');
+  if(inp) inp.value = getGeminiApiKey();
+  if(modal) modal.classList.add('open');
+}
+
+function closeGeminiModal(){
+  const modal = document.getElementById('geminiModal');
+  if(modal) modal.classList.remove('open');
+}
+
+function toggleApiKeyVisibility(){
+  const inp = document.getElementById('inpGeminiApiKey');
+  const btn = document.getElementById('btnToggleKeyVis');
+  if(inp){
+    if(inp.type === 'password'){
+      inp.type = 'text';
+      if(btn) btn.textContent = '🔒';
+    } else {
+      inp.type = 'password';
+      if(btn) btn.textContent = '👁️';
+    }
+  }
+}
+
+function saveGeminiApiKey(){
+  const inp = document.getElementById('inpGeminiApiKey');
+  const val = (inp ? inp.value : '').trim();
+  if(!val){
+    showToast('Vui lòng nhập API Key hợp lệ!', 'error');
+    return;
+  }
+  localStorage.setItem(GEMINI_STORAGE_KEY, val);
+  updateGeminiKeyStatusUI();
+  closeGeminiModal();
+  showToast('✓ Đã lưu Google Gemini API Key thành công!', 'success');
+}
+
+function clearGeminiApiKey(){
+  if(confirm('Bạn có chắc chắn muốn xóa Gemini API Key khỏi trình duyệt?')){
+    localStorage.removeItem(GEMINI_STORAGE_KEY);
+    const inp = document.getElementById('inpGeminiApiKey');
+    if(inp) inp.value = '';
+    updateGeminiKeyStatusUI();
+    closeGeminiModal();
+    showToast('Đã xóa Gemini API Key.', 'success');
+  }
+}
+
+async function triggerGeminiAI(){
+  const apiKey = getGeminiApiKey();
+  if(!apiKey){
+    openGeminiModal();
+    showToast('Vui lòng nhập Google Gemini API Key để kích hoạt AI!', 'error');
+    return;
+  }
+
+  if(!CURRENT_UNIT_DRILLDOWN_DATA || !CURRENT_UNIT_DRILLDOWN_DATA.last){
+    showToast('Chưa có dữ liệu đơn vị để phân tích!', 'error');
+    return;
+  }
+
+  const { unitCode, unitName, selectedYear, multiYearData, last, prev, forecastData } = CURRENT_UNIT_DRILLDOWN_DATA;
+  const box = document.getElementById('unitGeminiAIBox');
+  if(!box) return;
+
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  box.innerHTML = `
+    <div class="gemini-loading-anim">
+      <span class="gemini-sparkle-spin">✨</span>
+      <div>
+        <strong style="color:#4338CA; font-size:14.5px;">Google Gemini AI đang phân tích đa chiều...</strong><br/>
+        <span style="font-size:12.5px; color:var(--muted); line-height:1.5;">
+          Đang tổng hợp số liệu SXKD của <strong>${unitName}</strong>, tích hợp chu kỳ thời tiết Tây Bắc & chạy mô hình dự báo...
+        </span>
+      </div>
+    </div>
+  `;
+
+  // Chuẩn bị dữ liệu chi tiết 12 tháng năm được chọn
+  const monthlyDataStr = [];
+  for(let m = 1; m <= 12; m++){
+    const r = IDX[selectedYear] && IDX[selectedYear][m] && IDX[selectedYear][m][unitCode];
+    if(r){
+      const ttPct = r.phatra > 0 ? ((r.phatra - r.tieuthu) / r.phatra * 100) : 0;
+      monthlyDataStr.push(`Tháng ${m}: Thương phẩm ${n0(r.tieuthu)} m³, Phát ra ${n0(r.phatra)} m³, Thất thoát ${n2(ttPct)}%, Điện ${n0(r.dien)} kWh, Số hộ ${n0(r.soho)}`);
+    } else {
+      monthlyDataStr.push(`Tháng ${m}: Chưa có số liệu`);
+    }
+  }
+
+  // Chuẩn bị prompt chuyên gia
+  const promptText = `
+Bạn là Chuyên gia Cố vấn Cấp cao với hơn 30 năm kinh nghiệm trong ngành Cấp nước đô thị và Nông thôn Việt Nam, đặc biệt am hiểu sâu sắc hệ thống cấp nước địa hình miền núi dốc, thời tiết khắc nghiệt của Công ty Cổ phần Cấp nước Sơn La (Sơn La Water Supply JSC).
+
+Hãy phân tích toàn diện tình hình Sản xuất Kinh doanh và LẬP DỰ BÁO HOÀN THÀNH KẾ HOẠCH NĂM ${selectedYear} cho đơn vị sau:
+- Tên Đơn vị: ${unitName} (Mã: ${unitCode})
+- Năm phân tích: ${selectedYear}
+- Kế hoạch năm giao: Thương phẩm ${forecastData && forecastData.khTarget ? n0(forecastData.khTarget) + ' m³' : (last.khTieuThu ? n0(last.khTieuThu) + ' m³' : 'Chưa giao số liệu cụ thể')}, Tỷ lệ thất thoát giao: ${last.khThatThoat !== null ? n2(last.khThatThoat) + '%' : '15%'}
+- Tiến độ thực tế đến hiện tại: Đã có số liệu của ${forecastData ? forecastData.nMonths : 'nhiều'} tháng, Lũy kế thương phẩm: ${forecastData ? n0(forecastData.totRecordedTP) : n0(last.tieuthu)} m³ (Đạt ${forecastData ? n1(forecastData.currentProgressPct) : '-'}% kế hoạch so với ${forecastData ? n1(forecastData.timeElapsedPct) : '-'}% thời gian năm).
+- Diễn biến từng tháng năm ${selectedYear}:
+${monthlyDataStr.join('\n')}
+
+- Lịch sử đối chiếu các năm gần nhất:
+${multiYearData.map(d => `+ Năm ${d.year}: Thương phẩm ${n0(d.tieuthu)} m³, Phát ra ${n0(d.phatraGoc)} m³, Tỷ lệ thất thoát ${n2(d.tyLeThatThoat)}%, Khách hàng ${n0(d.soho)} hộ, Suất điện phát ${n3(d.suatPhat)} kWh/m³`).join('\n')}
+
+ĐẶC THÙ ĐỊA BÀN VÀ KHÍ HẬU SƠN LA CẦN PHÂN TÍCH LIÊN KẾT:
+1. Địa hình đồi núi dốc, áp lực đường ống cao, dễ rò rỉ bục vỡ mối nối van vòi.
+2. Mùa mưa lũ (Tháng 6 - Tháng 9): Nguồn nước mặt độ đục rất cao (hàng nghìn NTU), tăng chi phí PAC và Clo; dân nông thôn hứng nước mưa tự nhiên nên sản lượng nước sạch sinh hoạt giảm nhẹ; rủi ro sạt lở cuốn trôi tuyến ống qua suối.
+3. Mùa khô hạn & nắng nóng gay gắt (Tháng 3 - Tháng 5): Nhu cầu dùng nước tăng vọt 20-30%, các mó nước ngầm cạn kiệt, trạm bơm cấp 1-2 phải chạy quá tải làm tăng suất điện (kWh/m³).
+4. Mùa đông giá rét (Tháng 11 - Tháng 2): Tiêu thụ sinh hoạt giảm; nhưng lưu ý Mộc Châu vào mùa cao điểm du lịch hoa mận/Tết (khách sạn nhà hàng dùng nước tăng mạnh); Mai Sơn, Thuận Châu, TP Sơn La vào vụ ép mía đường, cà phê, sắn (khối công nghiệp tăng đột biến).
+
+HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUYÊN NGHIỆP CỦA CHUYÊN GIA CẤP NƯỚC, THEO 5 MỤC RÕ RÀNG:
+1. 🎯 ĐÁNH GIÁ XÁC SUẤT HOÀN THÀNH KẾ HOẠCH NĂM (Dự kiến sản lượng cả năm đạt bao nhiêu m³, vượt hay hụt bao nhiêu m³, xác suất % về đích).
+2. 🌦️ TÁC ĐỘNG THỜI TIẾT & TÍNH MÙA VỤ ĐẾN CÁC THÁNG CÒN LẠI (Tác động cụ thể của mùa mưa/mùa khô/vụ mùa nông sản đến địa bàn của đơn vị).
+3. 📈 DỰ BÁO SẢN LƯỢNG CHI TIẾT TỪNG THÁNG CÒN LẠI (Ước tính con số m³ cụ thể cho từng tháng còn thiếu để đạt mục tiêu).
+4. ⚠️ CẢNH BÁO RỦI RO VẬN HÀNH & KỸ THUẬT (Cảnh báo về thất thoát nước sạch NRW, hiệu suất bơm điện năng, an toàn cấp nước).
+5. 💡 KHUYẾN NGHỊ HÀNH ĐỘNG CẤP THIẾT CHO BAN LÃNH ĐẠO & GIÁM ĐỐC ĐƠN VỊ.
+`;
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: promptText }]
+        }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 2048
+        }
+      })
+    });
+
+    if(!resp.ok){
+      const errJson = await resp.json().catch(()=>({}));
+      const errMsg = (errJson && errJson.error && errJson.error.message) ? errJson.error.message : ('HTTP error ' + resp.status);
+      throw new Error(errMsg);
+    }
+
+    const data = await resp.json();
+    const rawAiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Không nhận được phản hồi từ AI.';
+    CURRENT_GEMINI_ANALYSIS_TEXT = rawAiText;
+
+    const formattedHtml = formatGeminiMarkdown(rawAiText);
+
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; border-bottom:1px solid rgba(99,102,241,0.2); padding-bottom:12px;">
+        <div style="font-size:15px; font-weight:800; color:#4338CA; display:flex; align-items:center; gap:8px;">
+          <span>✨</span> Báo cáo Dự báo Chuyên sâu từ Google Gemini AI — ${unitName} (${selectedYear})
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button type="button" class="btn-copy-action" onclick="copyGeminiReportToClipboard()" style="padding:6px 12px; font-size:12px; background:#EEF2FF; color:#4F46E5; border:1px solid #C7D2FE;">
+            <span>📋</span> Sao chép Phân tích AI
+          </button>
+          <button type="button" class="btn-copy-action" onclick="triggerGeminiAI()" style="padding:6px 12px; font-size:12px; background:var(--bg-page); color:var(--muted); border:1px solid var(--card-border);">
+            <span>🔄</span> Chạy lại
+          </button>
+          <button type="button" onclick="document.getElementById('unitGeminiAIBox').style.display='none'" style="background:none; border:none; color:var(--muted); font-size:16px; cursor:pointer; padding:4px 8px;">✕</button>
+        </div>
+      </div>
+      <div class="gemini-result-content">
+        ${formattedHtml}
+      </div>
+      <div style="margin-top:14px; font-size:11.5px; color:var(--muted); font-family:var(--font-mono); text-align:right;">
+        Mô hình: Google Gemini 1.5 Flash · Phân tích tương quan đa biến nội bộ
+      </div>
+    `;
+
+    showToast(`✓ Gemini AI đã hoàn thành dự báo cho [${unitName}]!`, 'success');
+  } catch(err){
+    console.error('Gemini API Error:', err);
+    box.innerHTML = `
+      <div style="padding:16px; background:rgba(239, 68, 68, 0.08); border-radius:12px; border:1px solid rgba(239, 68, 68, 0.3); color:var(--danger-text);">
+        <div style="font-weight:700; font-size:14px; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>⚠️</span> Không thể kết nối với Google Gemini API
+        </div>
+        <div style="font-size:13px; line-height:1.5; color:var(--ink);">
+          Lỗi: <code>${err.message}</code><br/>
+          Vui lòng kiểm tra lại API Key trong mục <strong>🔑 API Key</strong> (đảm bảo key còn hạn ngạch hoặc kết nối mạng ổn định).
+        </div>
+        <div style="margin-top:10px; display:flex; gap:10px;">
+          <button type="button" onclick="openGeminiModal()" style="padding:6px 14px; background:#EF4444; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">Kiểm tra lại Key</button>
+          <button type="button" onclick="triggerGeminiAI()" style="padding:6px 14px; background:var(--bg-page); border:1px solid var(--card-border); border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">Thử lại</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function formatGeminiMarkdown(text){
+  let html = text
+    .replace(/^### (.*$)/gim, '<h4><span>📌</span> $1</h4>')
+    .replace(/^## (.*$)/gim, '<h4><span>📌</span> $1</h4>')
+    .replace(/^# (.*$)/gim, '<h4><span>📌</span> $1</h4>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+    .replace(/^\s*\*\s+(.*$)/gim, '<li>$1</li>')
+    .replace(/^\s*-\s+(.*$)/gim, '<li>$1</li>')
+    .replace(/\n\n+/gim, '<br/><br/>')
+    .replace(/\n/gim, '<br/>');
+
+  html = html.replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
+  return html;
+}
+
+function copyGeminiReportToClipboard(){
+  if(!CURRENT_GEMINI_ANALYSIS_TEXT){
+    showToast('Chưa có nội dung phân tích AI để sao chép!', 'error');
+    return;
+  }
+  const unitName = CURRENT_UNIT_DRILLDOWN_DATA ? CURRENT_UNIT_DRILLDOWN_DATA.unitName : 'Đơn vị';
+  copyToClipboard(CURRENT_GEMINI_ANALYSIS_TEXT, `✓ Đã sao chép nhận định Gemini AI của [${unitName}]!`);
+}
+
 function render(){
   let years = getSelectedYears();
   if(years.length===0){
@@ -2528,6 +2943,46 @@ window.addEventListener('scroll', () => {
   }
 });
 </script>
+
+<!-- Modal Cấu hình Google Gemini API Key -->
+<div class="gemini-modal-overlay" id="geminiModal">
+  <div class="gemini-modal-card">
+    <div class="gemini-modal-head">
+      <div class="gemini-modal-title">
+        <span>✨</span> Cấu hình Google Gemini API Key
+      </div>
+      <button type="button" onclick="closeGeminiModal()" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted); line-height:1;">✕</button>
+    </div>
+    <div class="gemini-modal-body">
+      <p style="font-size:13.5px; color:var(--ink); margin:0 0 14px; line-height:1.5;">
+        Nhập Google Gemini API Key để kích hoạt mô hình AI phân tích chuỗi thời gian, liên kết biến số thời tiết Tây Bắc & dự báo khả năng hoàn thành kế hoạch năm của từng đơn vị.
+      </p>
+
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:12.5px; font-weight:700; color:var(--navy); margin-bottom:6px;">
+          Gemini API Key:
+        </label>
+        <div style="display:flex; gap:8px;">
+          <input type="password" id="inpGeminiApiKey" placeholder="AIzaSy..." style="flex:1; padding:10px 14px; border:1px solid var(--card-border); border-radius:10px; font-family:var(--font-mono); font-size:13px; background:var(--bg-page); color:var(--ink);">
+          <button type="button" id="btnToggleKeyVis" onclick="toggleApiKeyVisibility()" style="padding:0 12px; border:1px solid var(--card-border); border-radius:10px; background:var(--card-bg-solid); cursor:pointer;" title="Hiện / Ẩn Key">👁️</button>
+        </div>
+      </div>
+
+      <div style="font-size:12px; color:var(--muted); background:var(--bg-page); padding:10px 14px; border-radius:10px; border:1px solid var(--card-border); margin-bottom:14px; line-height:1.5;">
+        🔒 <strong>Bảo mật:</strong> API Key được lưu trực tiếp trong trình duyệt cá nhân của bạn (<code>localStorage</code>) và chỉ dùng để gửi yêu cầu dự báo trực tiếp đến Google API, tuyệt đối không lưu trữ trên máy chủ nào khác.
+      </div>
+
+      <div style="font-size:12.5px;">
+        👉 Bạn chưa có API Key? <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:#4F46E5; font-weight:700; text-decoration:underline;">Lấy Google Gemini API Key miễn phí tại đây</a> (hoàn toàn miễn phí hạn ngạch sử dụng).
+      </div>
+    </div>
+    <div class="gemini-modal-foot">
+      <button type="button" onclick="clearGeminiApiKey()" style="padding:8px 14px; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--danger-text); font-weight:600; cursor:pointer; font-size:13px;">Xóa Key</button>
+      <button type="button" onclick="closeGeminiModal()" style="padding:8px 16px; border:1px solid var(--card-border); border-radius:8px; background:var(--bg-page); font-weight:600; cursor:pointer; font-size:13px;">Hủy</button>
+      <button type="button" onclick="saveGeminiApiKey()" style="padding:8px 20px; border:none; border-radius:8px; background:linear-gradient(135deg, #4F46E5, #6366F1); color:#fff; font-weight:700; cursor:pointer; font-size:13px; box-shadow:0 2px 8px rgba(79, 70, 229, 0.3);">Lưu Cấu Hình</button>
+    </div>
+  </div>
+</div>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Về đầu trang">↑</button>
 <div class="toast-container" id="toastContainer"></div>
