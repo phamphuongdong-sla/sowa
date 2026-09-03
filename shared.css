@@ -2014,18 +2014,12 @@ body { letter-spacing: -.005em; }
   margin: 6px 0 !important;
 }
 
-/* Sticky Data Table Headers */
+/* Data Table Headers */
 table.datatable thead tr.g1 th {
-  position: sticky;
-  top: 68px;
-  z-index: 10;
   background: var(--card-bg-solid);
   box-shadow: 0 1px 0 var(--line);
 }
 table.datatable thead tr.g2 th {
-  position: sticky;
-  top: 108px;
-  z-index: 9;
   background: var(--bg-page);
   box-shadow: 0 1px 0 var(--line);
 }
