@@ -2726,14 +2726,15 @@ HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUY
         if(listData && Array.isArray(listData.models)){
           const supported = listData.models.filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'));
           const prefList = [
+            'models/gemini-3.6-flash',
+            'models/gemini-3.5-flash',
+            'models/gemini-flash-latest',
+            'models/gemini-3.1-flash-lite',
+            'models/gemini-2.5-flash-lite',
             'models/gemini-2.5-flash',
             'models/gemini-2.0-flash',
             'models/gemini-1.5-flash-latest',
             'models/gemini-1.5-flash',
-            'models/gemini-1.5-flash-8b',
-            'models/gemini-2.0-flash-exp',
-            'models/gemini-1.5-pro',
-            'models/gemini-1.5-pro-latest',
             'models/gemini-pro'
           ];
           for(const pref of prefList){
@@ -2753,11 +2754,13 @@ HÃY XUẤT RA BÁO CÁO ĐIỀU HÀNH NGẮN GỌN, SÚC TÍCH, VĂN PHONG CHUY
 
     // 2. Danh sách dự phòng nếu không list được
     const candidateModels = selectedModel ? [selectedModel] : [
+      'models/gemini-3.6-flash',
+      'models/gemini-3.5-flash',
+      'models/gemini-flash-latest',
+      'models/gemini-2.5-flash-lite',
       'models/gemini-2.0-flash',
       'models/gemini-1.5-flash-latest',
-      'models/gemini-1.5-flash',
-      'models/gemini-pro',
-      'models/gemini-1.5-flash-8b'
+      'models/gemini-pro'
     ];
 
     let resp = null;
