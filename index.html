@@ -568,11 +568,11 @@
     <div class="section-title" style="margin-top:0;">
       <h3>
         <svg class="ui-icon lg" viewBox="0 0 24 24" style="color:var(--teal); margin-right:4px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Xếp hạng biến động sản lượng theo đơn vị
+        Xếp hạng theo Tỷ lệ hoàn thành kế hoạch sản lượng đơn vị
       </h3>
       <span class="tag" id="rankTag">So kỳ gần nhất</span>
     </div>
-    <div class="hint" style="margin-bottom:14px;"> Dữ liệu báo cáo tỷ lệ Hoàn thành kế hoạch & tỷ lệ Thất thoát thực tế được hiển thị theo số năm tham chiếu từ bộ lọc năm và lấy năm gần nhất.</div>
+    <div class="hint" style="margin-bottom:14px;"> Danh sách xếp hạng từ cao xuống thấp theo <strong>Tỷ lệ hoàn thành kế hoạch</strong> (Sản lượng thương phẩm thực tế / Chỉ tiêu kế hoạch giao).</div>
     <div class="table-scroll">
       <table class="datatable" id="rankTable" style="min-width:1100px;"></table>
     </div>
@@ -1391,7 +1391,12 @@ function renderRankTable(years, periodInfo){
              aPR:a?a.phatraGoc:0, bPR:r.phatraGoc, diffPR, pctPR,
              tyLeThatThoat:r.tyLeThatThoat, khPct, khTotal, khThatThoat, khThatThoatDiff};
   });
-  list.sort((x,y)=> (y.pctTP===null?-999:y.pctTP) - (x.pctTP===null?-999:x.pctTP));
+  list.sort((x,y)=> {
+    const valY = (y.khPct !== null && y.khPct !== undefined) ? y.khPct : -999;
+    const valX = (x.khPct !== null && x.khPct !== undefined) ? x.khPct : -999;
+    if (Math.abs(valY - valX) > 1e-6) return valY - valX;
+    return (y.pctTP===null?-999:y.pctTP) - (x.pctTP===null?-999:x.pctTP);
+  });
 
   // Tính dòng Tổng cộng toàn Công ty
   const totalA = buildYearTable(yA, months).total;
@@ -1413,7 +1418,7 @@ function renderRankTable(years, periodInfo){
     if(cntTT>0){ khThatThoatT = sumTT/cntTT; khThatThoatDiffT = totalB.tyLeThatThoat - khThatThoatT; }
   }
 
-  const khCols = HAS_KH_DATA ? `<th rowspan="2"> tỷ lệ hoàn thành<br>/(kế hoạch)</th><th rowspan="2">tỷ lệ thất thoát thực tế<br>/(kế hoạch)</th>` : '';
+  const khCols = HAS_KH_DATA ? `<th rowspan="2" style="background:rgba(16,185,129,0.12); color:#065F46; border:1px solid rgba(16,185,129,0.3);">Tỷ lệ hoàn thành<br>/(kế hoạch)</th><th rowspan="2">Tỷ lệ thất thoát thực tế<br>/(kế hoạch)</th>` : '';
   let html = `<thead><tr class="g1">
     <th rowspan="2">Hạng</th><th rowspan="2">Đơn vị</th>
     <th colspan="4">Sản lượng nước thương phẩm (m³)</th>
