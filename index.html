@@ -335,9 +335,9 @@
 </nav>
 
 <header class="masthead">
-  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty cổ phần cấp nước Sơn La</div>
-  <h1>BÁO CÁO KẾT QUẢ <span class="highlight-text">SẢN XUẤT KINH DOANH</span></h1>
-  <p class="sub">Hệ thống tổng hợp trực quan sản lượng nước thương phẩm, nước phát ra và tỷ lệ thất thoát theo từng đơn vị trực thuộc, đối chiếu đa chiều theo thời gian.</p>
+  <div class="eyebrow"><span class="drop"></span>Phòng Quản lý Khách hàng · Công ty Cổ phần Cấp nước Sơn La</div>
+  <h1>BÁO CÁO ĐIỀU HÀNH <span class="highlight-text">THƯƠNG PHẨM & KHÁCH HÀNG</span></h1>
+  <p class="sub">Hệ thống theo dõi chuyên môn của Phòng Quản lý Khách hàng: Giám sát sản lượng nước thương phẩm, tỷ lệ thất thoát nước sạch, tiến độ phát triển khách hàng và doanh thu tiền nước theo từng Chi nhánh / Xí nghiệp trực thuộc.</p>
 </header>
 
 <div class="wrap">
@@ -408,8 +408,8 @@
   </div>
 
   <div class="panel" id="execSummaryPanel" style="display:none;">
-    <h2>Tóm tắt điều hành</h2>
-    <div class="hint">Tự động tổng hợp theo bộ lọc năm/kỳ hiện tại.</div>
+    <h2>Báo cáo Tóm tắt Điều hành — Phòng Quản lý Khách hàng</h2>
+    <div class="hint">Đánh giá nhanh tình hình thực hiện sản lượng thương phẩm, tỷ lệ thất thoát và các đơn vị trọng điểm.</div>
     <ul id="execSummaryList" style="margin:0;padding-left:20px;line-height:1.7;color:var(--ink);"></ul>
   </div>
 
@@ -442,20 +442,20 @@
   </div>
 
   <!-- ================================================================
-       HỒ SƠ PHÂN TÍCH CHUYÊN SÂU TỪNG ĐƠN VỊ (BỘ LỌC ĐA CHỈ TIÊU & COPY)
+       HỒ SƠ THEO DÕI THƯƠNG PHẨM & KHÁCH HÀNG TỪNG ĐƠN VỊ
        ================================================================ -->
   <div class="compare-wrap" id="unitDrilldownWrap">
     <div class="section-title" style="margin-top:0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <h3>🏛️ Phân tích Chuyên sâu & Đối chiếu Chỉ tiêu riêng từng Đơn vị</h3>
-        <span class="tag">Hồ sơ Quản lý Cấp nước · Đa chỉ tiêu Kỹ thuật & Kinh doanh</span>
+        <h3>🏛️ Báo cáo Chi tiết Thương phẩm, Khách hàng & Doanh thu Đơn vị</h3>
+        <span class="tag">Nghiệp vụ Quản lý Khách hàng · Giám sát Chi nhánh / Xí nghiệp</span>
       </div>
       <!-- Copy Actions Toolbar -->
       <div class="unit-copy-toolbar no-print">
-        <button type="button" class="btn-copy-action btn-copy-excel" id="copyUnitTableBtn" title="Sao chép bảng đa chỉ tiêu để dán trực tiếp vào Microsoft Excel hoặc Google Sheets">
+        <button type="button" class="btn-copy-action btn-copy-excel" id="copyUnitTableBtn" title="Sao chép bảng tổng hợp đa chỉ tiêu để dán vào Excel/Google Sheets">
           <span>📋</span> Sao chép bảng (Excel)
         </button>
-        <button type="button" class="btn-copy-action btn-copy-text" id="copyUnitReportBtn" title="Sao chép bản tóm tắt giao ban định dạng sẵn để gửi Zalo/Viber/Email cho Lãnh đạo">
+        <button type="button" class="btn-copy-action btn-copy-text" id="copyUnitReportBtn" title="Sao chép báo cáo điều hành của Trưởng phòng QLKH gửi Ban Giám đốc hoặc giao ban Chi nhánh qua Zalo/Viber">
           <span>📝</span> Sao chép báo cáo (Zalo/Viber)
         </button>
         <button type="button" class="btn-copy-action btn-copy-monthly" id="copyUnitMonthlyBtn" title="Sao chép bảng chi tiết 12 tháng của đơn vị ra Excel">
@@ -467,7 +467,7 @@
     <!-- Filter Control for Unit -->
     <div class="filters" style="margin-bottom:18px; background:var(--card-bg-solid); padding:16px; border-radius:14px; border:1px solid var(--card-border); gap:16px;">
       <div class="filter-group" style="min-width:280px; flex:1;">
-        <label class="grouplabel" for="drilldownUnitSelect">🏢 Chọn Đơn vị trực thuộc cần phân tích</label>
+        <label class="grouplabel" for="drilldownUnitSelect">🏢 Chọn Đơn vị trực thuộc cần theo dõi</label>
         <select id="drilldownUnitSelect" style="font-weight:700; font-size:14px; color:var(--teal); padding:10px 14px;"></select>
       </div>
       <div class="filter-group" style="min-width:220px;">
@@ -488,13 +488,13 @@
     <!-- Annual Plan Completion Forecast Box -->
     <div class="unit-forecast-box" id="unitForecastBox"></div>
 
-    <!-- Diagnostic & Recommendation Box from 30-year industry expert -->
+    <!-- Diagnostic & Recommendation Box from Head of Customer Management -->
     <div class="unit-expert-box" id="unitExpertBox"></div>
 
     <!-- Multi-year Metric Comparison Table -->
     <div style="margin:22px 0 10px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;">
       <h4 style="margin:0; font-size:15px; color:var(--navy); font-weight:800;" id="unitTableTitle">
-        1. Bảng Tổng hợp & Đối chiếu Đa chỉ tiêu theo các năm — [Tên đơn vị]
+        1. Bảng Đối chiếu Đa chỉ tiêu Thương phẩm, Thất thoát & Doanh thu theo các năm — [Tên đơn vị]
       </h4>
       <span style="font-size:12px; color:var(--muted); font-family:var(--font-mono);">Đơn vị tính: m³, kWh, đ, %, hộ</span>
     </div>
@@ -505,7 +505,7 @@
     <!-- 12-Month Detailed Breakdown in Selected Year -->
     <div style="margin:28px 0 10px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;">
       <h4 style="margin:0; font-size:15px; color:var(--navy); font-weight:800;" id="unitMonthlyTitle">
-        2. Chi tiết Diễn biến 12 Tháng trong Năm — [Tên đơn vị]
+        2. Bảng Theo dõi Chi tiết Diễn biến Thương phẩm & Khách hàng 12 Tháng — [Tên đơn vị]
       </h4>
       <span style="font-size:12px; color:var(--muted); font-family:var(--font-mono);">Số liệu hàng tháng theo chu kỳ đọc chỉ số</span>
     </div>
@@ -1539,7 +1539,7 @@ function renderMoM(){
   document.getElementById('momUnitTable').innerHTML = html2;
 }
 
-/* ---------- Tóm tắt điều hành ---------- */
+/* ---------- Báo cáo Tóm tắt Điều hành (Phòng Quản lý Khách hàng) ---------- */
 function renderExecSummary(years, periodInfo){
   const panel = document.getElementById('execSummaryPanel');
   const list = document.getElementById('execSummaryList');
@@ -1552,16 +1552,16 @@ function renderExecSummary(years, periodInfo){
   const prevYear = years.length>1 ? years[years.length-2] : null;
   const items = [];
 
-  items.push(`Kỳ báo cáo: <strong>${periodInfo.label}</strong>, năm <strong>${lastYear}</strong> — Sản lượng nước thương phẩm đạt <strong>${n0(last.tieuthu)} m³</strong>, sản lượng nước phát ra <strong>${n0(last.phatraGoc)} m³</strong>, tỷ lệ thất thoát <strong>${n2(last.tyLeThatThoat)}%</strong>.`);
+  items.push(`🏢 <strong>Tổng quan kỳ báo cáo (${periodInfo.label} — Năm ${lastYear}):</strong> Toàn Công ty đạt <strong>${n0(last.tieuthu)} m³</strong> sản lượng nước thương phẩm, tổng nước phát mạng lưới <strong>${n0(last.phatraGoc)} m³</strong>; tỷ lệ thất thoát nước sạch bình quân là <strong>${n2(last.tyLeThatThoat)}%</strong> (tương ứng <strong>${n0(last.thatThoatM3)} m³</strong> nước chưa thu tiền).`);
 
   if(prev){
     const diffTP = last.tieuthu - prev.tieuthu;
     const pctTP = prev.tieuthu ? diffTP/Math.abs(prev.tieuthu)*100 : null;
-    const dir = diffTP>=0 ? 'tăng' : 'giảm';
-    items.push(`So với ${prevYear}, sản lượng thương phẩm ${dir} <strong>${n0(Math.abs(diffTP))} m³</strong>${pctTP!==null?` (${dir} ${n2(Math.abs(pctTP))}%)`:''}.`);
+    const dir = diffTP>=0 ? 'tăng trưởng' : 'sụt giảm';
+    items.push(`📊 <strong>Biến động sản lượng thương phẩm:</strong> So với cùng kỳ năm ${prevYear}, thương phẩm ${dir} <strong>${diffTP>=0?'+':''}${n0(diffTP)} m³</strong>${pctTP!==null?` (${diffTP>=0?'+':''}${n2(pctTP)}%)`:''}.`);
     const diffTT = last.tyLeThatThoat - prev.tyLeThatThoat;
     const dirTT = diffTT>=0 ? 'tăng' : 'giảm';
-    items.push(`Tỷ lệ thất thoát ${dirTT} <strong>${n2(Math.abs(diffTT))} điểm %</strong> so với cùng kỳ ${prevYear}${last.tyLeThatThoat>15?' — hiện đang <strong>vượt ngưỡng 15%</strong>, cần rà soát chống thất thoát.':'.'}`);
+    items.push(`💧 <strong>Kiểm soát thất thoát nước (NRW):</strong> Tỷ lệ thất thoát ${dirTT} <strong>${n2(Math.abs(diffTT))} điểm %</strong> so với cùng kỳ ${prevYear}${last.tyLeThatThoat>15?' — hiện đang <strong>vượt ngưỡng định mức 15%</strong> của Công ty. Đề nghị các Chi nhánh tập trung khoanh vùng DMA, kiểm tra rò rỉ và rà soát đồng hồ đo nước.':'.'}`);
   }
 
   // Đơn vị biến động mạnh nhất (nếu đủ 2 năm)
@@ -1574,10 +1574,11 @@ function renderExecSummary(years, periodInfo){
       const a = byA[r.code];
       if(!a || !a.tieuthu) return;
       const pct = (r.tieuthu-a.tieuthu)/Math.abs(a.tieuthu)*100;
-      if(!best || pct>best.pct) best={name:r.name, pct};
-      if(!worst || pct<worst.pct) worst={name:r.name, pct};
+      if(!best || pct>best.pct) best={name:r.name, pct, m3: r.tieuthu - a.tieuthu};
+      if(!worst || pct<worst.pct) worst={name:r.name, pct, m3: r.tieuthu - a.tieuthu};
     });
-    if(best) items.push(`Đơn vị tăng trưởng mạnh nhất: <strong>${best.name}</strong> (${best.pct>=0?'+':''}${n2(best.pct)}%). Đơn vị giảm nhiều nhất: <strong>${worst.name}</strong> (${worst.pct>=0?'+':''}${n2(worst.pct)}%).`);
+    if(best) items.push(`🏆 <strong>Chi nhánh tăng trưởng thương phẩm tốt nhất:</strong> <strong>${best.name}</strong> (${best.pct>=0?'+':''}${n2(best.pct)}%, tương ứng ${best.m3>=0?'+':''}${n0(best.m3)} m³).`);
+    if(worst && worst.pct < 0) items.push(`⚠️ <strong>Chi nhánh sụt giảm thương phẩm cần lưu ý:</strong> <strong>${worst.name}</strong> (${n2(worst.pct)}%, giảm ${n0(Math.abs(worst.m3))} m³ so với cùng kỳ).`);
   }
 
   list.innerHTML = items.map(t=>`<li>${t}</li>`).join('');
@@ -1634,8 +1635,8 @@ function exportToPdf(){
 }
 
 /* ================================================================
-   HỒ SƠ PHÂN TÍCH CHUYÊN SÂU TỪNG ĐƠN VỊ & CÔNG CỤ SAO CHÉP
-   (Góc nhìn Chuyên gia Quản lý Cấp nước hơn 30 năm kinh nghiệm)
+   HỒ SƠ THEO DÕI THƯƠNG PHẨM & KHÁCH HÀNG TỪNG ĐƠN VỊ
+   (Nghiệp vụ Quản lý Khách hàng & Kinh doanh Nước sạch)
    ================================================================ */
 
 function showToast(message, type = 'success'){
@@ -1702,12 +1703,12 @@ function renderUnitDrilldown(years, periodInfo){
 
   // Cập nhật tiêu đề bảng
   const tableTitle = document.getElementById('unitTableTitle');
-  if(tableTitle) tableTitle.innerHTML = `1. Bảng Tổng hợp & Đối chiếu Đa chỉ tiêu theo các năm — <span style="color:var(--teal); font-weight:800;">${unitName}</span> (${periodInfo.label})`;
+  if(tableTitle) tableTitle.innerHTML = `1. Bảng Đối chiếu Đa chỉ tiêu Thương phẩm, Thất thoát & Doanh thu theo các năm — <span style="color:var(--teal); font-weight:800;">${unitName}</span> (${periodInfo.label})`;
   
   const monthlyTitle = document.getElementById('unitMonthlyTitle');
   const yearSelect = document.getElementById('drilldownYearSelect');
   const selectedYear = Number(yearSelect ? yearSelect.value : years[years.length - 1]) || years[years.length - 1];
-  if(monthlyTitle) monthlyTitle.innerHTML = `2. Chi tiết Diễn biến 12 Tháng trong Năm ${selectedYear} — <span style="color:var(--teal); font-weight:800;">${unitName}</span>`;
+  if(monthlyTitle) monthlyTitle.innerHTML = `2. Bảng Theo dõi Chi tiết Diễn biến Thương phẩm & Khách hàng 12 Tháng Năm ${selectedYear} — <span style="color:var(--teal); font-weight:800;">${unitName}</span>`;
 
   // 1. Tính toán số liệu đa năm cho đơn vị được chọn
   const multiYearData = years.map(y => {
@@ -1785,42 +1786,42 @@ function renderUnitDrilldown(years, periodInfo){
 
     kpiGrid.innerHTML = `
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Nước Thương phẩm (m³)</div>
+        <div class="unit-kpi-title">Sản lượng Thương phẩm (m³)</div>
         <div class="unit-kpi-val">${n0(last.tieuthu)}</div>
         <div class="unit-kpi-sub ${yoyTPDiff !== null ? (yoyTPDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
           ${yoyTPDiff !== null ? `${yoyTPDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyTPDiff)} m³ (${n2(Math.abs(yoyTPPct))}%)` : 'Năm ' + last.year}
         </div>
       </div>
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Nước Phát ra (m³)</div>
+        <div class="unit-kpi-title">Tổng Nước Phát mạng (m³)</div>
         <div class="unit-kpi-val">${n0(last.phatraGoc)}</div>
         <div class="unit-kpi-sub ${yoyPRDiff !== null ? (yoyPRDiff >= 0 ? 'yoy-up' : 'yoy-down') : 'yoy-flat'}">
           ${yoyPRDiff !== null ? `${yoyPRDiff >= 0 ? '▲ +' : '▼ '}${n0(yoyPRDiff)} m³ (${n2(Math.abs(yoyPRPct))}%)` : 'Tổng bơm cấp'}
         </div>
       </div>
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Tỷ lệ Thất thoát (%)</div>
+        <div class="unit-kpi-title">Tỷ lệ Thất thoát Nước (%)</div>
         <div class="unit-kpi-val" style="color:${nrwColor};">${n2(last.tyLeThatThoat)}%</div>
         <div class="unit-kpi-sub" style="font-weight:700; color:${nrwColor};">
           ${nrwBadge} ${yoyTTDiff !== null ? `(${yoyTTDiff >= 0 ? '+' : ''}${n2(yoyTTDiff)}%)` : ''}
         </div>
       </div>
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Lượng nước thất thoát</div>
+        <div class="unit-kpi-title">Lượng Nước Thất thoát (m³)</div>
         <div class="unit-kpi-val" style="color:var(--danger-text);">${n0(last.thatThoatM3)} <span style="font-size:13px; font-weight:600;">m³</span></div>
         <div class="unit-kpi-sub" style="color:var(--muted);">
           Chiếm ${n2(last.tyLeThatThoat)}% tổng lượng nước phát
         </div>
       </div>
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Số hộ & Mức dùng BQ</div>
+        <div class="unit-kpi-title">Khách hàng & Mức dùng BQ</div>
         <div class="unit-kpi-val">${n0(last.soho)} <span style="font-size:13px; font-weight:600;">hộ</span></div>
         <div class="unit-kpi-sub" style="color:var(--teal); font-weight:700;">
           ${last.tieuThuBQHo !== null ? `~${n2(last.tieuThuBQHo)} m³/hộ/tháng` : 'Chưa có dữ liệu'}
         </div>
       </div>
       <div class="unit-kpi-card">
-        <div class="unit-kpi-title">Doanh thu trước thuế</div>
+        <div class="unit-kpi-title">Doanh thu Tiền nước (chưa VAT)</div>
         <div class="unit-kpi-val">${n0(last.tongTienHang)} <span style="font-size:13px; font-weight:600;">đ</span></div>
         <div class="unit-kpi-sub" style="color:var(--navy); font-weight:700;">
           Giá BQ: ${n0(last.giaBanBQ)} đ/m³ ${yoyDTPct !== null ? `(${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}
@@ -1914,25 +1915,25 @@ function renderUnitDrilldown(years, periodInfo){
 
       if(nMonths === 12){
         if(currentProgressPct >= 100){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 ĐÃ HOÀN THÀNH XUẤT SẮC CẢ NĂM (${n2(currentProgressPct)}%)</span>`;
-          assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} với kết quả đạt <strong>${n0(totRecordedTP)} m³</strong>, vượt <strong>+${n0(totRecordedTP - khTarget)} m³ (+${n2(currentProgressPct - 100)}%)</strong> so với kế hoạch giao.`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 TIẾN ĐỘ THƯƠNG PHẨM: ĐÃ HOÀN THÀNH VƯỢT KẾ HOẠCH (${n2(currentProgressPct)}%)</span>`;
+          assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} với kết quả đạt <strong>${n0(totRecordedTP)} m³</strong>, vượt <strong>+${n0(totRecordedTP - khTarget)} m³ (+${n2(currentProgressPct - 100)}%)</strong> so với kế hoạch Công ty giao.`;
         } else {
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 KẾT THÚC NĂM: KHÔNG ĐẠT KẾ HOẠCH (${n2(currentProgressPct)}%)</span>`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 KẾT THÚC NĂM: CHƯA ĐẠT CHỈ TIÊU THƯƠNG PHẨM (${n2(currentProgressPct)}%)</span>`;
           assessmentSummary = `Đơn vị đã kết thúc 12 tháng năm ${selectedYear} đạt <strong>${n0(totRecordedTP)} m³</strong>, thiếu hụt <strong>-${n0(khTarget - totRecordedTP)} m³</strong> (-${n2(100 - currentProgressPct)}%) so với kế hoạch.`;
         }
       } else {
         if(runRateForecastPct >= 102){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 DỰ BÁO: HOÀN THÀNH VƯỢT KẾ HOẠCH NĂM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
-          assessmentSummary = `Tiến độ thực hiện sản lượng (<strong>${n1(currentProgressPct)}%</strong>) đang chạy nhanh hơn tiến độ thời gian (<strong>${n1(timeElapsedPct)}%</strong> năm). Với nhịp độ hiện tại, đơn vị dự kiến hoàn thành kế hoạch sớm và vượt khoảng <strong>+${n0(runRateDiff)} m³</strong>.`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🟢 ĐÁNH GIÁ PHÒNG QLKH: DỰ BÁO VƯỢT KẾ HOẠCH NĂM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ thực hiện thương phẩm (<strong>${n1(currentProgressPct)}%</strong>) đang vượt tiến độ thời gian (<strong>${n1(timeElapsedPct)}%</strong> năm). Với nhịp độ hiện tại, đơn vị dự kiến hoàn thành kế hoạch sớm và vượt khoảng <strong>+${n0(runRateDiff)} m³</strong>.`;
         } else if(runRateForecastPct >= 98){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🔵 DỰ BÁO: KHẢ THI CAO - CẬN ĐÍCH KẾ HOẠCH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
-          assessmentSummary = `Tốc độ thực hiện hiện tại bám sát mục tiêu năm. Các tháng còn lại cần duy trì sản lượng tối thiểu <strong>${n0(neededPerMonth)} m³/tháng</strong> để đảm bảo về đích an toàn 100%.`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-success">🔵 ĐÁNH GIÁ PHÒNG QLKH: TIẾN ĐỘ KHẢ THI - CẬN ĐÍCH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tốc độ tiêu thụ bám sát mục tiêu kế hoạch năm. Chi nhánh cần duy trì sản lượng tối thiểu <strong>${n0(neededPerMonth)} m³/tháng</strong> trong các tháng còn lại để đảm bảo về đích an toàn 100%.`;
         } else if(runRateForecastPct >= 90){
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-warning">🟡 DỰ BÁO: CẦN TĂNG TỐC - NGUY CƠ HỤT NHẸ (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
-          assessmentSummary = `Tiến độ sản lượng chậm hơn tiến độ thời gian (đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự báo nếu không tăng tốc sẽ thiếu hụt khoảng <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Mỗi tháng còn lại cần đạt <strong>${n0(neededPerMonth)} m³</strong> (phải tăng <strong>+${n1(requiredPaceRatio)}%</strong> so với mức bình quân hiện tại).`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-warning">🟡 ĐÁNH GIÁ PHÒNG QLKH: CẦN ĐÔN ĐỐC TĂNG TỐC - NGUY CƠ HỤT CHỈ TIÊU (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ thương phẩm chậm hơn tiến độ thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự báo nếu không tăng tốc sẽ thiếu hụt khoảng <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Mỗi tháng còn lại cần đạt <strong>${n0(neededPerMonth)} m³</strong> (phải tăng <strong>+${n1(requiredPaceRatio)}%</strong> so với mức bình quân hiện tại).`;
         } else {
-          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 DỰ BÁO: NGUY CƠ CAO KHÓ HOÀN THÀNH (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
-          assessmentSummary = `Tiến độ đang bị tụt sâu so với mốc thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự kiến cả năm sẽ hụt <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Đơn vị cần có giải pháp cấp bách về phát triển khách hàng mới và chống thất thoát nước thương mại.`;
+          statusBadgeHtml = `<span class="unit-forecast-status-badge status-danger">🔴 ĐÁNH GIÁ PHÒNG QLKH: BÁO ĐỘNG TỤT CHỈ TIÊU THƯƠNG PHẨM (Dự kiến ${n1(runRateForecastPct)}%)</span>`;
+          assessmentSummary = `Tiến độ thương phẩm đang bị tụt sâu so với mốc thời gian (mới đạt <strong>${n1(currentProgressPct)}%</strong> kế hoạch sau <strong>${nMonths}/12</strong> tháng). Dự kiến cả năm sẽ hụt <strong>-${n0(Math.abs(runRateDiff))} m³</strong>. Chi nhánh cần triển khai ngay các giải pháp mở rộng khách hàng mới và siết chặt chống thất thoát nước thương mại.`;
         }
       }
 
@@ -1942,7 +1943,7 @@ function renderUnitDrilldown(years, periodInfo){
       forecastBox.innerHTML = `
         <div class="unit-forecast-head">
           <div class="unit-forecast-title">
-            <span>🎯</span> Dự báo Khả năng Hoàn thành Kế hoạch Năm ${selectedYear} — ${unitName}
+            <span>🎯</span> Đánh giá & Dự báo Tiến độ Kế hoạch Thương phẩm Năm ${selectedYear} — ${unitName}
           </div>
           ${statusBadgeHtml}
         </div>
@@ -1960,7 +1961,7 @@ function renderUnitDrilldown(years, periodInfo){
           
           <div class="dual-progress-item">
             <div class="dual-progress-label">
-              <span>💧 Sản lượng thực tế đã đạt: <strong>${n0(totRecordedTP)} / ${n0(khTarget)} m³</strong></span>
+              <span>💧 Thương phẩm thực tế đã chốt: <strong>${n0(totRecordedTP)} / ${n0(khTarget)} m³</strong></span>
               <span style="font-family:var(--font-mono); font-weight:800; color:${currentProgressPct >= timeElapsedPct ? 'var(--teal)' : 'var(--danger-text)'};">${n1(currentProgressPct)}%</span>
             </div>
             <div class="dual-progress-track">
@@ -1971,7 +1972,7 @@ function renderUnitDrilldown(years, periodInfo){
           ${nMonths < 12 ? `
           <div class="dual-progress-item">
             <div class="dual-progress-label">
-              <span>📈 Dự báo sản lượng cả năm (Run-rate): <strong>${n0(runRateForecastTP)} m³</strong></span>
+              <span>📈 Dự kiến thương phẩm cả năm (Run-rate): <strong>${n0(runRateForecastTP)} m³</strong></span>
               <span style="font-family:var(--font-mono); font-weight:800; color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">${n1(runRateForecastPct)}% (${runRateDiff >= 0 ? '+' : ''}${n0(runRateDiff)} m³)</span>
             </div>
             <div class="dual-progress-track">
@@ -1984,7 +1985,7 @@ function renderUnitDrilldown(years, periodInfo){
         <div class="forecast-cards-grid">
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>⚡</span> Kịch bản 1: Tốc độ hiện tại (Run-rate)
+              <span>⚡</span> Kịch bản 1: Theo nhịp độ tiêu thụ hiện tại (Run-rate)
             </div>
             <div class="forecast-scenario-val" style="color:${runRateForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
               ${n1(runRateForecastPct)}%
@@ -1996,7 +1997,7 @@ function renderUnitDrilldown(years, periodInfo){
 
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>🌦️</span> Kịch bản 2: Có xét Mùa vụ (${selectedYear - 1})
+              <span>🌦️</span> Kịch bản 2: Có xét yếu tố Mùa vụ (${selectedYear - 1})
             </div>
             <div class="forecast-scenario-val" style="color:${seasonalForecastPct >= 100 ? 'var(--teal)' : 'var(--danger-text)'};">
               ${n1(seasonalForecastPct)}%
@@ -2008,7 +2009,7 @@ function renderUnitDrilldown(years, periodInfo){
 
           <div class="forecast-scenario-card">
             <div class="forecast-scenario-title">
-              <span>🎯</span> Kịch bản 3: Mục tiêu để cán đích 100%
+              <span>🎯</span> Kịch bản 3: Nhịp độ đôn đốc để về đích 100% KH
             </div>
             <div class="forecast-scenario-val" style="color:${requiredPaceRatio <= 0 ? 'var(--teal)' : (requiredPaceRatio <= 15 ? 'var(--blue)' : 'var(--danger-text)')};">
               ${n0(neededPerMonth)} <span style="font-size:12px; font-weight:600;">m³/tháng</span>
@@ -2020,7 +2021,7 @@ function renderUnitDrilldown(years, periodInfo){
         </div>
 
         <div style="margin-top:14px; font-size:13px; line-height:1.6; color:var(--ink); padding:10px 14px; background:var(--bg-page); border-radius:10px; border-left:3px solid var(--blue);">
-          <strong>📌 Kết luận Dự báo Chuyên gia:</strong> ${assessmentSummary}
+          <strong>📌 Ý kiến Đánh giá của Trưởng phòng Quản lý Khách hàng:</strong> ${assessmentSummary}
         </div>
       `;
 
@@ -2041,20 +2042,20 @@ function renderUnitDrilldown(years, periodInfo){
     }
   }
 
-  // 4. Render Khối Nhận định & Khuyến nghị Kỹ thuật (Chuyên gia 30 năm)
+  // 4. Render Khối Ý kiến Đánh giá & Đề xuất Chỉ đạo (Trưởng phòng Quản lý Khách hàng)
   const expertBox = document.getElementById('unitExpertBox');
   if(expertBox && last){
     const diagnosticItems = [];
     
     // Đánh giá tỷ lệ thất thoát nước sạch (NRW)
     if(last.tyLeThatThoat > 20){
-      diagnosticItems.push(`🔴 <strong>Thất thoát nước rất nghiêm trọng (${n2(last.tyLeThatThoat)}% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> Đang vượt ngưỡng cho phép 15% của Công ty rất lớn. <em>Khuyến nghị hành động:</em> Đơn vị cần ngay lập tức triển khai công tác khoanh vùng tách mạng (DMA), đo lưu lượng đêm tối thiểu (MNF) để phát hiện bể vỡ ngầm; đồng thời rà soát kẹt đồng hồ khách hàng, kiểm định định kỳ đồng hồ đo nước theo quy định ĐLVN 17:2017.`);
+      diagnosticItems.push(`🔴 <strong>Thất thoát nước sạch ở mức báo động đỏ (${n2(last.tyLeThatThoat)}% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> Vượt rất xa định mức khoán của Công ty (15%). <em>Chỉ đạo nghiệp vụ:</em> Yêu cầu Giám đốc Chi nhánh/Xí nghiệp khẩn trương phối hợp Đội Quản lý Mạng lưới triển khai phân vùng tách mạng (DMA), đo lưu lượng ban đêm (MNF) để xử lý dứt điểm các điểm bể vỡ ngầm; đồng thời Tổ Quản lý Khách hàng phải kiểm tra 100% đồng hồ đo nước quá hạn kiểm định theo quy định ĐLVN 17:2017, rà soát các điểm đấu nối nghi vấn gian lận nước.`);
     } else if(last.tyLeThatThoat > 15){
-      diagnosticItems.push(`🟡 <strong>Thất thoát nước vượt ngưỡng định mức (${n2(last.tyLeThatThoat)}% > 15%):</strong> Lượng nước thất thoát ${n0(last.thatThoatM3)} m³. Cần kiểm tra van giảm áp trên các tuyến ống nhánh có áp lực cao và đẩy mạnh công tác kiểm tra chống gian lận, rò rỉ tại các mối nối van vòi.`);
+      diagnosticItems.push(`🟡 <strong>Tỷ lệ thất thoát nước vượt định mức (${n2(last.tyLeThatThoat)}% > 15% — thất thoát ${n0(last.thatThoatM3)} m³):</strong> <em>Đề xuất xử lý:</em> Yêu cầu Chi nhánh rà soát lại áp lực mạng lưới, kiểm tra hiện tượng rò rỉ tại các tuyến ống phân phối và tăng cường kiểm tra định kỳ các khách hàng có mức tiêu thụ lớn.`);
     } else if(last.tyLeThatThoat <= 10){
-      diagnosticItems.push(`🟢 <strong>Kiểm soát thất thoát nước xuất sắc (${n2(last.tyLeThatThoat)}%):</strong> Đây là tỷ lệ thất thoát rất lý tưởng đối với đặc thù địa hình miền núi dốc, áp lực cao như tỉnh Sơn La. Đơn vị đang quản lý vận hành mạng lưới đường ống rất chặt chẽ.`);
+      diagnosticItems.push(`🟢 <strong>Kiểm soát thất thoát nước rất tốt (${n2(last.tyLeThatThoat)}%):</strong> Đây là kết quả đáng ghi nhận của Chi nhánh trong công tác quản lý chống thất thoát, bảo đảm bảo toàn doanh thu thương phẩm.`);
     } else {
-      diagnosticItems.push(`🔵 <strong>Tỷ lệ thất thoát nước đạt yêu cầu kỹ thuật (${n2(last.tyLeThatThoat)}%):</strong> Nằm trong hạn mức cho phép chung (<15%), cần duy trì bảo dưỡng định kỳ các tuyến ống và van xả khí/cặn.`);
+      diagnosticItems.push(`🔵 <strong>Tỷ lệ thất thoát trong hạn mức cho phép (${n2(last.tyLeThatThoat)}%):</strong> Đạt định mức Công ty giao, Chi nhánh cần duy trì công tác kiểm tra chống thất thoát thương mại và rà soát đồng hồ kẹt chạy chậm.`);
     }
 
     // Đánh giá tăng trưởng sản lượng thương phẩm & khách hàng
@@ -2063,32 +2064,32 @@ function renderUnitDrilldown(years, periodInfo){
       const pctTP = prev.tieuthu ? (diffTP / prev.tieuthu * 100) : 0;
       const diffHo = last.soho - prev.soho;
       if(pctTP >= 5){
-        diagnosticItems.push(`📈 <strong>Tăng trưởng sản lượng tốt:</strong> Sản lượng nước thương phẩm tăng <strong>+${n0(diffTP)} m³ (+${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Khách hàng phát triển mới: <strong>${diffHo >= 0 ? '+' : ''}${n0(diffHo)} hộ</strong>.`);
+        diagnosticItems.push(`📈 <strong>Tăng trưởng thương phẩm & phát triển khách hàng tích cực:</strong> Sản lượng nước thương phẩm tăng <strong>+${n0(diffTP)} m³ (+${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Phát triển mới <strong>${diffHo >= 0 ? '+' : ''}${n0(diffHo)} khách hàng đấu nối</strong>. Cần tiếp tục đẩy mạnh khảo sát mở rộng vùng phục vụ cấp nước.`);
       } else if(pctTP < 0){
-        diagnosticItems.push(`📉 <strong>Sản lượng thương phẩm suy giảm:</strong> Giảm <strong>${n0(diffTP)} m³ (${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. Đơn vị cần kiểm tra nguyên nhân: do sụt giảm nhu cầu dùng nước của khách hàng lớn/khách sạn/cơ quan, hay do thời tiết mưa nhiều dân dùng nước tự nhiên, hoặc do sai số đồng hồ kẹt chạy chậm.`);
+        diagnosticItems.push(`📉 <strong>Sản lượng nước thương phẩm sụt giảm:</strong> Giảm <strong>${n0(diffTP)} m³ (${n2(pctTP)}%)</strong> so với cùng kỳ ${prev.year}. <em>Yêu cầu Chi nhánh:</em> Báo cáo rõ nguyên nhân sụt giảm (do khách hàng lớn tạm ngừng sản xuất, thời tiết mưa nhiều người dân dùng nước mưa, hay do đồng hồ khách hàng chạy chậm/kẹt số chưa được thay thế).`);
       } else {
-        diagnosticItems.push(`⚖️ <strong>Sản lượng thương phẩm ổn định:</strong> Biến động nhẹ so với cùng kỳ ${prev.year} (${diffTP >= 0 ? '+' : ''}${n0(diffTP)} m³, ${n2(pctTP)}%). Khách hàng hiện có ${n0(last.soho)} hộ.`);
+        diagnosticItems.push(`⚖️ <strong>Sản lượng tiêu thụ và khách hàng ổn định:</strong> Tổng số khách hàng đang quản lý là <strong>${n0(last.soho)} hộ</strong>. Mức tiêu dùng bình quân đạt <strong>${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng</strong>.`);
       }
     }
 
     // Đánh giá suất điện năng
     if(last.suatPhat > 0.45){
-      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng phát ra cao (${n3(last.suatPhat)} kWh/m³):</strong> Cần kiểm tra lại hiệu suất làm việc của tổ máy bơm tại trạm bơm cấp 1, cấp 2 (hiện tượng mòn cánh bơm, tụt áp) hoặc do đường ống đẩy bị tăng trở lực/đóng cặn cản trở dòng chảy.`);
+      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng trạm bơm cao (${n3(last.suatPhat)} kWh/m³):</strong> Chi phí điện năng trên 1 m³ nước đang ở mức cao. Chi nhánh cần kiểm tra lại hiệu suất cụm máy bơm, tối ưu hóa giờ bơm vào khung giờ thấp điểm/bình thường để hạ giá thành sản xuất.`);
     } else if(last.suatPhat > 0){
-      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng kỹ thuật:</strong> Đạt <strong>${n3(last.suatPhat)} kWh/m³</strong> nước phát ra và <strong>${n3(last.suatTieuThu)} kWh/m³</strong> nước thương phẩm — nằm trong mức vận hành an toàn.`);
+      diagnosticItems.push(`⚡ <strong>Suất tiêu hao điện năng trạm bơm:</strong> Đạt <strong>${n3(last.suatPhat)} kWh/m³</strong> nước phát và <strong>${n3(last.suatTieuThu)} kWh/m³</strong> nước thương phẩm — nằm trong khung tiêu hao điện năng kỹ thuật an toàn.`);
     }
 
     // Đánh giá Kế hoạch
     if(last.khTyLeHT !== null){
-      diagnosticItems.push(`🎯 <strong>Thực hiện Kế hoạch năm:</strong> Sản lượng thương phẩm đạt <strong>${n2(last.khTyLeHT)}%</strong> chỉ tiêu kế hoạch được giao (${n0(last.tieuthu)} / ${n0(last.khTieuThu)} m³).`);
+      diagnosticItems.push(`🎯 <strong>Tiến độ hoàn thành Kế hoạch Công ty giao:</strong> Sản lượng thương phẩm đạt <strong>${n2(last.khTyLeHT)}%</strong> chỉ tiêu kế hoạch năm (${n0(last.tieuthu)} / ${n0(last.khTieuThu)} m³).`);
     }
 
     expertBox.innerHTML = `
       <div class="unit-expert-head">
         <div class="unit-expert-title">
-          <span>💡</span> Nhận định & Khuyến nghị Quản lý Vận hành (Chuyên gia Cấp nước 30+ năm)
+          <span>💡</span> Ý kiến Đánh giá & Đề xuất Chỉ đạo Nghiệp vụ (Trưởng phòng Quản lý Khách hàng)
         </div>
-        <span class="unit-expert-badge">${unitName} · ${last.year}</span>
+        <span class="unit-expert-badge">${unitName} · Năm ${last.year}</span>
       </div>
       <div class="unit-expert-content">
         <ul class="unit-expert-list">
@@ -2329,7 +2330,7 @@ function copyUnitMonthlyToClipboard(){
   copyToClipboard(content, `✓ Đã sao chép bảng 12 tháng năm ${yr} [${unitName}] ra Excel!`);
 }
 
-/* ---------- Chức năng Sao chép Báo cáo Giao ban Nhanh (Zalo/Viber) ---------- */
+/* ---------- Chức năng Sao chép Báo cáo Giao ban Nghiệp vụ (Zalo/Viber) ---------- */
 function copyUnitReportToClipboard(){
   if(!CURRENT_UNIT_DRILLDOWN_DATA || !CURRENT_UNIT_DRILLDOWN_DATA.last){
     showToast('Chưa có thông tin báo cáo để sao chép!', 'error');
@@ -2347,55 +2348,56 @@ function copyUnitReportToClipboard(){
 
   // Đánh giá thất thoát
   let danhGiaTT = 'Kiểm soát tốt trong định mức (<15%)';
-  if(last.tyLeThatThoat > 20) danhGiaTT = 'MỨC BÁO ĐỘNG ĐỎ (>20%) - Cần tổ chức dò tìm bể vỡ ngầm & rà soát DMA';
-  else if(last.tyLeThatThoat > 15) danhGiaTT = 'Vượt định mức 15% - Cần tăng cường rà soát chống thất thoát';
-  else if(last.tyLeThatThoat <= 10) danhGiaTT = 'Xuất sắc (≤10%) - Quản lý mạng lưới rất tốt';
+  if(last.tyLeThatThoat > 20) danhGiaTT = 'BÁO ĐỘNG ĐỎ (>20%) - Đề nghị khoanh vùng DMA & kiểm tra đồng hồ kẹt';
+  else if(last.tyLeThatThoat > 15) danhGiaTT = 'Vượt định mức 15% - Cần rà soát chống thất thoát thương mại';
+  else if(last.tyLeThatThoat <= 10) danhGiaTT = 'Rất tốt (≤10%) - Quản lý bảo toàn thương phẩm xuất sắc';
 
   const report = [
-    `📊 BÁO CÁO NHANH KẾT QUẢ SẢN XUẤT KINH DOANH`,
+    `📊 BÁO CÁO CÔNG TÁC QUẢN LÝ THƯƠNG PHẨM & KHÁCH HÀNG`,
     `🏢 Đơn vị: ${unitName}`,
+    `👤 Đơn vị lập: Phòng Quản lý Khách hàng — Công ty CP Cấp nước Sơn La`,
     `🗓 Kỳ báo cáo: ${periodLabel} — Năm ${last.year}${prev ? ` (So sánh cùng kỳ năm ${prev.year})` : ''}`,
     `========================================`,
-    `1. SẢN LƯỢNG & KHAI THÁC NƯỚC:`,
+    `1. SẢN LƯỢNG THƯƠNG PHẨM & THẤT THOÁT NƯỚC:`,
     `• Nước thương phẩm: ${n0(last.tieuthu)} m³${yoyTPDiff !== null ? ` (${yoyTPDiff >= 0 ? '+' : ''}${n0(yoyTPDiff)} m³, ${yoyTPPct >= 0 ? '+' : ''}${n2(yoyTPPct)}% so với ${prev.year})` : ''}`,
-    `• Nước phát ra: ${n0(last.phatraGoc)} m³${yoyPRDiff !== null ? ` (${yoyPRDiff >= 0 ? '+' : ''}${n0(yoyPRDiff)} m³, ${yoyPRPct >= 0 ? '+' : ''}${n2(yoyPRPct)}%)` : ''}`,
-    `• Lượng thất thoát: ${n0(last.thatThoatM3)} m³`,
-    `• Tỷ lệ thất thoát: ${n2(last.tyLeThatThoat)}%${yoyTTDiff !== null ? ` (${yoyTTDiff >= 0 ? '+' : ''}${n2(yoyTTDiff)} điểm % so với ${prev.year})` : ''}`,
-    `  ↳ Đánh giá: ${danhGiaTT}`,
+    `• Tổng nước phát mạng lưới: ${n0(last.phatraGoc)} m³${yoyPRDiff !== null ? ` (${yoyPRDiff >= 0 ? '+' : ''}${n0(yoyPRDiff)} m³, ${yoyPRPct >= 0 ? '+' : ''}${n2(yoyPRPct)}%)` : ''}`,
+    `• Lượng nước thất thoát: ${n0(last.thatThoatM3)} m³`,
+    `• Tỷ lệ thất thoát nước sạch: ${n2(last.tyLeThatThoat)}%${yoyTTDiff !== null ? ` (${yoyTTDiff >= 0 ? '+' : ''}${n2(yoyTTDiff)} điểm % so với ${prev.year})` : ''}`,
+    `  ↳ Ý kiến Phòng QLKH: ${danhGiaTT}`,
     ``,
-    `2. KHÁCH HÀNG & TIÊU THỤ:`,
-    `• Tổng số khách hàng: ${n0(last.soho)} hộ${prev ? ` (${last.soho - prev.soho >= 0 ? '+' : ''}${n0(last.soho - prev.soho)} hộ)` : ''}`,
-    `• Mức tiêu thụ bình quân: ${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng`,
+    `2. CÔNG TÁC PHÁT TRIỂN & QUẢN LÝ KHÁCH HÀNG:`,
+    `• Tổng số khách hàng đấu nối: ${n0(last.soho)} hộ${prev ? ` (${last.soho - prev.soho >= 0 ? 'tăng +' : 'giảm '}${n0(Math.abs(last.soho - prev.soho))} hộ)` : ''}`,
+    `• Mức tiêu dùng bình quân: ${last.tieuThuBQHo ? n2(last.tieuThuBQHo) : '-'} m³/hộ/tháng`,
     ``,
-    `3. ĐIỆN NĂNG & KỸ THUẬT:`,
+    `3. CHỈ TIÊU ĐIỆN NĂNG TRẠM BƠM:`,
     `• Điện năng tiêu thụ: ${n0(last.dien)} kWh`,
     `• Suất điện phát: ${n3(last.suatPhat)} kWh/m³ | Suất điện TP: ${n3(last.suatTieuThu)} kWh/m³`,
     ``,
-    `4. DOANH THU & TÀI CHÍNH:`,
-    `• Tiền nước thương phẩm: ${n0(last.tiennuoc)} đ`,
-    `• Chi phí đấu nối: ${n0(last.tiendaunoi)} đ`,
-    `• Tổng tiền hàng trước thuế: ${n0(last.tongTienHang)} đ${yoyDTDiff !== null ? ` (${yoyDTDiff >= 0 ? '+' : ''}${n0(yoyDTDiff)} đ, ${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}`,
-    `• Giá bán bình quân: ${n0(last.giaBanBQ)} đ/m³`,
-    `• Tổng cộng thanh toán: ${n0(last.tongCong)} đ`,
+    `4. DOANH THU & GIÁ BÁN BÌNH QUÂN:`,
+    `• Doanh thu tiền nước: ${n0(last.tiennuoc)} đ`,
+    `• Doanh thu dịch vụ đấu nối: ${n0(last.tiendaunoi)} đ`,
+    `• Doanh thu tiền hàng (chưa VAT): ${n0(last.tongTienHang)} đ${yoyDTDiff !== null ? ` (${yoyDTDiff >= 0 ? '+' : ''}${n0(yoyDTDiff)} đ, ${yoyDTPct >= 0 ? '+' : ''}${n2(yoyDTPct)}%)` : ''}`,
+    `• Giá bán nước bình quân: ${n0(last.giaBanBQ)} đ/m³`,
+    `• Tổng giá trị thanh toán: ${n0(last.tongCong)} đ`,
     ...(forecastData && forecastData.khTarget ? [
       ``,
-      `5. DỰ BÁO HOÀN THÀNH KẾ HOẠCH NĂM ${forecastData.selectedYear}:`,
-      `• Kế hoạch giao cả năm: ${n0(forecastData.khTarget)} m³`,
-      `• Lũy kế đã đạt (${forecastData.nMonths}/12 tháng): ${n0(forecastData.totRecordedTP)} m³ (${n1(forecastData.currentProgressPct)}% KH — Thời gian: ${n1(forecastData.timeElapsedPct)}%)`,
-      `• Dự báo cả năm (Run-rate): ${n0(forecastData.runRateForecastTP)} m³ (${n1(forecastData.runRateForecastPct)}% KH — ${forecastData.runRateDiff >= 0 ? 'dự kiến vượt +' : 'dự kiến thiếu '}${n0(Math.abs(forecastData.runRateDiff))} m³)`,
-      `• Nhịp độ cần đạt các tháng còn lại: ${n0(forecastData.neededPerMonth)} m³/tháng`,
-      `• Nhận định: ${forecastData.assessmentSummary.replace(/<[^>]*>/g, '')}`
+      `5. ĐÁNH GIÁ TIẾN ĐỘ & DỰ BÁO KẾ HOẠCH NĂM ${forecastData.selectedYear}:`,
+      `• Kế hoạch thương phẩm giao: ${n0(forecastData.khTarget)} m³`,
+      `• Lũy kế thương phẩm thực hiện (${forecastData.nMonths}/12 tháng): ${n0(forecastData.totRecordedTP)} m³ (${n1(forecastData.currentProgressPct)}% KH — Thời gian: ${n1(forecastData.timeElapsedPct)}%)`,
+      `• Dự kiến cả năm theo Run-rate: ${n0(forecastData.runRateForecastTP)} m³ (${n1(forecastData.runRateForecastPct)}% KH — ${forecastData.runRateDiff >= 0 ? 'dự kiến vượt +' : 'dự kiến thiếu '}${n0(Math.abs(forecastData.runRateDiff))} m³)`,
+      `• Nhịp độ cần đôn đốc các tháng còn lại: ${n0(forecastData.neededPerMonth)} m³/tháng`,
+      `• Ý kiến chỉ đạo của Trưởng phòng QLKH: ${forecastData.assessmentSummary.replace(/<[^>]*>/g, '')}`
     ] : (last.khTyLeHT !== null ? [
       ``,
-      `5. THỰC HIỆN KẾ HOẠCH:`,
-      `• Kế hoạch giao: ${n0(last.khTieuThu)} m³`,
+      `5. THỰC HIỆN CHỈ TIÊU KẾ HOẠCH NĂM:`,
+      `• Chỉ tiêu thương phẩm giao: ${n0(last.khTieuThu)} m³`,
       `• Tỷ lệ hoàn thành: ${n2(last.khTyLeHT)}%`
     ] : [])),
     `========================================`,
-    `⚡ Trích xuất từ Hệ thống Báo cáo SXKD — Công ty Cổ phần Cấp nước Sơn La`
+    `📋 Báo cáo điều hành chuyên môn — Phòng Quản lý Khách hàng, Công ty Cổ phần Cấp nước Sơn La`
   ].join('\n');
 
-  copyToClipboard(report, `✓ Đã sao chép báo cáo nhanh [${unitName}] (sẵn sàng gửi Zalo/Viber)!`);
+  copyToClipboard(report, `✓ Đã sao chép báo cáo điều hành [${unitName}] (sẵn sàng gửi Zalo/Viber)!`);
 }
 
 function render(){
