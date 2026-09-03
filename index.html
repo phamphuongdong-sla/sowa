@@ -476,9 +476,9 @@
           Khoảng thời gian trong năm
         </label>
         <select id="periodSelect">
+          <option value="range" selected>Theo khoảng tháng (Từ … đến …)</option>
           <option value="h1">6 tháng đầu năm (Tháng 1–6)</option>
           <option value="h2">6 tháng cuối năm (Tháng 7–12)</option>
-          <option value="range">Theo khoảng tháng (Từ … đến …)</option>
           <option value="custom">Tùy chọn tự do nhiều tháng</option>
           <option value="full">Cả năm (Tháng 1–12)</option>
           <option value="q1">Quý I (Tháng 1–3)</option>
@@ -488,7 +488,7 @@
           <option value="month">1 tháng cụ thể…</option>
         </select>
 
-        <div id="rangeWrap" style="display:none; margin-top:8px;">
+        <div id="rangeWrap" style="margin-top:8px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-size:12.5px; font-weight:700; color:var(--muted);">Từ:</span>
             <select id="rangeFromSelect" style="width:auto; padding:6px 12px; font-size:13px;"></select>
@@ -999,6 +999,9 @@ function initFilters(){
     monthSelect.appendChild(opt);
   }
 
+  const now = new Date();
+  const currentMonth = Math.min(12, Math.max(1, now.getMonth() + 1));
+
   const rangeFromSelect = document.getElementById('rangeFromSelect');
   const rangeToSelect = document.getElementById('rangeToSelect');
   rangeFromSelect.innerHTML = '';
@@ -1011,7 +1014,7 @@ function initFilters(){
 
     const optT = document.createElement('option');
     optT.value = m; optT.textContent = 'Tháng '+m;
-    if(m===7) optT.selected = true;
+    if(m===currentMonth) optT.selected = true;
     rangeToSelect.appendChild(optT);
   }
 
@@ -1020,7 +1023,7 @@ function initFilters(){
     customGrid.innerHTML = '';
     for(let m=1;m<=12;m++){
       const chip = document.createElement('div');
-      chip.className = 'custom-month-chip' + (m<=6 ? ' active' : '');
+      chip.className = 'custom-month-chip' + (m<=currentMonth ? ' active' : '');
       chip.textContent = 'T' + m;
       chip.dataset.month = m;
       chip.addEventListener('click', ()=>{
@@ -1031,7 +1034,7 @@ function initFilters(){
     }
   }
 
-  document.getElementById('periodSelect').value='h1';
+  document.getElementById('periodSelect').value='range';
   document.getElementById('periodSelect').addEventListener('change', updatePeriodUI);
   rangeFromSelect.addEventListener('change', updatePeriodUI);
   rangeToSelect.addEventListener('change', updatePeriodUI);
